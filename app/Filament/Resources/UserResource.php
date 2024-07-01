@@ -53,8 +53,23 @@ class UserResource extends Resource
                         Select::make('roles')
                             ->relationship('roles', 'name')
                             ->preload(),
+                            Select::make('projects')
+                                ->label('Projects')
+                                ->multiple()
+                                ->relationship('projects','description')
+                                ->preload()
+                                ->columnSpanFull()
+                                ->columns(12),
+                            Select::make('locations')
+                                ->label('locations')
+                                ->multiple()
+                                ->relationship('locations','description')
+                                ->preload()
+                                ->columnSpanFull()
+                                ->columns(12),
                             Placeholder::make('created_at')
                         ->content(fn ($record) => $record?->created_at?->diffForHumans() ?? new HtmlString('&mdash;')),
+
                     Placeholder::make('updated_at')
                         ->content(fn ($record) => $record?->created_at?->diffForHumans() ?? new HtmlString('&mdash;'))
                         ]),

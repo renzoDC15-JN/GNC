@@ -9,6 +9,7 @@ class ClientInformations extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'reference_code',
         'project',
         'location',
         'property_name',
@@ -25,4 +26,8 @@ class ClientInformations extends Model
         'reservation_rate',
         'created_by',
     ];
+
+    public function Contact(){
+      return  $this->hasOne(Contact::class,'reference_code','reference_code');
+    }
 }
