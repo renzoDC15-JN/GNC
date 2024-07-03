@@ -11,8 +11,16 @@ Route::get('/', function () {
 Route::middleware([Authenticate::class])->group(function () {
     // Download
     Route::get('pdf-bc-dl/{id}', [DocuGenController::class, 'download_bc_pdf'])->name('download.bc'); // working
+    Route::get('pdf-li-dl/{id}', [DocuGenController::class, 'download_li_pdf'])->name('download.li'); //letter of intent
+    Route::get('pdf-soac-dl/{id}', [DocuGenController::class, 'download_soac_pdf'])->name('download.soac');//solaris affidavit of consent
+    Route::get('pdf-sbc-dl/{id}', [DocuGenController::class, 'download_sbc_pdf'])->name('download.sbc');//solaris buyers confirmity
+    Route::get('pdf-sua-dl/{id}', [DocuGenController::class, 'download_sua_pdf'])->name('download.sua');//solaris usufruct agreement
     // View
     Route::get('pdf-bc-view/{id}', [DocuGenController::class, 'view_bc_pdf'])->name('view.bc');
+    Route::get('pdf-li-view/{id}', [DocuGenController::class, 'view_li_pdf'])->name('view.li'); //letter of intent
+    Route::get('pdf-soac-view/{id}', [DocuGenController::class, 'view_soac_pdf'])->name('view.soac');//solaris affidavit of consent
+    Route::get('pdf-sbc-view/{id}', [DocuGenController::class, 'view_sbc_pdf'])->name('view.sbc');//solaris buyers confirmity
+    Route::get('pdf-sua-view/{id}', [DocuGenController::class, 'view_sua_pdf'])->name('view.sua');//solaris usufruct agreement
 
     Route::get('/document-stream/{id}', function ($id) {
         $record = \App\Models\Documents::findOrFail($id);
