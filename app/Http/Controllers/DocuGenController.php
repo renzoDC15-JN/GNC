@@ -26,7 +26,9 @@ class DocuGenController extends Controller
         $ci = new ClientInformations();
         $information = $ci->find($id);
         // dd($information);
-        $pdf = \Barryvdh\DomPDF\Facade\PDF::loadView('pdf.borrowers_conformity.bc-pdf', ['data' => $information, 'user_branch_signatories' ]);
+//        $pdf = \Barryvdh\DomPDF\Facade\PDF::loadView('pdf.borrowers_conformity.bc-pdf', ['data' => $information ]);
+//        $pdf = \Barryvdh\DomPDF\Facade\PDF::loadView('pdf.letter_of_intent.li-pdf', ['data' => $information,'app_url'=>ENV('APP_URL') ]);
+        $pdf = \Barryvdh\DomPDF\Facade\PDF::loadView('pdf.solaris_buyer_conformity.sbc-pdf', ['data' => $information ]);
         return $pdf->stream('Borrower Conformity '.$information->property_name.'-'.$information->buyer_name.'.pdf');
     }
 
