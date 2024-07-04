@@ -15,7 +15,7 @@ class DocuGenController extends Controller
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
      */
-    public function download_document($id, $document){
+    public function download_document($id, $document,$isView){
         $client_information = new ClientInformations();
         $information = $client_information->find($id);
         $document_template = Documents::find($document);
@@ -39,16 +39,23 @@ class DocuGenController extends Controller
         $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
         exec($command, $output, $return_var);
         $pdfFile = storage_path('app/public/converted_pdf/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.pdf');
+
         if (file_exists($pdfFile)) {
-//            return response()->download($pdfFile);
-            return response()->file($pdfFile, [
+//            if($isView){
+//               return response()->file($pdfFile, [
+//                    'Content-Type' => 'application/pdf',
+//                    'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
+//                ]);
+//            }else{
+//               return response()->download($pdfFile);
+//            }
+            return $isView? response()->file($pdfFile, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
-            ]);
+            ]):response()->download($pdfFile);
         } else {
             return response()->json(['error' => 'An error occurred during the file conversion'], 500);
         }
-
     }
 
     public function download_bc_pdf($id){

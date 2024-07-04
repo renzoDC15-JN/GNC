@@ -6,13 +6,18 @@ use App\Filament\Imports\ClientInformationsImporter;
 use App\Filament\Resources\ClientInformationsResource\Pages;
 use App\Filament\Resources\ClientInformationsResource\RelationManagers;
 use App\Models\ClientInformations;
+use App\Models\Documents;
 use App\Models\Projects;
+use BladeUI\Icons\Components\Icon;
 use Filament\Actions\Action;
+use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -131,16 +136,29 @@ class ClientInformationsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('download_bc')
-                ->icon('heroicon-c-arrow-down-circle')
-                ->label('Borrowers Conformity')
-                ->url(fn ($record): string => route('download.bc', ['id' => $record->id])),
-                Tables\Actions\Action::make('view_pa')
-                ->icon('heroicon-s-eye')
-                ->label('View Borrowers Conformity')
-                ->url(fn ($record): string => route('view.bc', ['id' => $record->id]), true),
-            ])
+                ActionGroup::make(
+                    array_merge(Documents::all()->map(function($document){
+                        return  Tables\Actions\Action::make('view_'.$document->name)
+                            ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [$record,$document,1]))
+                            ->label($document->name)
+                            ->icon('heroicon-m-eye')
+                            ->openUrlInNewTab();
+                    })->toArray(),
+                        Documents::all()->map(function($document){
+                            return  Tables\Actions\Action::make('view_'.$document->name)
+                                ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [$record,$document,0]))
+                                ->label($document->name)
+                                ->icon('heroicon-m-arrow-down-tray')
+                                ->openUrlInNewTab();
+                        })->toArray()
+                    )
+                )
+                    ->label('Documents')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size(ActionSize::Small)
+                    ->color('primary')
+                    ->button()
+            ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

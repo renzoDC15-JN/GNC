@@ -24,7 +24,7 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::get('pdf-sua-view/{id}', [DocuGenController::class, 'view_sua_pdf'])->name('view.sua');//solaris usufruct agreement
     Route::get('pdf-svsaw-view/{id}', [DocuGenController::class, 'view_svsaw_pdf'])->name('view.svsaw');//solaris voluntary surrender and waiver
 
-    Route::get('docx-pdf-download/{id}/{document}', [DocuGenController::class, 'download_document'])->name('view.docx_to_pdf');
+    Route::get('docx-pdf-download/{id}/{document}/{is_view}', [DocuGenController::class, 'download_document'])->name('docx_to_pdf');
 
 
     Route::get('/document-stream/{id}', function ($id) {
