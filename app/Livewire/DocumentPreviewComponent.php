@@ -2,6 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\ClientInformations;
+use App\Models\Documents;
+use ConvertApi\ConvertApi;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Model;
 use PhpOffice\PhpWord\IOFactory;
@@ -11,6 +14,8 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 use PhpOffice\PhpWord\Settings;
 use setasign\Fpdi\TcpdfFpdi;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class DocumentPreviewComponent extends Component
 {
@@ -18,79 +23,63 @@ class DocumentPreviewComponent extends Component
     public ?Model $record = null;
     public ?string $html_code = null;
 
-    public function oldRender()
+
+    public function mount($record)
     {
-        if ($this->record) {
-            $filePath = storage_path('app/public/' . $this->record->file_attachment);
-            $templateProcessor = new TemplateProcessor($filePath);
-            $templateProcessor->setValue('name', 'John Doe');
-            $templateProcessor->saveAs('templated.docx');
-
-            // Load the processed DOCX file
-            $phpWord = IOFactory::load('templated.docx');
-
-            // Convert DOCX to HTML
-            $htmlWriter = IOFactory::createWriter($phpWord, 'HTML');
-            ob_start();
-            $htmlWriter->save('php://output');
-            $htmlContent = ob_get_clean();
-
-            // Initialize Dompdf and write the HTML content to PDF
-            $dompdf = new Dompdf();
-            $dompdf->loadHtml($htmlContent);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-            $pdfFileName = 'templated.pdf';
-            $pdfFilePath = storage_path('app/public/' . $pdfFileName);
-            file_put_contents($pdfFilePath, $dompdf->output());
-
-//            $phpWord = IOFactory::load($filePath);
-//            // Convert DOCX to HTML
-//            $htmlWriter = IOFactory::createWriter($phpWord, 'Word2007');
-////            $htmlContent = $htmlWriter->getContent();
-//            $htmlWriter->save($this->record->name.'.docx');
-////            $this->html_code = $htmlContent;
-        }
-        return view('livewire.document-preview-component');
+        $this->record = $record;
     }
 
     public function render()
     {
-//        if ($this->record) {
-//            $filePath = storage_path('app/public/' . $this->record->file_attachment);
-//            $templateProcessor = new TemplateProcessor($filePath);
-//            $templateProcessor->setValue('name', 'John Doe');
-//            $templateProcessor->saveAs('template output.docx');
-//
-//            // Load the processed DOCX file
-//            $phpWord = IOFactory::load('templated.docx');
-//
-//        }
+        if ($this->record) {
+            $filePath = storage_path('app/public/' . $this->record->file_attachment);
+            $templateProcessor = new TemplateProcessor($filePath);
+            if($this->record->data ){
+                foreach ($this->record->data as $key => $value) {
+                    $templateProcessor->setValue($key, $value);
+                }
+            }
+            $imagePath = storage_path('app/public/test_image.png');
+            $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+            $docx_file =storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.docx');
+            $templateProcessor->saveAs($docx_file);
+            $outputFile = storage_path('app/public/converted_pdf/');
+            $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
+            exec($command, $output, $return_var);
+
+        }
         return view('livewire.document-preview-component');
+    }
+
+    public function refreshPdf()
+    {
+        if ($this->record) {
+            $filePath = storage_path('app/public/' . $this->record->file_attachment);
+            $templateProcessor = new TemplateProcessor($filePath);
+            foreach ($this->record->data as $key => $value) {
+                $templateProcessor->setValue($key, $value);
+            }
+            $imagePath = storage_path('app/public/test_image.png');
+            $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+            $docx_file = storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.docx');
+            $templateProcessor->saveAs($docx_file);
+            $outputFile = storage_path('app/public/converted_pdf/');
+            $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
+            exec($command, $output, $return_var);
+
+            // Emit an event to reload the PDF iframe
+            $this->emit('reloadPdfIframe');
+        }
     }
 
     public function streamPdf()
     {
-//        if($this->record) {
-//            $filePath = storage_path('app/public/' . $this->record->file_attachment);
-//            $phpWord = IOFactory::load($filePath);
-//
-//            // Convert DOCX to HTML
-//            $htmlWriter = IOFactory::createWriter($phpWord, 'HTML');
-//            $htmlContent = $htmlWriter->getContent();
-//            $this->html_code = $htmlContent;
-//
-//            // Generate PDF
-//            $options = new Options();
-//            $options->set('isHtml5ParserEnabled', true);
-//            $dompdf = new Dompdf($options);
-//            $dompdf->loadHtml($this->html_code);
-//            $dompdf->setPaper('A4', 'portrait');
-//            $dompdf->render();
-//
-//            // Stream the PDF directly to the browser
-//            $pdfContent = $dompdf->output();
-//        }
-//        return response($pdfContent)->header('Content-Type', 'application/pdf');
+        if ($this->record){
+            $pdfFile = storage_path('app/public/converted_pdf/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.pdf');
+            return response()->file($pdfFile, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
+            ]);
+        }
     }
 }

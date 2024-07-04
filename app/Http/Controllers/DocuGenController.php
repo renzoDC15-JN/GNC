@@ -3,11 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientInformations;
+use App\Models\Documents;
 use Illuminate\Http\Request;
 use PDF;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class DocuGenController extends Controller
 {
+    /**
+     * @throws \PhpOffice\PhpWord\Exception\CopyFileException
+     * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
+     */
+    public function download_document($id, $document){
+        $client_information = new ClientInformations();
+        $information = $client_information->find($id);
+        $document_template = Documents::find($document);
+        $filePath = storage_path('app/public/' . $document_template->file_attachment);
+
+        $templateProcessor = new TemplateProcessor($filePath);
+
+        $ci = $information->toArray();
+        //set values
+        foreach ($ci as $key => $value) {
+            $templateProcessor->setValue($key, $value);
+        }
+        //set image
+        $imagePath = storage_path('app/public/test_image.png');
+        $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+
+        $docx_file =storage_path('app/public/converted_documents/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.docx');
+        $templateProcessor->saveAs($docx_file);
+
+        $outputFile = storage_path('app/public/converted_pdf/');
+        $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
+        exec($command, $output, $return_var);
+        $pdfFile = storage_path('app/public/converted_pdf/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.pdf');
+        if (file_exists($pdfFile)) {
+//            return response()->download($pdfFile);
+            return response()->file($pdfFile, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
+            ]);
+        } else {
+            return response()->json(['error' => 'An error occurred during the file conversion'], 500);
+        }
+
+    }
+
     public function download_bc_pdf($id){
         $ci = new ClientInformations();
         $information = $ci->find($id);
@@ -85,6 +128,20 @@ class DocuGenController extends Controller
         $ci = new ClientInformations();
         $information = $ci->find($id);
         $pdf = \Barryvdh\DomPDF\Facade\PDF::loadView('pdf.solaris_affidavit_of_consent.saoc-pdf', ['data' => $information ]);
+        return $pdf->stream('Solaris Affidavit of Consent '.$information->property_name.'-'.$information->buyer_name.'.pdf');
+    }
+
+    public function download_svsaw_pdf($id){
+        $ci = new ClientInformations();
+        $information = $ci->find($id);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.solaris_voluntary_surrender_and_waiver.svsaw-pdf', ['data' => $information]);
+        return $pdf->download('Solaris Affidavit of Consent '.$information->property_name.'-'.$information->buyer_name.'.pdf');
+    }
+
+    public function view_svsaw_pdf($id){
+        $ci = new ClientInformations();
+        $information = $ci->find($id);
+        $pdf = \Barryvdh\DomPDF\Facade\PDF::loadView('pdf.solaris_voluntary_surrender_and_waiver.svsaw-pdf', ['data' => $information ]);
         return $pdf->stream('Solaris Affidavit of Consent '.$information->property_name.'-'.$information->buyer_name.'.pdf');
     }
 

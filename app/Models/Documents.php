@@ -21,10 +21,12 @@ class Documents extends Model
         'description',
         'file_attachment',
         'fields',
+        'data',
     ];
 
     protected $casts = [
         'file_attachment' => 'array',
         'fields' => 'array',
+        'data' => 'array',
     ];
 }

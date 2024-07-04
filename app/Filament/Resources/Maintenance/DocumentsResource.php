@@ -6,6 +6,7 @@ use App\Filament\Resources\Maintenance\DocumentsResource\Pages;
 use App\Filament\Resources\Maintenance\DocumentsResource\RelationManagers;
 use App\Livewire\DocumentPreviewComponent;
 use App\Models\Documents;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +19,7 @@ use phpDocumentor\Reflection\Types\False_;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Facades\Schema;
 use Filament\Forms\Components\Livewire;
+use ValentinMorice\FilamentJsonColumn\FilamentJsonColumn;
 
 class DocumentsResource extends Resource
 {
@@ -32,29 +34,28 @@ class DocumentsResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->required(),
-//                    Forms\Components\TextInput::make('description')
-//                        ->required(),
-                    FileUpload::make('file_attachment')
-                        ->directory('documents')
-                        ->preserveFilenames(),
-//                    Forms\Components\Textarea::make('fields')
-//                        ->required()
-//                        ->columnSpanFull(),
-                    Forms\Components\Select::make('fields')
-                        ->options(
-                            collect(Schema::getColumnListing('contacts'))->mapWithKeys(function ($item, $key) {
-                                return [$item=>$item];
-                            })->toArray()
-                        )->multiple(),
+                    Forms\Components\Section::make()->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\Textarea::make('description'),
+                        FileUpload::make('file_attachment')
+                            ->directory('documents')
+                            ->preserveFilenames(),
+                        Forms\Components\Select::make('fields')
+                            ->options(
+                                collect(Schema::getColumnListing('contacts'))->mapWithKeys(function ($item, $key) {
+                                    return [$item=>$item];
+                                })->toArray()
+                            )->multiple(),
 
+                    ])->columns(1)->columnSpan(4),
 
-                    Forms\Components\Textarea::make('description'),
-                ])->columns(1)->columnspan(4),
+                    FilamentJsonColumn::make('data')->columnSpan(8),
+                ])->columns(12)->columnSpanFull(),
                 Forms\Components\Section::make()->schema([
                     Livewire::make(DocumentPreviewComponent::class)
-                        ->key('foo-first')
+                        ->key(Carbon::now()->format('Y-m-d H:i:s'))
+                        ->columnSpanFull()
                 ])->columnSpan(8),
             ])->columns(12);
     }
