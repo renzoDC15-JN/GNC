@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClientInformations;
 use App\Models\Documents;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -16,6 +17,12 @@ class DocuGenController extends Controller
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
      */
     public function download_document($id, $document,$isView){
+        if (!File::exists(storage_path('app/public/converted_documents/'))) {
+            File::makeDirectory(storage_path('app/public/converted_documents/'), 0755, true);
+        }
+        if (!File::exists(storage_path('app/public/converted_pdf/'))) {
+            File::makeDirectory(storage_path('app/public/converted_pdf/'), 0755, true);
+        }
         $client_information = new ClientInformations();
         $information = $client_information->find($id);
         $document_template = Documents::find($document);

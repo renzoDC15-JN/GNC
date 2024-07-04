@@ -16,6 +16,7 @@ use PhpOffice\PhpWord\Settings;
 use setasign\Fpdi\TcpdfFpdi;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\File;
 
 class DocumentPreviewComponent extends Component
 {
@@ -32,6 +33,13 @@ class DocumentPreviewComponent extends Component
     public function render()
     {
         if ($this->record) {
+            if (!File::exists(storage_path('app/public/converted_documents/'))) {
+                File::makeDirectory(storage_path('app/public/converted_documents/'), 0755, true);
+            }
+            if (!File::exists(storage_path('app/public/converted_pdf/'))) {
+                File::makeDirectory(storage_path('app/public/converted_pdf/'), 0755, true);
+            }
+
             $filePath = storage_path('app/public/' . $this->record->file_attachment);
             $templateProcessor = new TemplateProcessor($filePath);
             if($this->record->data ){
@@ -41,6 +49,7 @@ class DocumentPreviewComponent extends Component
             }
             $imagePath = storage_path('app/public/test_image.png');
             $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+
             $docx_file =storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.docx');
             $templateProcessor->saveAs($docx_file);
             $outputFile = storage_path('app/public/converted_pdf/');
