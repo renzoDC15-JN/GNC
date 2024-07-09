@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('documents', function (Blueprint $table) {
             $table->dropColumn('fields');
+
         });
     }
 

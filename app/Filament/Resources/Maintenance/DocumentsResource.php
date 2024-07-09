@@ -39,29 +39,35 @@ class DocumentsResource extends Resource
 
                         Forms\Components\TextInput::make('name')
                             ->required(),
-                        Forms\Components\Textarea::make('description'),
+                        Forms\Components\Textarea::make('description')
+                            ->required(),
                         Forms\Components\Select::make('company_code')
                             ->label('Company')
                             ->options(
                                 Companies::all()->mapWithKeys(function($company){
                                     return [$company->code=>$company->description];
                                 })->toArray()
-                            )->native(false),
+                            )->native(false)
+                            ->required(),
                         FileUpload::make('file_attachment')
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                             ->directory('documents')
-                            ->preserveFilenames(),
+                            ->preserveFilenames()
+                            ->required(),
 
 
                     ])->columns(1)->columnSpan(4),
 
                     FilamentJsonColumn::make('data')->columnSpan(8),
                 ])->columns(12)->columnSpanFull(),
-                Forms\Components\Section::make()->schema([
-                    Livewire::make(DocumentPreviewComponent::class)
-                        ->key(Carbon::now()->format('Y-m-d H:i:s'))
-                        ->columnSpanFull()
-                ])->columnSpan(8),
+                Livewire::make(DocumentPreviewComponent::class)
+                    ->key(Carbon::now()->format('Y-m-d H:i:s'))
+                    ->columnSpanFull(),
+//                Forms\Components\Section::make()->schema([
+//                    Livewire::make(DocumentPreviewComponent::class)
+//                        ->key(Carbon::now()->format('Y-m-d H:i:s'))
+//                        ->columnSpanFull()
+//                ])->columnSpan(8),
             ])->columns(12);
     }
 
