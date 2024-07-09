@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Maintenance;
 use App\Filament\Resources\Maintenance\DocumentsResource\Pages;
 use App\Filament\Resources\Maintenance\DocumentsResource\RelationManagers;
 use App\Livewire\DocumentPreviewComponent;
+use App\Models\Companies;
 use App\Models\Documents;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -35,18 +36,21 @@ class DocumentsResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\Section::make()->schema([
+
                         Forms\Components\TextInput::make('name')
                             ->required(),
                         Forms\Components\Textarea::make('description'),
+                        Forms\Components\Select::make('company_code')
+                            ->label('Company')
+                            ->options(
+                                Companies::all()->mapWithKeys(function($company){
+                                    return [$company->code=>$company->description];
+                                })->toArray()
+                            )->native(false),
                         FileUpload::make('file_attachment')
                             ->directory('documents')
                             ->preserveFilenames(),
-                        Forms\Components\Select::make('fields')
-                            ->options(
-                                collect(Schema::getColumnListing('contacts'))->mapWithKeys(function ($item, $key) {
-                                    return [$item=>$item];
-                                })->toArray()
-                            )->multiple(),
+
 
                     ])->columns(1)->columnSpan(4),
 
@@ -64,6 +68,8 @@ class DocumentsResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('company.description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')

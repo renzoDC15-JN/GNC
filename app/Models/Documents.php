@@ -20,13 +20,19 @@ class Documents extends Model
         'name',
         'description',
         'file_attachment',
-        'fields',
+//        'fields',
         'data',
+        'company_code',
     ];
 
     protected $casts = [
         'file_attachment' => 'array',
-        'fields' => 'array',
+//        'fields' => 'array',
         'data' => 'array',
     ];
+
+    public function company(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Companies::class, 'code','company_code');
+    }
 }
