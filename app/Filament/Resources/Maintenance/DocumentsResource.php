@@ -68,7 +68,8 @@ class DocumentsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('company.description')
+                Tables\Columns\TextColumn::make('company_code')
+                    ->label('Company')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

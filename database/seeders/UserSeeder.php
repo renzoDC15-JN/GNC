@@ -17,11 +17,14 @@ class UserSeeder extends Seeder
     public function run(): void
     {
        $user= User::updateOrCreate(['email' => 'renzo.carianga@gmail.com'], ['name' => 'Renzo Carianga','password'=>Hash::make('weneverknow')]);
-        $superAdminRole = Role::where('name', 'super_admin')->first();
+        $user1= User::updateOrCreate(['email' => 'cmbeltran@joy-nostalg.com'], ['name' => 'Celina Erica Beltran','password'=>Hash::make('weneverknow')]);
+       $superAdminRole = Role::where('name', 'super_admin')->first();
 
         if ($superAdminRole) {
             // Assign super_admin role to user with id 1
             $user->roles()->syncWithoutDetaching([$superAdminRole->id]);
+            $user1->roles()->syncWithoutDetaching([$superAdminRole->id]);
         }
+
     }
 }
