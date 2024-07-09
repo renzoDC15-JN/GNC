@@ -48,6 +48,7 @@ class DocumentsResource extends Resource
                                 })->toArray()
                             )->native(false),
                         FileUpload::make('file_attachment')
+                            ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                             ->directory('documents')
                             ->preserveFilenames(),
 

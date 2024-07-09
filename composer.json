@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpword": "dev-master",
+        "spatie/laravel-medialibrary": "^11.7",
         "symfony/process": "^7.1",
         "tecnickcom/tcpdf": "^6.7",
         "ueberdosis/pandoc": "^0.9.0",

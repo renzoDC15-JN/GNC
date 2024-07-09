@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 //use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 //use Spatie\MediaLibrary\MediaCollections\File;
 //use Spatie\MediaLibrary\MediaCollections\Models\Media;
-class Documents extends Model
+class Documents extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;

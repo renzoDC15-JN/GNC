@@ -65,8 +65,10 @@ class DocumentPreviewComponent extends Component
         if ($this->record) {
             $filePath = storage_path('app/public/' . $this->record->file_attachment);
             $templateProcessor = new TemplateProcessor($filePath);
-            foreach ($this->record->data as $key => $value) {
-                $templateProcessor->setValue($key, $value);
+            if ($this->record->data) {
+                foreach ($this->record->data as $key => $value) {
+                    $templateProcessor->setValue($key, $value);
+                }
             }
             $imagePath = storage_path('app/public/test_image.png');
             $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
