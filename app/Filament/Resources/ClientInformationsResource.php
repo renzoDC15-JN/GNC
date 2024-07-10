@@ -87,6 +87,8 @@ class ClientInformationsResource extends Resource
     {
 
         return $table
+            ->defaultPaginationPageOption(25)
+            ->defaultSort('id','desc')
             ->query(
                 ClientInformations::query()
                     ->whereIn('project',Auth::user()->projects()->pluck('description'))

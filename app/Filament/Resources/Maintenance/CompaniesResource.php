@@ -43,6 +43,8 @@ class CompaniesResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(25)
+            ->defaultSort('id','desc')
             ->columns([
                 ToggleColumn::make('isActive')
                     ->label('Active')

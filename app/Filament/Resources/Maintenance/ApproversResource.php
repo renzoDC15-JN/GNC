@@ -70,6 +70,8 @@ class ApproversResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(25)
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()

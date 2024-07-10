@@ -68,6 +68,8 @@ class LocationsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(25)
+            ->defaultSort('id','desc')
             ->columns([
                 TextColumn::make('code'),
                 TextColumn::make('description'),

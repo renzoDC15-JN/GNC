@@ -74,6 +74,8 @@ class DocumentsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(25)
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('company_code')
                     ->label('Company')
