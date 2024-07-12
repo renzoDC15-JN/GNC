@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
@@ -16,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\HtmlString;
 
 class UserResource extends Resource
@@ -41,7 +44,31 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->columnSpan(8),
+                TextInput::make('password')
+                    ->password()
+                    ->revealable()
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->visible(fn (string $operation): bool => $operation === 'create')
+                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                    ->dehydrated(fn (?string $state): bool => filled($state))
+                    ->hintActions(
+                        [
+                            Action::make('Generate')
+                            ->icon('heroicon-m-arrow-path')
+                            ->action(function (Set $set, $state) {
+                                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                $charactersLength = strlen($characters);
+                                $randomString = '';
 
+                                for ($i = 0; $i < 16; $i++) {
+                                    $randomString .= $characters[rand(0, $charactersLength - 1)];
+                                }
+
+                                $set('password', $randomString);
+                            }),
+                        ]
+                    )
+                    ->columnSpan(4),
             ])
             ->columns(12)->columnSpan(2),
 
@@ -78,6 +105,7 @@ class UserResource extends Resource
         ])
         ->columns(3);
     }
+
 
     public static function table(Table $table): Table
     {
