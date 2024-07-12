@@ -12,6 +12,7 @@ class Approvers extends Model
 
     protected $fillable = [
         'user_id',
+        'name',
         'position',
         'id_type',
         'id_number',

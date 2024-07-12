@@ -27,10 +27,13 @@ class ApproversResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()->schema([
-                    Select::make('user_id')
-                        ->relationship(name: 'user', titleAttribute: 'name')
-                        ->searchable(['name', 'email'])
-                        ->preload()
+//                    Select::make('user_id')
+//                        ->relationship(name: 'user', titleAttribute: 'name')
+//                        ->searchable(['name', 'email'])
+//                        ->preload()
+//                        ->columnSpan(4),
+                    Forms\Components\TextInput::make('name')
+                        ->required()
                         ->columnSpan(4),
                     Forms\Components\TextInput::make('position')
                         ->required()
@@ -73,7 +76,7 @@ class ApproversResource extends Resource
             ->defaultPaginationPageOption(25)
             ->defaultSort('id','desc')
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('name')
                     ->numeric()
                     ->searchable()
                     ->sortable(),

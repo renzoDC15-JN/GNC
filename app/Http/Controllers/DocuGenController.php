@@ -6,7 +6,6 @@ use App\Models\ClientInformations;
 use App\Models\Documents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use PDF;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
 
