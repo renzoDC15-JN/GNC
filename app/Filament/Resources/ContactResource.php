@@ -5,8 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Imports\ContactImporter;
 use App\Filament\Resources\ContactResource\Pages;
 use App\Filament\Resources\ContactResource\RelationManagers;
+use App\Models\ClientInformations;
+use App\Models\Documents;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
+use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\ActionsPosition;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Homeful\Contacts\Models\Contact;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 use Maatwebsite\Excel\Facades\Excel;
@@ -75,6 +83,11 @@ class ContactResource extends Resource
         return $table
             ->defaultPaginationPageOption(25)
             ->defaultSort('id','desc')
+//            ->query(
+//                Contact::query()
+//                    ->whereIn('project',Auth::user()->projects()->pluck('description'))
+//                    ->whereIn('location',Auth::user()->locations()->pluck('description'))
+//            )
             ->columns([
                 Tables\Columns\TextColumn::make('reference_code')
                     ->searchable(),
@@ -110,8 +123,29 @@ class ContactResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                ActionGroup::make(
+                    array_merge(Documents::all()->map(function($document){
+                        return  Tables\Actions\Action::make('view_'.$document->name)
+                            ->url(fn (Contact $record): string => route('contacts_docx_to_pdf', [$record,$document,1]))
+                            ->label($document->name)
+                            ->icon('heroicon-m-eye')
+                            ->openUrlInNewTab();
+                    })->toArray(),
+                        Documents::all()->map(function($document){
+                            return  Tables\Actions\Action::make('view_'.$document->name)
+                                ->url(fn (Contact $record): string => route('contacts_docx_to_pdf', [$record,$document,0]))
+                                ->label($document->name)
+                                ->icon('heroicon-m-arrow-down-tray')
+                                ->openUrlInNewTab();
+                        })->toArray()
+                    )
+                )
+                    ->label('Documents')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size(ActionSize::Small)
+                    ->color('primary')
+                    ->button()
+            ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -128,7 +162,22 @@ class ContactResource extends Resource
                         Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                     })
 
-            ]);
+            ])->filters([
+                SelectFilter::make('project')
+                    ->multiple()
+                    ->options(
+                        Auth::user()->projects()->get()->mapWithKeys(function ($item,$keys) {
+                            return [$item->description => $item->description];
+                        })->toArray()
+                    )->columnSpan(2),
+                SelectFilter::make('location')
+                    ->multiple()
+                    ->options(
+                        Auth::user()->locations()->get()->mapWithKeys(function ($item,$keys) {
+                            return [$item->description => $item->description];
+                        })->toArray()
+                    )->columnSpan(2)
+            ], layout: FiltersLayout::AboveContent);
     }
 
     public static function getRelations(): array

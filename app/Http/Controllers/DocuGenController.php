@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Homeful\Contacts\Data\FlatData;
+use Homeful\Contacts\Models\Contact;
 
 class DocuGenController extends Controller
 {
@@ -30,6 +32,60 @@ class DocuGenController extends Controller
         $templateProcessor = new TemplateProcessor($filePath);
 
         $ci = $information->toArray();
+        //set values
+        foreach ($ci as $key => $value) {
+            $templateProcessor->setValue($key, $value);
+        }
+        //set image
+        $imagePath = storage_path('app/public/test_image.png');
+        $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+
+        $docx_file =storage_path('app/public/converted_documents/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.docx');
+        $templateProcessor->saveAs($docx_file);
+
+        $outputFile = storage_path('app/public/converted_pdf/');
+        $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
+        exec($command, $output, $return_var);
+        $pdfFile = storage_path('app/public/converted_pdf/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.pdf');
+
+        if (file_exists($pdfFile)) {
+//            if($isView){
+//               return response()->file($pdfFile, [
+//                    'Content-Type' => 'application/pdf',
+//                    'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
+//                ]);
+//            }else{
+//               return response()->download($pdfFile);
+//            }
+            return $isView? response()->file($pdfFile, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
+            ]):response()->download($pdfFile);
+        } else {
+            return response()->json(['error' => 'An error occurred during the file conversion'], 500);
+        }
+    }
+
+    /**
+     * @throws \PhpOffice\PhpWord\Exception\CopyFileException
+     * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
+     */
+    public function contacts_download_document($id, $document,$isView){
+        if (!File::exists(storage_path('app/public/converted_documents/'))) {
+            File::makeDirectory(storage_path('app/public/converted_documents/'), 0755, true);
+        }
+        if (!File::exists(storage_path('app/public/converted_pdf/'))) {
+            File::makeDirectory(storage_path('app/public/converted_pdf/'), 0755, true);
+        }
+        $contacts = new Contact();
+        $information = $contacts->find($id);
+        $document_template = Documents::find($document);
+        $filePath = storage_path('app/public/' . $document_template->file_attachment);
+
+        $templateProcessor = new TemplateProcessor($filePath);
+
+        $ci = FlatData::fromModel($information);
+        dd($ci);
         //set values
         foreach ($ci as $key => $value) {
             $templateProcessor->setValue($key, $value);

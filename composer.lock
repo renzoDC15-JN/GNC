@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ba06f21ca2052c1773001716404319f",
+    "content-hash": "0e55812e9f9fef2941338939af6bad91",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4052,21 +4052,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v1.4.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "d123acc3f64cffada898afb512f9bff461e01d00"
-            },
+            "version": "dev-main",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/d123acc3f64cffada898afb512f9bff461e01d00",
-                "reference": "d123acc3f64cffada898afb512f9bff461e01d00",
-                "shasum": ""
+                "type": "path",
+                "url": "../contacts",
+                "reference": "2275c509cad930459a5d38f589737e4821046e92"
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0",
                 "jn-devops/common": "^1.2",
+                "kwn/number-to-words": "^2.9",
                 "lorisleiva/laravel-actions": "^2.8",
                 "php": "^8.2",
                 "spatie/laravel-data": "^4.6",
@@ -4103,7 +4098,44 @@
                     "Homeful\\Contacts\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Homeful\\Contacts\\Tests\\": "tests/",
+                    "Workbench\\App\\": "workbench/app/"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@composer run prepare"
+                ],
+                "clear": [
+                    "@php vendor/bin/testbench package:purge-contacts --ansi"
+                ],
+                "prepare": [
+                    "@php vendor/bin/testbench package:discover --ansi"
+                ],
+                "build": [
+                    "@composer run prepare",
+                    "@php vendor/bin/testbench workbench:build --ansi"
+                ],
+                "start": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "@composer run build",
+                    "@php vendor/bin/testbench serve"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -4121,17 +4153,10 @@
                 "contacts",
                 "laravel"
             ],
-            "support": {
-                "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v1.4.3"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Homeful",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-07-01T06:51:01+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "joaopaulolndev/filament-edit-profile",
@@ -4328,6 +4353,59 @@
                 "source": "https://github.com/kirschbaum-development/eloquent-power-joins/tree/3.5.7"
             },
             "time": "2024-06-26T13:09:29+00:00"
+        },
+        {
+            "name": "kwn/number-to-words",
+            "version": "2.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kwn/number-to-words.git",
+                "reference": "0b29195ab64994a5abd24115730aa590c598d468"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kwn/number-to-words/zipball/0b29195ab64994a5abd24115730aa590c598d468",
+                "reference": "0b29195ab64994a5abd24115730aa590c598d468",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.6.7",
+                "squizlabs/php_codesniffer": "^3.7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "NumberToWords\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Karol Wnuk",
+                    "email": "k.wnuk@ascetic.pl"
+                }
+            ],
+            "description": "Multi language standalone PHP number to words converter. Fully tested, open for extensions and new languages.",
+            "keywords": [
+                "currency",
+                "money",
+                "number",
+                "numbers",
+                "string",
+                "to",
+                "words"
+            ],
+            "support": {
+                "issues": "https://github.com/kwn/number-to-words/issues",
+                "source": "https://github.com/kwn/number-to-words/tree/2.9.1"
+            },
+            "time": "2024-02-24T17:01:19+00:00"
         },
         {
             "name": "laravel/framework",
@@ -14811,6 +14889,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "jn-devops/contacts": 20,
         "phpoffice/phpword": 20
     },
     "prefer-stable": true,

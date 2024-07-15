@@ -107,6 +107,20 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
                     'pagibig' => (string) $row['buyer_pag_ibig_number'],
                 ],
             ],
+            //additional for gnc 7-15-2024
+            'company_name' => Str::title($row['company_name']),
+            'project_name' => Str::title($row['project_name']),
+            'project_code' => Str::title($row['project_code']),
+            'property_name' => Str::title($row['property_name']),
+            'phase' => Str::title($row['phase']),
+            'block' => Str::title($row['block']),
+            'lot' => Str::title($row['lot']),
+            'lot_area' => Str::title($row['lot_area']),
+            'floor_area' => Str::title($row['floor_area']),
+            'tcp' => Str::title($row['tcp']),
+            'loan_term' => Str::title($row['loan_term']),
+            'loan_interest_rate' => Str::title($row['loan_interest_rate']),
+            'tct_no' => Str::title($row['tct_no']),
 
         ];
 
