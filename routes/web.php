@@ -4,8 +4,7 @@ use App\Http\Controllers\DocuGenController;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', function () {
-})->name('login');
+
 
 //Route::get('/', function () {
 //    return view('welcome');
