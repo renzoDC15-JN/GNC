@@ -12,4 +12,9 @@ class Companies extends Model
     protected $casts = [
         'is_admin' => 'boolean',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_companies', 'company_code', 'user_id', 'code', 'id');
+    }
 }

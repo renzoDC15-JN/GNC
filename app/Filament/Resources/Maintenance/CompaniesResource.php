@@ -6,6 +6,7 @@ use App\Filament\Resources\Maintenance\CompaniesResource\Pages;
 use App\Filament\Resources\Maintenance\CompaniesResource\RelationManagers;
 use App\Models\Companies;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -37,6 +38,13 @@ class CompaniesResource extends Resource
                     ->label('Name')
                     ->required()
                     ->columnSpan(8),
+                FileUpload::make('file_attachment')
+                    ->acceptedFileTypes(['application/png','application/x-png','image/jpeg','image/png'])
+                    ->directory('company_logo')
+                    ->preserveFilenames()
+                    ->required()
+                    ->columnSpan(12),
+
             ])->columns(12);
     }
 

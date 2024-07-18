@@ -37,7 +37,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
         if (!isset($row['project_code'])) {
             return null;
         }
-
+//    dd($row);
         $attribs  = [
             //
             'reference_code'=> Str::title($row['buyer_last_name']).'-'.$row['buyer_birthday'],
@@ -107,26 +107,45 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
                     'pagibig' => (string) $row['buyer_pag_ibig_number'],
                 ],
             ],
-            //additional for gnc 7-15-2024
-            'company_name' => Str::title($row['company_name']),
-            'project_name' => Str::title($row['project_name']),
-            'project_code' => Str::title($row['project_code']),
-            'property_name' => Str::title($row['property_name']),
-            'phase' => Str::title($row['phase']),
-            'block' => Str::title($row['block']),
-            'lot' => Str::title($row['lot']),
-            'lot_area' => Str::title($row['lot_area']),
-            'floor_area' => Str::title($row['floor_area']),
-            'tcp' => Str::title($row['tcp']),
-            'loan_term' => Str::title($row['loan_term']),
-            'loan_interest_rate' => Str::title($row['loan_interest_rate']),
-            'tct_no' => Str::title($row['tct_no']),
+            'order'=>[
+                //additional for gnc 7-15-2024
+
+                'sku' => Str::title($row['sku']),
+                'seller_commission_code' => Str::title($row['seller_commission_code']),
+                'property_code' => Str::title($row['property_code']),
+
+                'company_name' => Str::title($row['company_name']),
+                'project_name' => Str::title($row['project_name']),
+                'project_code' => Str::title($row['project_code']),
+                'property_name' => Str::title($row['property_name']??$row['property_code']),
+                'phase' => $row['phase'],
+                'block' => $row['block'],
+                'lot' => $row['lot'],
+                'lot_area' => $row['lot_area'],
+                'floor_area' => $row['floor_area'],
+                'tcp' => $row['total_contract_price']??$row['tcp'],
+                'loan_term' => $row['bp2_terms']??$row['bp1_terms'],
+                'loan_interest_rate' =>$row['bp2_interest_rate']??$row['bp1_interest_rate'],
+                'tct_no' => $row['transfer_certificate_of_title'],
+
+                'project_location' => Str::title($row['project_location']),
+                'project_address' => Str::title($row['project_address']),
+                'mrif_fee' => $row['mrif_fee'],
+                'reservation_rate' => $row['reservation_rate_processing_fee'],
+
+            ],
+
+
+
+
+
 
         ];
 
 //        dd($attribs);
 
         $contact = app(PersistContactAction::class)->run($attribs);
+
         return $contact;
     }
 
@@ -136,11 +155,12 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
      */
     public function formatHeaderRow(array $headerRow): array
     {
+//        dd($headerRow);
         // Custom header row formatting logic here
         return array_map(function ($header) {
             $heading = Str::snake(Str::camel($header));
             return match ($heading) {
-                'property_name' => 'property_code',
+                'property_name' => 'property_code', //old
                 'b_r_n' => 'brn',
                 'o_s_status' => 'os_status',
                 'rebooked_i_d_from' => 'rebooked_id_from',
@@ -192,6 +212,8 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
                 'h_u_c_f_amount_paid' => 'hucf_amount_paid',
                 'h_u_c_f_payment_reference_number' => 'hucf_payment_reference_number',
                 'h_u_c_f_payment_date' => 'hucf_payment_date',
+                'total_contract_price'=>'tcp',
+                'transfer_certificate_of_title'=>'tct_no',
 
                 default  => $heading,
             };

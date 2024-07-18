@@ -29,6 +29,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-m-users';
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
     {
@@ -80,6 +81,13 @@ class UserResource extends Resource
                         Select::make('roles')
                             ->relationship('roles', 'name')
                             ->preload()->native(false),
+                            Select::make('companies')
+                                ->label('Companies')
+                                ->multiple()
+                                ->relationship('companies','description')
+                                ->preload()
+                                ->columnSpanFull()
+                                ->columns(12)->native(false),
                             Select::make('projects')
                                 ->label('Projects')
                                 ->multiple()
@@ -88,7 +96,7 @@ class UserResource extends Resource
                                 ->columnSpanFull()
                                 ->columns(12)->native(false),
                             Select::make('locations')
-                                ->label('locations')
+                                ->label('Locations')
                                 ->multiple()
                                 ->relationship('locations','description')
                                 ->preload()

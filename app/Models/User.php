@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Locations;
 use App\Models\Projects;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
-use App\Models\Locations;
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
@@ -64,6 +64,11 @@ class User extends Authenticatable implements FilamentUser
     public function locations()
     {
         return $this->belongsToMany(Locations::class, 'user_locations', 'user_id', 'location_code', 'id', 'code');
+    }
+
+    public function companies()
+    {
+        return $this->belongsToMany(Companies::class, 'user_companies', 'user_id', 'company_code', 'id', 'code');
     }
 
 

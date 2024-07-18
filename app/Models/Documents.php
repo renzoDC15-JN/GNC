@@ -23,12 +23,15 @@ class Documents extends Model implements HasMedia
 //        'fields',
         'data',
         'company_code',
+        'approvers'
     ];
 
     protected $casts = [
         'file_attachment' => 'array',
 //        'fields' => 'array',
         'data' => 'array',
+        'company_code' => 'array',
+        'approvers' => 'array',
     ];
 
     public function company(): \Illuminate\Database\Eloquent\Relations\BelongsTo

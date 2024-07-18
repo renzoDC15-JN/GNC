@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e55812e9f9fef2941338939af6bad91",
+    "content-hash": "d59c82782f3a67ac29508febc5596a57",
     "packages": [
         {
             "name": "amphp/amp",
@@ -3831,6 +3831,89 @@
             "time": "2024-04-10T06:31:54+00:00"
         },
         {
+            "name": "howdu/filament-record-switcher",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/howdu/filament-record-switcher.git",
+                "reference": "658ab7b343ed334b2b40b013f40ae6013060f3ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/howdu/filament-record-switcher/zipball/658ab7b343ed334b2b40b013f40ae6013060f3ca",
+                "reference": "658ab7b343ed334b2b40b013f40ae6013060f3ca",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "filament/forms": "^3.0",
+                "filament/tables": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.1",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Howdu\\FilamentRecordSwitcher\\FilamentRecordSwitcherServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentRecordSwitcher": "Howdu\\FilamentRecordSwitcher\\Facades\\FilamentRecordSwitcher"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Howdu\\FilamentRecordSwitcher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben",
+                    "email": "howdu3@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Resource level navigation with search",
+            "homepage": "https://github.com/howdu/filament-record-switcher",
+            "keywords": [
+                "filament",
+                "filament-plugin",
+                "filament-record-switcher",
+                "howdu",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/howdu/filament-record-switcher/issues",
+                "source": "https://github.com/howdu/filament-record-switcher"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/howdu",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-28T16:05:46+00:00"
+        },
+        {
             "name": "jaybizzle/crawler-detect",
             "version": "v1.2.119",
             "source": {
@@ -4056,7 +4139,7 @@
             "dist": {
                 "type": "path",
                 "url": "../contacts",
-                "reference": "2275c509cad930459a5d38f589737e4821046e92"
+                "reference": "d0773af22c9e29f49569cca5ed834884aa1727dd"
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0",

@@ -7,6 +7,7 @@ use App\Filament\Resources\Maintenance\DocumentsResource\RelationManagers;
 use App\Livewire\DocumentPreviewComponent;
 use App\Models\Companies;
 use App\Models\Documents;
+use App\Models\Maintenance\Approvers;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,6 +29,7 @@ class DocumentsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Maintenance';
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
     {
@@ -48,11 +50,21 @@ class DocumentsResource extends Resource
                                     return [$company->code=>$company->description];
                                 })->toArray()
                             )->native(false)
+                            ->multiple()
                             ->required(),
                         FileUpload::make('file_attachment')
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                             ->directory('documents')
                             ->preserveFilenames()
+                            ->required(),
+                        Forms\Components\Select::make('approvers')
+                            ->label('Approvers')
+                            ->options(
+                                Approvers::all()->mapWithKeys(function($approver){
+                                    return [$approver->id=>$approver->name];
+                                })->toArray()
+                            )->native(false)
+                            ->multiple()
                             ->required(),
 
 

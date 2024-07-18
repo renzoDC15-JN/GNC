@@ -27,6 +27,7 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::get('docx-pdf-download/{id}/{document}/{is_view}', [DocuGenController::class, 'download_document'])->name('docx_to_pdf');
     Route::get('contacts-docx-pdf-download/{id}/{document}/{is_view}', [DocuGenController::class, 'contacts_download_document'])->name('contacts_docx_to_pdf');
 
+    Route::get('es-sheet/{id}', [DocuGenController::class, 'es_file'])->name('es_file');//solaris voluntary surrender and waiver
 
     Route::get('/document-stream/{id}', function ($id) {
         $record = \App\Models\Documents::findOrFail($id);
