@@ -1,7 +1,8 @@
-function myJavaScriptFunction() {
-    console.log("JavaScript function called!");
+function openLinkNewTab(link) {
+    window.open(link[0], '_blank', 'noopener,noreferrer');
 }
 
-document.addEventListener('my-js-event', function () {
-    myJavaScriptFunction();
+document.addEventListener('open-link-new-tab-event', function (event) {
+    openLinkNewTab(event.detail);
 });
+
