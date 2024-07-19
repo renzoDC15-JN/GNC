@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Maintenance;
 
+use App\Filament\Clusters\Settings;
 use App\Filament\Resources\Maintenance\CompaniesResource\Pages;
 use App\Filament\Resources\Maintenance\CompaniesResource\RelationManagers;
 use App\Models\Companies;
@@ -24,6 +25,7 @@ class CompaniesResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Maintenance';
+
     public static function form(Form $form): Form
     {
         return $form

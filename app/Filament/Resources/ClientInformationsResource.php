@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\Settings;
 use App\Filament\Imports\ClientInformationsImporter;
 use App\Filament\Resources\ClientInformationsResource\Pages;
 use App\Filament\Resources\ClientInformationsResource\RelationManagers;
@@ -10,20 +11,29 @@ use App\Models\Documents;
 use App\Models\Projects;
 use BladeUI\Icons\Components\Icon;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Support\Enums\ActionSize;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use http\Client\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\HtmlString;
+use Livewire\Component;
+
 
 class ClientInformationsResource extends Resource
 {
@@ -85,7 +95,6 @@ class ClientInformationsResource extends Resource
 
     public static function table(Table $table): Table
     {
-
         return $table
             ->defaultPaginationPageOption(25)
             ->defaultSort('id','desc')
@@ -95,6 +104,14 @@ class ClientInformationsResource extends Resource
                     ->whereIn('location',Auth::user()->locations()->pluck('description'))
             )
             ->columns([
+//                Tables\Columns\TextColumn::make('documents')
+//                    ->disabledClick()
+//                    ->state(function ( ClientInformations $record) {
+//                        return new HtmlString(view('custom_column.document_action', [
+//                            'record' => $record,
+//                            'documents'=>Documents::all()
+//                        ])->render());
+//                    }),
                 Tables\Columns\TextColumn::make('project')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('location')
@@ -138,6 +155,32 @@ class ClientInformationsResource extends Resource
                 //
             ])
             ->actions([
+//                    Tables\Actions\Action::make('document')
+//                        ->button()
+//                    ->form([
+//                        Select::make('document')
+//                            ->label('Select Document')
+//                            ->native(false)
+//                            ->options(Documents::all()->pluck('name','id')->toArray())
+//                            ->required(),
+//                        ToggleButtons::make('action')
+//                            ->options([
+//                                'view' => 'View',
+//                                'download' => 'Download',
+//                            ])
+//                            ->icons([
+//                                'view' => 'heroicon-o-eye',
+//                                'download' => 'heroicon-o-arrow-down-tray',
+//                            ])
+//                            ->inline()
+//                            ->columns(2)
+//                            ->default('view')
+//                            ->required(),
+//                    ])
+//                    ->action(function (array $data, ClientInformations $record,array $arguments,Component $livewire){
+//                        dd($livewire);
+//                    })
+//                        ->modalWidth(MaxWidth::Small)
                 ActionGroup::make(
                     array_merge(Documents::all()->map(function($document){
                         return  Tables\Actions\Action::make('view_'.$document->name)
@@ -160,7 +203,8 @@ class ClientInformationsResource extends Resource
                     ->size(ActionSize::Small)
                     ->color('primary')
                     ->button()
-            ], position: ActionsPosition::BeforeCells)
+            ]
+                , position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -187,6 +231,12 @@ class ClientInformationsResource extends Resource
             ->deselectAllRecordsWhenFiltered(false);
     }
 
+    public function publishAction(): Action
+    {
+        return Action::make('publish')
+            ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [7,5,1]))
+            ->openUrlInNewTab();
+    }
     public static function getRelations(): array
     {
         return [

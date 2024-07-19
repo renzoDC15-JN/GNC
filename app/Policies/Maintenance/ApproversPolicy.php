@@ -15,7 +15,7 @@ class ApproversPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any::approvers');
+        return $user->can('view_any_maintenance::approvers');
     }
 
     /**
@@ -23,7 +23,7 @@ class ApproversPolicy
      */
     public function view(User $user, Approvers $approvers): bool
     {
-        return $user->can('view::approvers');
+        return $user->can('view_maintenance::approvers');
     }
 
     /**
@@ -31,7 +31,7 @@ class ApproversPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create::approvers');
+        return $user->can('create_maintenance::approvers');
     }
 
     /**
@@ -39,7 +39,7 @@ class ApproversPolicy
      */
     public function update(User $user, Approvers $approvers): bool
     {
-        return $user->can('update::approvers');
+        return $user->can('update_maintenance::approvers');
     }
 
     /**
@@ -47,7 +47,7 @@ class ApproversPolicy
      */
     public function delete(User $user, Approvers $approvers): bool
     {
-        return $user->can('delete::approvers');
+        return $user->can('delete_maintenance::approvers');
     }
 
     /**
@@ -55,7 +55,7 @@ class ApproversPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any::approvers');
+        return $user->can('delete_any_maintenance::approvers');
     }
 
     /**
@@ -63,7 +63,7 @@ class ApproversPolicy
      */
     public function forceDelete(User $user, Approvers $approvers): bool
     {
-        return $user->can('force_delete::approvers');
+        return $user->can('force_delete_maintenance::approvers');
     }
 
     /**
@@ -71,7 +71,7 @@ class ApproversPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any::approvers');
+        return $user->can('force_delete_any_maintenance::approvers');
     }
 
     /**
@@ -79,7 +79,7 @@ class ApproversPolicy
      */
     public function restore(User $user, Approvers $approvers): bool
     {
-        return $user->can('restore::approvers');
+        return $user->can('restore_maintenance::approvers');
     }
 
     /**
@@ -87,7 +87,7 @@ class ApproversPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any::approvers');
+        return $user->can('restore_any_maintenance::approvers');
     }
 
     /**
@@ -95,7 +95,7 @@ class ApproversPolicy
      */
     public function replicate(User $user, Approvers $approvers): bool
     {
-        return $user->can('replicate::approvers');
+        return $user->can('replicate_maintenance::approvers');
     }
 
     /**
@@ -103,6 +103,6 @@ class ApproversPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder::approvers');
+        return $user->can('reorder_maintenance::approvers');
     }
 }

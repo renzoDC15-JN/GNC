@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContactResource\Pages;
 
+use App\Filament\Clusters\Settings;
 use App\Filament\Resources\ContactResource;
 use App\Imports\OSImport;
 use Filament\Actions;
@@ -11,7 +12,7 @@ use YOS\FilamentExcel\Actions\Import;
 class ListContacts extends ListRecords
 {
     protected static string $resource = ContactResource::class;
-
+    protected static ?string $cluster = Settings::class;
     protected function getHeaderActions(): array
     {
         return [

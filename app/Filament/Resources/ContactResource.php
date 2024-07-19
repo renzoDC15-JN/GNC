@@ -2,15 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\Settings;
 use App\Filament\Imports\ContactImporter;
 use App\Filament\Resources\ContactResource\Pages;
 use App\Filament\Resources\ContactResource\RelationManagers;
+use App\Filament\Resources\Maintenance\CompaniesResource;
 use App\Models\ClientInformations;
+use App\Models\Companies;
 use App\Models\Documents;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Pages\Page;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -78,10 +84,12 @@ class ContactResource extends Resource
             ]);
     }
 
+
     public static function table(Table $table): Table
     {
         return $table
             ->defaultPaginationPageOption(25)
+            ->extremePaginationLinks()
             ->defaultSort('id','desc')
 //            ->query(
 //                Contact::query()
@@ -89,6 +97,7 @@ class ContactResource extends Resource
 //                    ->whereIn('location',Auth::user()->locations()->pluck('description'))
 //            )
             ->columns([
+
                 Tables\Columns\TextColumn::make('reference_code')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
