@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Maintenance;
 
 use App\Models\User;
-use Homeful\Contacts\Models\Contact;
+use App\Models\Maintenance\Approvers;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ContactPolicy
+class ApproversPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class ContactPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any::contact');
+        return $user->can('view_any::approvers');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Contact $contact): bool
+    public function view(User $user, Approvers $approvers): bool
     {
-        return $user->can('view::contact');
+        return $user->can('view::approvers');
     }
 
     /**
@@ -31,23 +31,23 @@ class ContactPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create::contact');
+        return $user->can('create::approvers');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Contact $contact): bool
+    public function update(User $user, Approvers $approvers): bool
     {
-        return $user->can('update::contact');
+        return $user->can('update::approvers');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Contact $contact): bool
+    public function delete(User $user, Approvers $approvers): bool
     {
-        return $user->can('delete::contact');
+        return $user->can('delete::approvers');
     }
 
     /**
@@ -55,15 +55,15 @@ class ContactPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any::contact');
+        return $user->can('delete_any::approvers');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Contact $contact): bool
+    public function forceDelete(User $user, Approvers $approvers): bool
     {
-        return $user->can('force_delete::contact');
+        return $user->can('force_delete::approvers');
     }
 
     /**
@@ -71,15 +71,15 @@ class ContactPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any::contact');
+        return $user->can('force_delete_any::approvers');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Contact $contact): bool
+    public function restore(User $user, Approvers $approvers): bool
     {
-        return $user->can('restore::contact');
+        return $user->can('restore::approvers');
     }
 
     /**
@@ -87,15 +87,15 @@ class ContactPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any::contact');
+        return $user->can('restore_any::approvers');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Contact $contact): bool
+    public function replicate(User $user, Approvers $approvers): bool
     {
-        return $user->can('replicate::contact');
+        return $user->can('replicate::approvers');
     }
 
     /**
@@ -103,6 +103,6 @@ class ContactPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder::contact');
+        return $user->can('reorder::approvers');
     }
 }

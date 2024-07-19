@@ -3,10 +3,11 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Homeful\Contacts\Models\Contact;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
+use Homeful\Contacts\Models\Contact;
 
-class ContactPolicy
+class ContactsPolicy
 {
     use HandlesAuthorization;
 
@@ -15,7 +16,7 @@ class ContactPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any::contact');
+        return $user->can('view_any::contacts');
     }
 
     /**
@@ -23,7 +24,7 @@ class ContactPolicy
      */
     public function view(User $user, Contact $contact): bool
     {
-        return $user->can('view::contact');
+        return $user->can('view::contacts');
     }
 
     /**
@@ -31,7 +32,7 @@ class ContactPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create::contact');
+        return $user->can('create::contacts');
     }
 
     /**
@@ -39,7 +40,7 @@ class ContactPolicy
      */
     public function update(User $user, Contact $contact): bool
     {
-        return $user->can('update::contact');
+        return $user->can('update::contacts');
     }
 
     /**
@@ -55,7 +56,7 @@ class ContactPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any::contact');
+        return $user->can('delete_any::contacts');
     }
 
     /**
@@ -63,7 +64,7 @@ class ContactPolicy
      */
     public function forceDelete(User $user, Contact $contact): bool
     {
-        return $user->can('force_delete::contact');
+        return $user->can('force_delete::contacts');
     }
 
     /**
@@ -71,7 +72,7 @@ class ContactPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any::contact');
+        return $user->can('force_delete_any::contacts');
     }
 
     /**
@@ -79,7 +80,7 @@ class ContactPolicy
      */
     public function restore(User $user, Contact $contact): bool
     {
-        return $user->can('restore::contact');
+        return $user->can('restore::contacts');
     }
 
     /**
@@ -87,7 +88,7 @@ class ContactPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any::contact');
+        return $user->can('restore_any::contacts');
     }
 
     /**
@@ -95,7 +96,7 @@ class ContactPolicy
      */
     public function replicate(User $user, Contact $contact): bool
     {
-        return $user->can('replicate::contact');
+        return $user->can('replicate::contacts');
     }
 
     /**
@@ -103,6 +104,6 @@ class ContactPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder::contact');
+        return $user->can('reorder::contacts');
     }
 }

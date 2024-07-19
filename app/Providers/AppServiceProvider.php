@@ -2,9 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Maintenance\Approvers;
+use App\Policies\ContactPolicy;
+use App\Policies\Maintenance\ApproversPolicy;
+use Homeful\Contacts\Models\Contact;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(Approvers::class, ApproversPolicy::class);
+        Gate::policy(Contact::class, ContactPolicy::class);
+
         HeadingRowFormatter::extend('cornerstone-os-report-1', function($value, $key) {
             $heading = Str::snake(Str::camel($value));
             return match ($heading) {
