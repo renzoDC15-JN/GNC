@@ -6,34 +6,28 @@ use App\Filament\Clusters\Settings;
 use App\Filament\Imports\ClientInformationsImporter;
 use App\Filament\Resources\ClientInformationsResource\Pages;
 use App\Filament\Resources\ClientInformationsResource\RelationManagers;
+use App\Livewire\DocumentFormActionComponent;
+use App\Livewire\OpenLinkNewTabButtonComponent;
 use App\Models\ClientInformations;
 use App\Models\Documents;
-use App\Models\Projects;
-use BladeUI\Icons\Components\Icon;
 use Filament\Actions\Action;
+use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\MaxWidth;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\ImportAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use http\Client\Response;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\HtmlString;
 use Livewire\Component;
-
+use Filament\Tables\Actions\ViewAction;
 
 class ClientInformationsResource extends Resource
 {
@@ -43,6 +37,7 @@ class ClientInformationsResource extends Resource
 
     public static function form(Form $form): Form
     {
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('project')
@@ -112,6 +107,12 @@ class ClientInformationsResource extends Resource
 //                            'documents'=>Documents::all()
 //                        ])->render());
 //                    }),
+//                Tables\Columns\SelectColumn::make('document')
+//                    ->options(Documents::all()->pluck('name','id')->toArray())
+//                    ->beforeStateUpdated(function ($record, $state,Component $livewire) {
+//                        $this->dispatch('open-post-edit-modal', post: $record->getKey());
+//                       dd($record,$state);
+//                    }),
                 Tables\Columns\TextColumn::make('project')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('location')
@@ -155,54 +156,58 @@ class ClientInformationsResource extends Resource
                 //
             ])
             ->actions([
-//                    Tables\Actions\Action::make('document')
-//                        ->button()
-//                    ->form([
-//                        Select::make('document')
-//                            ->label('Select Document')
-//                            ->native(false)
-//                            ->options(Documents::all()->pluck('name','id')->toArray())
-//                            ->required(),
-//                        ToggleButtons::make('action')
-//                            ->options([
-//                                'view' => 'View',
-//                                'download' => 'Download',
-//                            ])
-//                            ->icons([
-//                                'view' => 'heroicon-o-eye',
-//                                'download' => 'heroicon-o-arrow-down-tray',
-//                            ])
-//                            ->inline()
-//                            ->columns(2)
-//                            ->default('view')
-//                            ->required(),
-//                    ])
-//                    ->action(function (array $data, ClientInformations $record,array $arguments,Component $livewire){
-//                        dd($livewire);
-//                    })
-//                        ->modalWidth(MaxWidth::Small)
-                ActionGroup::make(
-                    array_merge(Documents::all()->map(function($document){
-                        return  Tables\Actions\Action::make('view_'.$document->name)
-                            ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [$record,$document,1]))
-                            ->label($document->name)
-                            ->icon('heroicon-m-eye')
-                            ->openUrlInNewTab();
-                    })->toArray(),
-                        Documents::all()->map(function($document){
-                            return  Tables\Actions\Action::make('view_'.$document->name)
-                                ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [$record,$document,0]))
-                                ->label($document->name)
-                                ->icon('heroicon-m-arrow-down-tray')
-                                ->openUrlInNewTab();
-                        })->toArray()
-                    )
-                )
-                    ->label('Documents')
-                    ->icon('heroicon-m-ellipsis-vertical')
-                    ->size(ActionSize::Small)
-                    ->color('primary')
-                    ->button()
+                    Tables\Actions\Action::make('document')
+                        ->button()
+                    ->form(function(Form $form,array $data,ClientInformations $record){
+                        return $form->schema([
+                        Select::make('document')
+                            ->label('Select Document')
+                            ->native(false)
+                            ->options(Documents::all()->pluck('name','id')->toArray())
+                            ->searchable()
+                            ->required(),
+                        ToggleButtons::make('action')
+                            ->options([
+                                'view' => 'View',
+                                'download' => 'Download',
+                            ])
+                            ->icons([
+                                'view' => 'heroicon-o-eye',
+                                'download' => 'heroicon-o-arrow-down-tray',
+                            ])
+                            ->inline()
+                            ->columns(2)
+                            ->default('view')
+                            ->required(),
+                            ]);
+                    })
+                    ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
+                        ->action(function (array $data, ClientInformations $record, Component $livewire) {
+                           $livewire->dispatch('download-pdf-from-url-event',route('docx_to_pdf', [$record,$data['document'],$data['action']=='view'?1:0]));
+                        })
+                        ->modalWidth(MaxWidth::Small)
+//                ActionGroup::make(
+//                    array_merge(Documents::all()->map(function($document){
+//                        return  Tables\Actions\Action::make('view_'.$document->name)
+//                            ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [$record,$document,1]))
+//                            ->label($document->name)
+//                            ->icon('heroicon-m-eye')
+//                            ->openUrlInNewTab();
+//                    })->toArray(),
+//                        Documents::all()->map(function($document){
+//                            return  Tables\Actions\Action::make('view_'.$document->name)
+//                                ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [$record,$document,0]))
+//                                ->label($document->name)
+//                                ->icon('heroicon-m-arrow-down-tray')
+//                                ->openUrlInNewTab();
+//                        })->toArray()
+//                    )
+//                )
+//                    ->label('Documents')
+//                    ->icon('heroicon-m-ellipsis-vertical')
+//                    ->size(ActionSize::Small)
+//                    ->color('primary')
+//                    ->button()
             ]
                 , position: ActionsPosition::BeforeCells)
             ->bulkActions([
@@ -210,7 +215,6 @@ class ClientInformationsResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->headerActions([
-
             ])->filters([
                 SelectFilter::make('project')
                     ->multiple()
@@ -231,12 +235,7 @@ class ClientInformationsResource extends Resource
             ->deselectAllRecordsWhenFiltered(false);
     }
 
-    public function publishAction(): Action
-    {
-        return Action::make('publish')
-            ->url(fn (ClientInformations $record): string => route('docx_to_pdf', [7,5,1]))
-            ->openUrlInNewTab();
-    }
+
     public static function getRelations(): array
     {
         return [

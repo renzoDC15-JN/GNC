@@ -27,4 +27,10 @@
         @filamentScripts
         @vite('resources/js/app.js')
     </body>
+    <div
+        x-data="{}"
+        x-load-js="[@js(\Filament\Support\Facades\FilamentAsset::getScriptSrc('openlinknewtab'))]"
+    >
+        <!-- ... -->
+    </div>
 </html>

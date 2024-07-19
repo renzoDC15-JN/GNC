@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Maintenance\Approvers;
 use App\Policies\ContactPolicy;
 use App\Policies\Maintenance\ApproversPolicy;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Homeful\Contacts\Models\Contact;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -29,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Approvers::class, ApproversPolicy::class);
         Gate::policy(Contact::class, ContactPolicy::class);
+
+        FilamentAsset::register([
+            Js::make('openlinknewtab', __DIR__ . '/../../resources/js/openlinknewtab.js'),
+        ]);
 
         HeadingRowFormatter::extend('cornerstone-os-report-1', function($value, $key) {
             $heading = Str::snake(Str::camel($value));
