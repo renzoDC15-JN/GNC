@@ -121,10 +121,18 @@ class UserResource extends Resource
             ->defaultPaginationPageOption(25)
             ->defaultSort('id','desc')
             ->columns([
-                TextColumn::make('id'),
-                TextColumn::make('name'),
-                TextColumn::make('email'),
-                TextColumn::make('roles.name'),
+                TextColumn::make('id')
+                ->sortable()
+                ->searchable(),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('roles.name')
+                    ->sortable()
+                    ->searchable(),
 
             ])
             ->filters([

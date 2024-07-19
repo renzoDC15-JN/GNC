@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\Maintenance\Approvers;
 use App\Policies\ContactPolicy;
+use App\Policies\ContactsPolicy;
 use App\Policies\Maintenance\ApproversPolicy;
+use Homeful\Contacts\Facades\Contacts;
 use Homeful\Contacts\Models\Contact;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -28,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Approvers::class, ApproversPolicy::class);
-        Gate::policy(Contact::class, ContactPolicy::class);
+        Gate::policy(Contacts::class, ContactPolicy::class);
+        Gate::policy(Contacts::class, ContactsPolicy::class);
 
         HeadingRowFormatter::extend('cornerstone-os-report-1', function($value, $key) {
             $heading = Str::snake(Str::camel($value));
