@@ -47,10 +47,10 @@ class DocumentPreviewComponent extends Component
                     $templateProcessor->setValue($key, $value);
                 }
             }
-            $imagePath = storage_path('app/public/test_image.png');
-            $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+//            $imagePath = storage_path('app/public/test_image.png');
+//            $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
 
-            $docx_file =storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.docx');
+            $docx_file =storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_'.$this->record->id.'_preview.docx');
             $templateProcessor->saveAs($docx_file);
             $outputFile = storage_path('app/public/converted_pdf/');
             $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
@@ -72,7 +72,7 @@ class DocumentPreviewComponent extends Component
             }
             $imagePath = storage_path('app/public/test_image.png');
             $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
-            $docx_file = storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.docx');
+            $docx_file = storage_path('app/public/converted_documents/'.$this->record->created_at->format('Y-m-d_H-i-s').'_'.$this->record->id.'_preview.docx');
             $templateProcessor->saveAs($docx_file);
             $outputFile = storage_path('app/public/converted_pdf/');
             $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
@@ -86,7 +86,7 @@ class DocumentPreviewComponent extends Component
     public function streamPdf()
     {
         if ($this->record){
-            $pdfFile = storage_path('app/public/converted_pdf/'.$this->record->created_at->format('Y-m-d_H-i-s').'_preview.pdf');
+            $pdfFile = storage_path('app/public/converted_pdf/'.$this->record->created_at->format('Y-m-d_H-i-s').'_'.$this->record->id.'_preview.pdf');
             return response()->file($pdfFile, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'

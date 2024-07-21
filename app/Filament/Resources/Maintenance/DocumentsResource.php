@@ -8,6 +8,7 @@ use App\Livewire\DocumentPreviewComponent;
 use App\Models\Companies;
 use App\Models\Documents;
 use App\Models\Maintenance\Approvers;
+use App\Models\Projects;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -52,6 +53,15 @@ class DocumentsResource extends Resource
                             )->native(false)
                             ->multiple()
                             ->required(),
+                        Forms\Components\Select::make('project_code')
+                            ->label('Projects')
+                            ->options(
+                                Projects::all()->mapWithKeys(function($company){
+                                    return [$company->code=>$company->description];
+                                })->toArray()
+                            )->native(false)
+                            ->multiple()
+                            ->required(),
                         FileUpload::make('file_attachment')
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                             ->directory('documents')
@@ -64,8 +74,7 @@ class DocumentsResource extends Resource
                                     return [$approver->id=>$approver->name];
                                 })->toArray()
                             )->native(false)
-                            ->multiple()
-                            ->required(),
+                            ->multiple(),
 
 
                     ])->columns(1)->columnSpan(4),

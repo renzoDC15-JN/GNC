@@ -37,7 +37,21 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('client_informations', function (Blueprint $table) {
-            //
+            $table->string('project')->change();
+            $table->string('location')->change();
+            $table->string('property_name')->change();
+            $table->string('phase')->change();
+            $table->string('block')->change();
+            $table->string('lot')->change();
+            $table->string('buyer_name')->change();
+            $table->string('buyer_civil_status')->change();
+            $table->string('buyer_nationality')->change();
+            $table->string('buyer_address')->change();
+            $table->string('buyer_tin')->change();
+            $table->string('buyer_spouse_name')->change();
+            $table->string('mrif_fee')->change();
+            $table->string('reservation_rate')->change();
+            $table->string('created_by')->change();
         });
     }
 };

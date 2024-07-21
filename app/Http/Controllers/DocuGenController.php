@@ -73,7 +73,7 @@ class DocuGenController extends Controller
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
      */
-    public function contacts_download_document($id, $document,$isView){
+    public function contacts_download_document($id, $document,$isView,$name){
         if (!File::exists(storage_path('app/public/converted_documents/'))) {
             File::makeDirectory(storage_path('app/public/converted_documents/'), 0755, true);
         }
@@ -99,15 +99,16 @@ class DocuGenController extends Controller
         $imagePath = storage_path('app/public/test_image.png');
         $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
 
-        $docx_file =storage_path('app/public/converted_documents/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.docx');
+        $filename = preg_replace('/[^A-Za-z0-9_\-]/', '',now()->format('Ymd_His')."_{$document_template->name}_{$information->last_name}");
+        $docx_file =storage_path("app/public/converted_documents/{$filename}_templated.docx");
+
         $templateProcessor->saveAs($docx_file);
-
-
 
         $outputFile = storage_path('app/public/converted_pdf/');
         $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
         exec($command, $outputFile, $return_var);
-        $pdfFile = storage_path('app/public/converted_pdf/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.pdf');
+
+        $pdfFile = storage_path("app/public/converted_pdf/{$filename}_templated.pdf");
         if (file_exists($pdfFile)) {
 //            if($isView){
 //               return response()->file($pdfFile, [

@@ -24,6 +24,8 @@ return new class extends Migration
     {
         Schema::table('approvers', function (Blueprint $table) {
             //
+            $table->unsignedInteger('user_id')->change();
+            $table->dropColumn('name');
         });
     }
 };

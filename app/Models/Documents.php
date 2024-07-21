@@ -23,6 +23,7 @@ class Documents extends Model implements HasMedia
 //        'fields',
         'data',
         'company_code',
+        'projects',
         'approvers'
     ];
 
@@ -31,6 +32,7 @@ class Documents extends Model implements HasMedia
 //        'fields' => 'array',
         'data' => 'array',
         'company_code' => 'array',
+        'projects' => 'array',
         'approvers' => 'array',
     ];
 

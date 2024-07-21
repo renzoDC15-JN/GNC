@@ -14,6 +14,7 @@ use Filament\Actions\Action;
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Infolists\Infolist;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms;
@@ -34,6 +35,14 @@ class ClientInformationsResource extends Resource
     protected static ?string $model = ClientInformations::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                // ...
+            ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -156,6 +165,7 @@ class ClientInformationsResource extends Resource
                 //
             ])
             ->actions([
+                    Tables\Actions\ViewAction::make()->label('View Details')->button(),
                     Tables\Actions\Action::make('document')
                         ->button()
                     ->form(function(Form $form,array $data,ClientInformations $record){
@@ -183,7 +193,7 @@ class ClientInformationsResource extends Resource
                     })
                     ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
                         ->action(function (array $data, ClientInformations $record, Component $livewire) {
-                           $livewire->dispatch('download-pdf-from-url-event',route('docx_to_pdf', [$record,$data['document'],$data['action']=='view'?1:0]));
+                           $livewire->dispatch('open-link-new-tab-event',route('docx_to_pdf', [$record,$data['document'],$data['action']=='view'?1:0]));
                         })
                         ->modalWidth(MaxWidth::Small)
 //                ActionGroup::make(
@@ -248,7 +258,7 @@ class ClientInformationsResource extends Resource
         return [
             'index' => Pages\ListClientInformations::route('/'),
             'create' => Pages\CreateClientInformations::route('/create'),
-            'edit' => Pages\EditClientInformations::route('/{record}/edit'),
+//            'edit' => Pages\EditClientInformations::route('/{record}/edit'),
         ];
     }
 }
