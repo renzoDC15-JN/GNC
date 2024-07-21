@@ -51,7 +51,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class ContactResource extends Resource
 {
-    protected static ?string $label ='Client Info';
+    protected static ?string $label ='Contacts Information';
     protected static ?string $model = Contact::class;
     protected static ?string $recordTitleAttribute ='reference_code';
 
