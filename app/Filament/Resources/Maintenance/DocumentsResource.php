@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 use Homeful\Contacts\Models\Contact;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use phpDocumentor\Reflection\Types\False_;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Facades\Schema;
@@ -41,6 +42,7 @@ class DocumentsResource extends Resource
                     Forms\Components\Section::make()->schema([
 
                         Forms\Components\TextInput::make('name')
+                            ->unique('documents')
                             ->required(),
                         Forms\Components\Textarea::make('description')
                             ->required(),
@@ -64,8 +66,10 @@ class DocumentsResource extends Resource
                             ->required(),
                         FileUpload::make('file_attachment')
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                            ->unique('documents')
                             ->directory('documents')
                             ->preserveFilenames()
+                            ->maxSize(5120)
                             ->required(),
                         Forms\Components\Select::make('approvers')
                             ->label('Approvers')
@@ -94,6 +98,9 @@ class DocumentsResource extends Resource
 
     public static function table(Table $table): Table
     {
+
+
+
         return $table
             ->defaultPaginationPageOption(25)
             ->defaultSort('id','desc')
