@@ -4,6 +4,15 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../contacts",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require": {
         "php": "^8.2",
         "aws/aws-sdk-php": "^3.316",
@@ -13,7 +22,7 @@
         "filament/filament": "^3.2",
         "hasnayeen/themes": "^3.0",
         "howdu/filament-record-switcher": "^1.0",
-        "jn-devops/contacts": "^1.4",
+        "jn-devops/contacts": "dev-main",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
