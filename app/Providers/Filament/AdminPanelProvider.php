@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Backup;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -21,6 +22,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -71,6 +73,8 @@ class AdminPanelProvider extends PanelProvider
                     \Hasnayeen\Themes\ThemesPlugin::make(),
                     \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 FilamentRecordSwitcherPlugin::make(),
+                FilamentSpatieLaravelBackupPlugin::make()
+                    ->usingPage(Backup::class),
                     // FilamentEditProfilePlugin::make()
                 ]);
     }

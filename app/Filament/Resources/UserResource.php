@@ -23,7 +23,7 @@ use Illuminate\Support\HtmlString;
 
 class UserResource extends Resource
 {
-    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationGroup = 'Admin';
 
 
     protected static ?string $model = User::class;
