@@ -37,6 +37,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
         if (!isset($row['project_code'])) {
             return null;
         }
+//        dd($row);
 //    dd($row);
         $attribs  = [
             //
@@ -400,6 +401,19 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
                 'h_u_c_f_payment_date' => 'hucf_payment_date',
                 'total_contract_price'=>'tcp',
                 'transfer_certificate_of_title'=>'tct_no',
+
+                'buyer_spouse_first_name' => 'spouse_first_name',
+                'buyer_spouse_middle_name' => 'spouse_middle_name',
+                'buyer_spouse_last_name' =>  'spouse_last_name',
+                'buyer_spouse_name_suffix' =>  'spouse_name_suffix',
+                'buyer_spouse_mothers_maiden_name' =>  'spouse_mothers_maiden_name',
+                'buyer_spouse_civil_status' =>  'spouse_civil_status',
+                'buyer_spouse_gender' =>  'spouse_gender',
+                'buyer_spouse_nationality' =>'spouse_nationality',
+                'buyer_spouse_date_of_birth' => 'spouse_date_of_birth',
+                'buyer_spouse_email' =>  'spouse_email',
+                'buyer_spouse_mobile' => 'spouse_mobile',
+                'buyer_spouse_landline' => 'spouse_landline',
 
                 'buyer_primary_contact_number' => 'buyer_primary_contact_number',
                 'buyer_help_number' => 'buyer_help_number',
