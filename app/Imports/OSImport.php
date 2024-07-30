@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Faker\Factory as FakerFactory;
+//use Faker\Factory as FakerFactory;
 
 HeadingRowFormatter::default('cornerstone-os-report-1');
 class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
@@ -24,7 +24,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
 
     public function __construct()
     {
-        $this->faker = FakerFactory::create();
+//        $this->faker = FakerFactory::create();
     }
 
     /**
