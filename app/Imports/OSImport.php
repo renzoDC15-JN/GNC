@@ -40,7 +40,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
 //        dd($row);
         $attribs  = [
             //
-            'reference_code'=> $row['brn'],
+            'reference_code'=>(string) $row['brn'],
             'spouse' => [
                 'first_name' => $row['buyer_spouse_first_name'] ?? '',
                 'middle_name' => $row['buyer_spouse_middle_name'] ?? '',
@@ -331,6 +331,8 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
 //        dd($attribs);
 
         $contact = app(PersistContactAction::class)->run($attribs);
+
+//        dd($contact);
 
         return $contact;
     }
