@@ -13,9 +13,11 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Faker\Factory as FakerFactory;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 HeadingRowFormatter::default('cornerstone-os-report-1');
-class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
+class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -518,5 +520,10 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
     public function headingRow(): int
     {
         return 6;
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }

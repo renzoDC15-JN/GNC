@@ -243,7 +243,8 @@ class ContactResource extends Resource
                             ->storeFiles(false),
                     ])
                     ->action(function (array $arguments, $form, $data): void {
-                        Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
+//                        Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
+                        Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                     })
 
             ])->filters([
