@@ -13,7 +13,7 @@
         "filament/filament": "^3.2",
         "hasnayeen/themes": "^3.0",
         "howdu/filament-record-switcher": "^1.0",
-        "jn-devops/contacts": "v1.4.8",
+        "jn-devops/contacts": "v1.4.*",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/reverb": "^1.0",
