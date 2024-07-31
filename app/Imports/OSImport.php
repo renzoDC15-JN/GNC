@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\User;
 use Homeful\Contacts\Actions\PersistContactAction;
+use Homeful\Contacts\Models\Contact;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -320,23 +321,18 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
 
                 ]
 
-
             ],
-
-
-
-
-
 
         ];
 
-//        dd($attribs);
 
         $contact = app(PersistContactAction::class)->run($attribs);
 
-//        dd($contact);
 
-        return $contact;
+        return Contact::updateOrCreate(
+            ['reference_code' => $contact->toArray()['reference_code']], // Unique identifier, adjust as needed
+            $contact->toArray()
+        );
     }
 
     /**

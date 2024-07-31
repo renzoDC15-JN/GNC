@@ -154,6 +154,7 @@ class ContactResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('10')
             ->defaultPaginationPageOption(25)
             ->extremePaginationLinks()
             ->defaultSort('id','desc')
@@ -207,6 +208,7 @@ class ContactResource extends Resource
                                 ->label('Select Document')
                                 ->native(false)
                                 ->options(Documents::all()->pluck('name','id')->toArray())
+                                ->multiple()
                                 ->searchable()
                                 ->required(),
                             ToggleButtons::make('action')
@@ -226,7 +228,9 @@ class ContactResource extends Resource
                     })
                     ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
                     ->action(function (array $data, Contact $record, Component $livewire) {
-                        $livewire->dispatch('open-link-new-tab-event',route('contacts_docx_to_pdf', [$record,$data['document'],$data['action']=='view'?1:0,$record->last_name]));
+                        foreach ($data['document'] as $d){
+                        $livewire->dispatch('open-link-new-tab-event',route('contacts_docx_to_pdf', [$record,$d,$data['action']=='view'?1:0,$record->last_name]));
+                        }
                     })
                     ->modalWidth(MaxWidth::Small)
             ], position: ActionsPosition::BeforeCells)
