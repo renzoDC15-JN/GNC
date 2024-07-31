@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\User;
 use Homeful\Contacts\Actions\PersistContactAction;
+use Homeful\Contacts\Models\Contact;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -12,10 +13,12 @@ use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-//use Faker\Factory as FakerFactory;
+use Faker\Factory as FakerFactory;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 HeadingRowFormatter::default('cornerstone-os-report-1');
-class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
+class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -24,7 +27,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
 
     public function __construct()
     {
-//        $this->faker = FakerFactory::create();
+        $this->faker = FakerFactory::create();
     }
 
     /**
@@ -318,23 +321,18 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
 
                 ]
 
-
             ],
-
-
-
-
-
 
         ];
 
-//        dd($attribs);
 
         $contact = app(PersistContactAction::class)->run($attribs);
 
-//        dd($contact);
 
-        return $contact;
+        return Contact::updateOrCreate(
+            ['reference_code' => $contact->toArray()['reference_code']], // Unique identifier, adjust as needed
+            $contact->toArray()
+        );
     }
 
     /**
@@ -518,5 +516,10 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow
     public function headingRow(): int
     {
         return 6;
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }

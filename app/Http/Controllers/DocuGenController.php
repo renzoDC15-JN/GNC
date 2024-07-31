@@ -40,8 +40,9 @@ class DocuGenController extends Controller
             $templateProcessor->setValue($key, $value);
         }
         //set image
-        $imagePath = storage_path('app/public/test_image.png');
-        $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+//        $imagePath = storage_path('app/public/test_image.png');
+
+//        $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
 
         $docx_file =storage_path('app/public/converted_documents/'.$information->created_at->format('Y-m-d_H-i-s').'_templated.docx');
         $templateProcessor->saveAs($docx_file);
@@ -95,8 +96,8 @@ class DocuGenController extends Controller
         }
 
         //set image
-        $imagePath = storage_path('app/public/test_image.png');
-        $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
+//        $imagePath = storage_path('app/public/test_image.png');
+//        $templateProcessor->setImageValue('image', array('path' => $imagePath, 'width' => 100, 'height' => 100, 'ratio' => false));
 
         $filename = preg_replace('/[^A-Za-z0-9_\-]/', '',now()->format('Ymd_His')."_{$document_template->name}_{$information->last_name}");
         $docx_file =storage_path("app/public/converted_documents/{$filename}_templated.docx");
