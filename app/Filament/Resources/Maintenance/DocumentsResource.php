@@ -69,7 +69,7 @@ class DocumentsResource extends Resource
                             ->unique('documents')
                             ->directory('documents')
                             ->preserveFilenames()
-                            ->maxSize(5120)
+                            ->maxSize(1024*12)
                             ->required(),
                         Forms\Components\Select::make('approvers')
                             ->label('Approvers')

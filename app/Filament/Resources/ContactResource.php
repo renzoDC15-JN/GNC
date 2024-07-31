@@ -244,6 +244,7 @@ class ContactResource extends Resource
                     ->form([
                         Forms\Components\FileUpload::make('file')
                             ->label('OS Report')
+                            ->maxSize(1024*12)
                             ->storeFiles(false),
                     ])
                     ->action(function (array $arguments, $form, $data): void {
