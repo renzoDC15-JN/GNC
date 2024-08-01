@@ -42,7 +42,6 @@ class DocumentsResource extends Resource
                     Forms\Components\Section::make()->schema([
 
                         Forms\Components\TextInput::make('name')
-                            ->unique('documents')
                             ->required(),
                         Forms\Components\Textarea::make('description')
                             ->required(),
