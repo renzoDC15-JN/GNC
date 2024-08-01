@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Faker\Factory as FakerFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
@@ -23,11 +22,9 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
     use Importable;
 
 
-    protected $faker;
 
     public function __construct()
     {
-        $this->faker = FakerFactory::create();
     }
 
     /**
