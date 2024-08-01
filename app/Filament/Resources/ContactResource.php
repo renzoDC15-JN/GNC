@@ -244,7 +244,7 @@ class ContactResource extends Resource
                     ->form([
                         Forms\Components\FileUpload::make('file')
                             ->label('OS Report')
-                            ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                            ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                             ->maxSize(1024*12)
                             ->storeFiles(false),
                     ])
