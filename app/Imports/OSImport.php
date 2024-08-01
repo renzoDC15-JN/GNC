@@ -63,7 +63,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             'civil_status' => Str::title($row['buyer_civil_status']),
             'sex' => Str::title($row['buyer_gender']),
             'nationality' => Str::title($row['buyer_nationality']),
-            'date_of_birth' => Carbon::createFromDate(Date::excelToDateTimeObject($row['buyer_birthday'])), //TODO: update this
+            'date_of_birth' => Carbon::createFromDate(Date::excelToDateTimeObject($row['buyer_birthday']))->format('Y-m-d'), //TODO: update this
             'email' => strtolower($row['buyer_principal_email']),
             'mobile' => (string) $row['buyer_primary_contact_number'], //TODO: update this
             'help_number' => (string) ($row['buyer_help_number'] ?? ''),
