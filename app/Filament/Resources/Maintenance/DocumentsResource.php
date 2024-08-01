@@ -42,7 +42,6 @@ class DocumentsResource extends Resource
                     Forms\Components\Section::make()->schema([
 
                         Forms\Components\TextInput::make('name')
-                            ->unique('documents')
                             ->required(),
                         Forms\Components\Textarea::make('description')
                             ->required(),
@@ -69,7 +68,7 @@ class DocumentsResource extends Resource
                             ->unique('documents')
                             ->directory('documents')
                             ->preserveFilenames()
-                            ->maxSize(5120)
+                            ->maxSize(1024*12)
                             ->required(),
                         Forms\Components\Select::make('approvers')
                             ->label('Approvers')

@@ -6,6 +6,7 @@ use App\Filament\Clusters\Settings;
 use App\Filament\Resources\ContactResource;
 use App\Imports\OSImport;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use YOS\FilamentExcel\Actions\Import;
 
@@ -24,6 +25,13 @@ class ListContacts extends ListRecords
 //                ->hint('Upload xlsx type')
 ////                ->icon(HeroIcons::C_ARROW_UP)
 //                ->color('success'),
+//            Actions\Action::make('test')
+//            ->action(function(){
+//                Notification::make()
+//                    ->title('Saved successfully')
+////                    ->sendToDatabase(auth()->user())
+//                    ->broadcast(auth()->user());
+//            })
         ];
     }
 }
