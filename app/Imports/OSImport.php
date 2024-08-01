@@ -322,6 +322,11 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 ]
 
             ],
+            'co_borrower' => [
+                'last_name' => 'aif_last_name',
+                'first_name' => 'aif_first_name',
+                'middle_name' => 'aif_middle_name',
+            ],
 
         ];
 
@@ -330,8 +335,8 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
 
 
         return Contact::updateOrCreate(
-            ['reference_code' => $contact->toArray()['reference_code']], // Unique identifier, adjust as needed
-            $contact->toArray()
+            ['reference_code' => $attribs['reference_code']], // Unique identifier, adjust as needed
+            $attribs
         );
     }
 
