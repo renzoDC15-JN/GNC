@@ -54,7 +54,7 @@ class DocumentsResource extends Resource
                             )->native(false)
                             ->multiple()
                             ->required(),
-                        Forms\Components\Select::make('project_code')
+                        Forms\Components\Select::make('projects')
                             ->label('Projects')
                             ->options(
                                 Projects::all()->mapWithKeys(function($company){
