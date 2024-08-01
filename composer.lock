@@ -4352,7 +4352,7 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v1.4.10",
+            "version": "v1.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
@@ -4424,7 +4424,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v1.4.10"
+                "source": "https://github.com/jn-devops/contacts/tree/v1.4.11"
             },
             "funding": [
                 {
