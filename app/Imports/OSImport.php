@@ -332,8 +332,8 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
 
 
         return Contact::updateOrCreate(
-            ['reference_code' => $attribs['reference_code']], // Unique identifier, adjust as needed
-            $attribs
+            ['reference_code' => $contact->toArray()['reference_code']], // Unique identifier, adjust as needed
+            $contact->toArray()
         );
     }
 
