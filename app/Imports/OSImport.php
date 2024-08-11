@@ -55,6 +55,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'email' =>  $row['buyer_spouse_email'] ?? '',
                 'mobile' => $row['buyer_spouse_mobile'] ?? '',
                 'landline' => $row['buyer_spouse_landline'] ?? '',
+                'client_id' => $row['client_id_spouse'] ?? '',
             ],
             //
             'first_name' => Str::title($row['buyer_first_name']),
@@ -317,7 +318,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'bp_2_monthly_payment' => $row['bp_2_monthly_payment'] ?? '',
                 'bp_2_effective_date' => $row['bp_2_effective_date'] ?? '',
 
-                'date_created'=> $row['date_created'],
+                'date_created'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['date_created'])),
                 'ra_date'=> $row['ra_date'],
                 'date_approved'=>$row['date_approved'],
                 'date_expiration'=>$row['date_expiration'],
@@ -330,6 +331,11 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'date_closed'=>$row['date_closed'],
                 'closed_reason'=>$row['closed_reason'],
                 'date_cancellation'=>$row['date_cancellation'],
+
+                'baf_number' => $row['baf_number'],
+                'baf_date' => Carbon::createFromDate(Date::excelToDateTimeObject($row['baf_date'])),
+                'client_id_buyer' => $row['client_id_buyer'],
+                'buyer_age' => $row['buyer_age'],
 
                 'seller'=>[
                     'unit'=>$row['selling_unit'],
@@ -556,7 +562,6 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'buyer_employer_building' => 'buyer_employer_building',
                 'buyer_employer_length_of_stay' => 'buyer_employer_length_of_stay',
                 'buyer_tax_identification_number' => 'buyer_tax_identification_number',
-                'buyer_sss_gsis_number' => 'buyer_sss_gsis_number',
                 'buyer_pag_ibig_number' => 'buyer_pag_ibig_number',
                 'spouse_employer_status' => 'spouse_employer_status',
                 'spouse_salary_gross_income' => 'spouse_salary_gross_income',
@@ -722,6 +727,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'bp_2_-_terms' => 'bp_2_terms',
                 'bp_2_-_monthly_payment' => 'bp_2_monthly_payment',
                 'bp_2_-_effective_date' => 'bp_2_effective_date',
+                'buyer_age' => 'buyer_age',
 
                 default  => $heading,
             };
