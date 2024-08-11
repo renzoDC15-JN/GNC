@@ -207,7 +207,11 @@ class ContactResource extends Resource
                             Select::make('document')
                                 ->label('Select Document')
                                 ->native(false)
-                                ->options(Documents::all()->pluck('name','id')->toArray())
+                                ->options(
+                                    Documents::all()->mapWithKeys(function ($document) {
+                                    return [$document->id => $document->name];
+                                    })->toArray()
+                                )
                                 ->multiple()
                                 ->searchable()
                                 ->required(),
