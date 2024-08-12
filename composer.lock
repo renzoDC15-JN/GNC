@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "774396f43d4ea0644d88e3685cb7e0af",
+    "content-hash": "58690a385bb35d61f3ce2c70f744904e",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4184,7 +4184,7 @@
             "dist": {
                 "type": "path",
                 "url": "../contacts",
-                "reference": "c07d2a9a264ea785c8a9dff6c78598cf5f640797"
+                "reference": "178185bb1f4217e4931e8d0edac5a887c555fd9c"
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0",

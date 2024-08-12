@@ -13,22 +13,21 @@ return new class extends Migration
     {
         Schema::create('client_informations', function (Blueprint $table) {
             $table->id();
-            $table->string('project');
-            $table->string('location');
-            $table->string('property_name');
-            $table->string('phase');
-            $table->string('block');
-            $table->string('lot');
-            $table->string('buyer_name');
-            $table->string('buyer_civil_status');
-            $table->string('buyer_nationality');
-            $table->string('buyer_address');
-            $table->string('buyer_tin');
-            $table->string('buyer_spouse_name');
-            $table->string('mrif_fee');
-            $table->string('reservation_rate');
-            $table->string('created_by');
-
+            $table->string('project')->nullable();
+            $table->string('location')->nullable();
+            $table->string('property_name')->nullable();
+            $table->string('phase')->nullable();
+            $table->string('block')->nullable();
+            $table->string('lot')->nullable();
+            $table->string('buyer_name')->nullable();
+            $table->string('buyer_civil_status')->nullable();
+            $table->string('buyer_nationality')->nullable();
+            $table->string('buyer_address')->nullable();
+            $table->string('buyer_tin')->nullable();
+            $table->string('buyer_spouse_name')->nullable();
+            $table->string('mrif_fee')->nullable();
+            $table->string('reservation_rate')->nullable();
+            $table->string('created_by')->nullable();
             $table->timestamps();
         });
     }

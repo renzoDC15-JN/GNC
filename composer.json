@@ -19,6 +19,7 @@
         "barryvdh/laravel-dompdf": "^2.2",
         "bezhansalleh/filament-shield": "^3.2",
         "convertapi/convertapi-php": "^2.0",
+        "doctrine/dbal": "^4.0",
         "filament/filament": "^3.2",
         "hasnayeen/themes": "^3.0",
         "howdu/filament-record-switcher": "^1.0",

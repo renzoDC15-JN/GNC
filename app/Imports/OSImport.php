@@ -38,23 +38,24 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
         if (!isset($row['project_code'])) {
             return null;
         }
-    //    dd($row);
         $attribs  = [
             //
             'reference_code'=>(string) $row['brn'],
             'spouse' => [
-                'first_name' => $row['buyer_spouse_first_name'] ?? '',
-                'middle_name' => $row['buyer_spouse_middle_name'] ?? '',
-                'last_name' =>  $row['buyer_spouse_last_name'] ?? '',
-                'name_suffix' =>  $row['buyer_spouse_name_suffix'] ?? '',
-                'mothers_maiden_name' =>  $row['buyer_spouse_mothers_maiden_name'] ?? '', // missing in MAP
-                'civil_status' =>  $row['buyer_spouse_civil_status'] ?? '', // missing in MAP
-                'sex' =>  $row['buyer_spouse_gender'] ?? '',
-                'nationality' =>$row['buyer_spouse_nationality'] ?? '',
-                'date_of_birth' => $row['buyer_spouse_date_of_birth'] ?? '',
-                'email' =>  $row['buyer_spouse_email'] ?? '',
-                'mobile' => $row['buyer_spouse_mobile'] ?? '',
-                'landline' => $row['buyer_spouse_landline'] ?? '',
+                'first_name' => $row['spouse_first_name'] ?? '',
+                'middle_name' => $row['spouse_middle_name'] ?? '',
+                'last_name' =>  $row['spouse_last_name'] ?? '',
+                'name_suffix' =>  $row['spouse_name_suffix'] ?? '',
+                'mothers_maiden_name' =>  $row['spouse_mothers_maiden_name'] ?? '', // missing in MAP
+                'civil_status' =>  $row['spouse_civil_status'] ?? '', // missing in MAP
+                'sex' =>  $row['spouse_gender'] ?? '',
+                'nationality' =>$row['spouse_nationality'] ?? '',
+                'date_of_birth' =>isset($order['spouse_date_of_birth']) && $order['spouse_date_of_birth'] !== null
+                    ? Carbon::createFromDate(Date::excelToDateTimeObject($row['spouse_date_of_birth']))->format('Y-m-d')
+                    : '' ,
+                'email' =>  $row['spouse_email'] ?? '',
+                'mobile' => $row['spouse_mobile'] ?? '',
+                'landline' => $row['spouse_landline'] ?? '',
                 'client_id' => $row['client_id_spouse'] ?? '',
             ],
             //

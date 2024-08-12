@@ -29,6 +29,8 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
+use Homeful\Contacts\Actions\PersistContactAction;
+use Homeful\Contacts\Data\ContactData;
 use Homeful\Contacts\Models\Contact;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -232,6 +234,7 @@ class ContactResource extends Resource
                     })
                     ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
                     ->action(function (array $data, Contact $record, Component $livewire) {
+
                         foreach ($data['document'] as $d){
                         $livewire->dispatch('open-link-new-tab-event',route('contacts_docx_to_pdf', [$record,$d,$data['action']=='view'?1:0,$record->last_name]));
                         }
