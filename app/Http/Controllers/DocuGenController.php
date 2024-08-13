@@ -92,7 +92,7 @@ class DocuGenController extends Controller
         // dd($information);
         $ci = FlatData::fromModel($information);
 
-        // dd($ci);
+        dd($ci);
 
         //set values
         foreach ($ci as $key => $value) {

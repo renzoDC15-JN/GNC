@@ -56,6 +56,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'mobile' => $row['buyer_spouse_mobile'] ?? '',
                 'landline' => $row['buyer_spouse_landline'] ?? '',
                 'client_id' => $row['client_id_spouse'] ?? '',
+                'age' => $row['spouse_age'] ?? '',
             ],
             //
             'first_name' => Str::title($row['buyer_first_name']),
@@ -150,7 +151,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'department_name' => $row['department_name'],
                     'employer' => [
                         'name' => Str::title($row['buyer_employer_name']),
-                        'industry' => Str::title($row['buyer_industry'] ?? ''),
+                        'industry' => Str::title($row['industry'] ?? ''),
                         'type' => Str::title($row['buyer_employer_type']),
                         'status' => Str::title($row['buyer_employer_status'] ?? ''),
                         'year_established' => Str::title($row['buyer_employer_year_established']),
@@ -161,7 +162,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'address' => [
                             'type' => 'work',
                             'ownership' => 'N/A',
-                            'full_address' => null,
+                            'full_address' => Str::title($row['buyer_employer_address'] ?? ''),
                             'address1' => Str::title($row['buyer_place_of_work_1_(city_of_employer)'] ?? ''),
                             'address2' => Str::title($row['buyer_place_of_work_2_(province_of_employer)'] ?? ''),
                             'sublocality' => Str::title($row['buyer_employer_barangay'] ?? ''),
@@ -233,6 +234,53 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'pagibig' => (string) ($row['spouse_pag_ibig_number'] ?? ''),
                     ],
                 ],
+                [
+                    'type'=>'co_borrower',
+                    'employment_status' => Str::title($row['co_borrower_employer_status'] ?? ''),
+                    'monthly_gross_income' => (string) ($row['co_borrower_salary_gross_income'] ?? ''),
+                    'current_position' => Str::title($row['co_borrower_position'] ?? ''),
+                    'employment_type' => Str::title($row['co_borrower_employer_type'] ?? ''),
+                    'years_in_service' => Str::title($row['co_borrower_years_in_service'] ?? ''),
+                    'salary_range' => $row['co_borrower_salary_range'] ?? '',
+                    'department_name' => $row['co_borrower_department_name'] ?? '',
+                    'employer' => [
+                        'name' => Str::title($row['co_borrower_employer_name'] ?? ''),
+                        'industry' => Str::title($row['co_borrower_industry'] ?? ''),
+                        'type' => Str::title($row['co_borrower_employer_type'] ?? ''),
+                        'status' => Str::title($row['co_borrower_employer_status'] ?? ''),
+                        'year_established' => Str::title($row['co_borrower_employer_year_stablished'] ?? ''),
+                        'total_number_of_employees' => $row['co_borrower_employer_total_number_of_employees'] ?? '',
+                        'email' => $row['co_borrower_employer_email'] ?? '',
+                        'nationality' => 'PH',
+                        'contact_no' => (string) ($row['co_borrower_employer_contact_number'] ?? ''),
+                        'address' => [
+                            'type' => 'work',
+                            'ownership' => 'N/A',
+                            'full_address' => null,
+                            'address1' => Str::title($row['co_borrower_place_of_work_1_(city_of_residency)'] ?? ''),
+                            'address2' => Str::title($row['co_borrower_place_of_work_2_(province_of_residency)'] ?? ''),
+                            'sublocality' => Str::title($row['co_borrower_employer_barangay'] ?? ''),
+                            'locality' => Str::title($row['co_borrower_employer_city'] ?? ''),
+                            'administrative_area' => Str::title($row['co_borrower_employer_province'] ?? ''),
+                            'postal_code' => Str::title($row['co_borrower_employer_zip_code'] ?? ''),
+                            'sorting_code' => null,
+                            'country' => 'PH',
+
+                            'block' =>  Str::title($row['co_borrower_employer_block'] ?? ''),
+                            'lot' =>  Str::title($row['co_borrower_employer_lot'] ?? ''),
+                            'unit' =>  Str::title($row['co_borrower_employer_unit'] ?? ''),
+                            'floor' =>  Str::title($row['co_borrower_employer_floor'] ?? ''),
+                            'street' =>  Str::title($row['co_borrower_employer_street'] ?? ''),
+                            'building' =>  Str::title($row['co_borrower_employer_building'] ?? ''),
+                            'length_of_stay' => $row['co_borrower_employer_length_of_stay'] ?? '',
+                        ],
+                    ],
+                    'id' => [
+                        'tin' => (string) ($row['co_borrower_tax_identification_number'] ?? ''),
+                        'sss' => (string) ($row['co_borrower_sss_gsis_number'] ?? ''), //TODO: process sss or gsis
+                        'pagibig' => (string) ($row['co_borrower_pag_ibig_number'] ?? ''),
+                    ],
+                ],
             ],
             'order'=>[
                 //additional for gnc 7-15-2024
@@ -250,10 +298,11 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'lot' => $row['lot'],
                 'lot_area' => $row['lot_area'],
                 'floor_area' => $row['floor_area'],
-                'tcp' => $row['total_contract_price']??$row['tcp'],
+                'tcp' => $row['tcp'],
                 'loan_term' => $row['bp2_terms']??$row['bp1_terms'],
                 'loan_interest_rate' =>$row['bp2_interest_rate']??$row['bp1_interest_rate'],
                 'tct_no' => $row['transfer_certificate_of_title'] ?? '',
+                'interest' => $row['interest'] ?? '',
 
                 'project_location' => Str::title($row['project_location'] ?? ''),
                 'project_address' => Str::title($row['project_address'] ?? ''),
@@ -267,6 +316,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'buyer_action_form_date' => $row['buyer_action_form_date'] ?? '',
                 'cancellation_type' => $row['cancellation_type'],
                 'cancellation_reason' => $row['cancellation_reason'],
+                'cancellation_reason2' => $row['cancellation_reason2'],
                 'cancellation_remarks' => $row['cancellation_remarks'],
 
                 'unit_type' => $row['unit_type'],
@@ -360,6 +410,11 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'bp_2_terms' => $row['bp_2_terms'] ?? '',
                 'bp_2_monthly_payment' => $row['bp_2_monthly_payment'] ?? '',
                 'bp_2_effective_date' => $row['bp_2_effective_date'] ?? '',
+                'circular_no_312_379' => $row['circular_no._(312/379)'] ?? '',
+                'tcp_in_words' => $row['tcp_in_words'] ?? '',
+                'interest_in_words' => $row['interest_in_words'] ?? '',
+                'logo' => $row['logo'] ?? '',
+                'loan_period_months' => $row['loan_period_months'] ?? '',
 
                 'date_created'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['date_created'])),
                 'ra_date'=> $row['ra_date'],
@@ -379,15 +434,18 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'baf_date' => Carbon::createFromDate(Date::excelToDateTimeObject($row['baf_date'])),
                 'client_id_buyer' => $row['client_id_buyer'],
                 'buyer_age' => $row['buyer_age'],
+                'hucf_move_in_fee' =>$row['hucf/move-in_fee'] ?? '',
+                'ltvr_slug' =>$row['ltvr_slug'] ?? '',
+                'repricing_period_slug' =>$row['repricing_period_slug'] ?? '',
 
-                'seller'=>[
+                'seller_data'=>[
                     'unit'=>$row['selling_unit'],
                     'id'=>$row['seller_id'],
                     'name'=>$row['seller_name'],
                     'superior'=>$row['seller_superior'],
-                    'team_head'=>$row['seller_superior'],
+                    'team_head'=>$row['sales_team_head'],
                     'chief_seller_officer'=>$row['chief_seller_officer'] ?? '',
-                    'deputy_chief_seller_officer'=>$row['deputy_chief_seller_officer'] ?? '',
+                    'deputy_chief_seller_officer'=>$row['chief_seller_officer'] ?? '',
                     'type'=>$row['seller_type'],
                     'reference_no'=>$row['seller_reference_no'] ?? '',
                 ],
@@ -399,7 +457,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'evat_percentage'=>$row['evat_percentage'],
                     'evat_amount'=>$row['evat_amount'],
                     'net_total_contract_price'=>$row['net_total_contract_price'],
-                    'total_contract_price'=>$row['total_contract_price'],
+                    'total_contract_price'=>$row['tcp'],
                     'payments'=>[
                         [
                             'type'=>'processing_fee',
@@ -449,6 +507,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'discount_rate'=>$row['discount_rate'],
                     'conditional_discount'=>$row['conditional_discount'],
                     'transaction_sub_status'=>$row['transaction_sub_status'],
+                    'total_selling_price'=>$row['total_selling_price'],
 
                 ]
 
@@ -485,6 +544,10 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'date_of_birth' => '',
                     'email' => '',
                     'mobile' => '',
+                    'relationship_to_buyer' => $row['aif_relationship_to_buyer'] ?? '',
+                    'passport' => $row['aif_passport'] ?? '',
+                    'date_issued' => $row['aif_date_issued'] ?? '',
+                    'place_issued' => $row['aif_place_issued'] ?? '',
                 ]
             ],
 
@@ -507,7 +570,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
      */
     public function formatHeaderRow(array $headerRow): array
     {
-        dd($headerRow);
+        // dd($headerRow);
         // Custom header row formatting logic here
         return array_map(function ($header) {
             $heading = Str::snake(Str::camel($header));
