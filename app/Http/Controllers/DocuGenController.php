@@ -89,7 +89,10 @@ class DocuGenController extends Controller
 
         $templateProcessor = new TemplateProcessor($filePath);
 
+        // dd($information);
         $ci = FlatData::fromModel($information);
+
+        // dd($ci);
 
         //set values
         foreach ($ci as $key => $value) {

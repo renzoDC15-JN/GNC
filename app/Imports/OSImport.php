@@ -94,6 +94,49 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'building' =>  Str::title($row['buyer_building'] ?? ''),
                     'length_of_stay' => $row['buyer_length_of_stay'] ?? '',
                 ],
+                [
+                    'type' => 'co_borrower',
+                    'ownership' => Str::title($row['buyer_ownership_type']),
+                    'full_address' => null,
+                    'address1' => Str::title($row['buyer_place_of_residency_1_(city_of_residency)'] ?? ''),
+                    'address2' => Str::title($row['buyer_place_of_residency_2_(province_of_residency)'] ?? ''),
+                    'sublocality' => Str::title($row['buyer_barangay']),
+                    'locality' => Str::title($row['buyer_city']),
+                    'administrative_area' => Str::title($row['buyer_province']),
+                    'postal_code' => Str::title($row['buyer_zip_code'] ?? ''),
+                    'sorting_code' => null,
+                    'country' => 'PH',
+
+                    'block' =>  Str::title($row['buyer_block']),
+                    'lot' =>  Str::title($row['buyer_lot'] ?? ''),
+                    'unit' =>  Str::title($row['buyer_unit'] ?? ''),
+                    'floor' =>  Str::title($row['buyer_floor'] ?? ''),
+                    'street' =>  Str::title($row['buyer_street']),
+                    'building' =>  Str::title($row['buyer_building'] ?? ''),
+                    'length_of_stay' => $row['buyer_length_of_stay'] ?? '',
+                ],
+                [
+                    'type' => 'spouse',
+                    'ownership' => Str::title($row['buyer_ownership_type']),
+                    'full_address' => null,
+                    'address1' => Str::title($row['buyer_place_of_residency_1_(city_of_residency)'] ?? ''),
+                    'address2' => Str::title($row['buyer_place_of_residency_2_(province_of_residency)'] ?? ''),
+                    'sublocality' => Str::title($row['buyer_barangay']),
+                    'locality' => Str::title($row['buyer_city']),
+                    'administrative_area' => Str::title($row['buyer_province']),
+                    'postal_code' => Str::title($row['buyer_zip_code'] ?? ''),
+                    'sorting_code' => null,
+                    'country' => 'PH',
+
+                    'block' =>  Str::title($row['buyer_block']),
+                    'lot' =>  Str::title($row['buyer_lot'] ?? ''),
+                    'unit' =>  Str::title($row['buyer_unit'] ?? ''),
+                    'floor' =>  Str::title($row['buyer_floor'] ?? ''),
+                    'street' =>  Str::title($row['buyer_street']),
+                    'building' =>  Str::title($row['buyer_building'] ?? ''),
+                    'length_of_stay' => $row['buyer_length_of_stay'] ?? '',
+                ],
+                
             ],
             'employment' =>[
                 [
@@ -283,14 +326,14 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'floor' => $row['floor'],
                 'unit' => $row['unit'],
                 'cct' => $row['cct'],
-                'wtiness1' => $row['wtiness1'] ?? '',
-                'wtiness2' => $row['wtiness2'] ?? '',
+                'witness1' => $row['witness1'] ?? '',
+                'witness2' => $row['witness2'] ?? '',
                 'buyer_extension_name' => $row['buyer_extension_name'],
                 'company_acronym' => $row['company_acronym'] ?? '',
                 'repricing_period_in_words' => $row['repricing_period_in_words'] ?? '',
                 'repricing_period' => $row['repricing_period'] ?? '',
                 'company_address' => $row['company_address'] ?? '',
-                'exec_possition' => $row['exec_possition'] ?? '',
+                'exec_position' => $row['exec_position'] ?? '',
                 'board_resolution_date' => $row['board_resolution_date'] ?? '',
                 'registry_of_deeds_address' => $row['registry_of_deeds_address'] ?? '',
                 'exec_tin' => $row['exec_tin'] ?? '',
@@ -412,11 +455,13 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             ],
             'co_borrowers' => [
                 [
+                    'aif_name' => $row['aif_name'] ?? '',
                     'first_name' => $row['aif_first_name'] ?? '',
                     'middle_name' => $row['aif_middle_name'] ?? '',
                     'last_name' => $row['aif_last_name'] ?? '',
                     'name_suffix' => $row['aif_extension_name'] ?? '',
                     'unit_lot' => $row['aif_unit_lot'] ?? '' ?? '',
+                    'aif_address' => $row['aif_address'] ?? '' ?? '',
                     'street' => $row['aif_street'] ?? '',
                     'subdivision' => $row['aif_subdivision'] ?? '',
                     'barangay' => $row['aif_barangay'] ?? '',
@@ -462,6 +507,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
      */
     public function formatHeaderRow(array $headerRow): array
     {
+        dd($headerRow);
         // Custom header row formatting logic here
         return array_map(function ($header) {
             $heading = Str::snake(Str::camel($header));
@@ -649,9 +695,9 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'aif_company_phone_number' => 'aif_company_phone_number',
                 'aif_fax' => 'aif_fax',
                 'aif_company_email' => 'aif_company_email',
-                'term_1' => 'term_1',
-                'term_2' => 'term_2',
-                'term_3' => 'term_3',
+                'term1' => 'term_1',
+                'term2' => 'term_2',
+                'term3' => 'term_3',
                 'amort_mrisri1' => 'amort_mrisri1',
                 'amort_mrisri2' => 'amort_mrisri2',
                 'amort_mrisri3' => 'amort_mrisri3',
