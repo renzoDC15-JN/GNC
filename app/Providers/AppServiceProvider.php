@@ -94,7 +94,6 @@ class AppServiceProvider extends ServiceProvider
                 'h_u_c_f_payment_date' => 'hucf_payment_date',
                 'total_contract_price'=>'tcp',
                 'transfer_certificate_of_title'=>'tct_no',
-
                 'buyer_primary_contact_number' => 'buyer_primary_contact_number',
                 'buyer_help_number' => 'buyer_help_number',
                 'buyer_other_contact_number' => 'buyer_other_contact_number',
@@ -274,7 +273,6 @@ class AppServiceProvider extends ServiceProvider
                 'company_acronym' => 'company_acronym',
                 'repricing_period_in_words' => 'repricing_period_in_words',
                 'repricing_period' => 'repricing_period',
-                // For Checking
                 'project' => 'company_name',
                 'project_address' => 'project_address',
                 'name_of_executive' => 'exec_possition',
@@ -304,7 +302,6 @@ class AppServiceProvider extends ServiceProvider
                 'bp_2_-_effective_date' => 'bp_2_effective_date',
                 'buyer_age' => 'buyer_age',
                 'sales_team_head' => 'sales_team_head',
-
                 'employment_status' => 'employment_status',
                 'monthly_gross_income' => 'monthly_gross_income',
                 'buyer_employer_address' => 'buyer_employer_address',
@@ -331,7 +328,6 @@ class AppServiceProvider extends ServiceProvider
                 'loan_value' => 'loan_value_after_downpayment',
                 'company_address' => 'company_address',
         
-
                 default  => $heading,
             };
         });
