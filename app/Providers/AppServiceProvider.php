@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
                 'client_i_d(_a_i_f)' => 'client_id_aif',
                 'a_i_f_name' => 'aif_name',
                 'a_i_f_address' => 'aif_address',
-                'client_i_d(_co_borrower)' => 'client_id__co_borrower',
+                'client_i_d(_co_borrower)' => 'client_id_co_borrower',
                 'buyer_place_of_work1(_city_of_employer)' => 'buyer_place_of_employer_city',
                 'buyer_place_of_work2(_province_of_employer)' => 'buyer_place_of_employer_province',
                 'buyer_salary/_gross_income' => 'buyer_salary_gross_income',
@@ -222,7 +222,7 @@ class AppServiceProvider extends ServiceProvider
                 'aif_industry' => 'aif_industry',
                 'aif_salary_gross_income' => 'aif_salary_gross_income',
                 'aif_company_phone_number' => 'aif_company_phone_number',
-                'aif_fax' => 'aif_fax',
+                'aif_fax' => 'fax',
                 'aif_company_email' => 'aif_company_email',
                 'term1' => 'term_1',
                 'term2' => 'term_2',
@@ -276,7 +276,7 @@ class AppServiceProvider extends ServiceProvider
                 'repricing_period' => 'repricing_period',
                 // For Checking
                 'project' => 'company_name',
-                'project_address' => 'company_address',
+                'project_address' => 'project_address',
                 'name_of_executive' => 'exec_possition',
                 'board_resolution_date' => 'board_resolution_date',
                 'municipality_where_deed_of_sales_is_located' => 'registry_of_deeds_address',
@@ -320,9 +320,17 @@ class AppServiceProvider extends ServiceProvider
                 'aif_passport' => 'passport',
                 'aif_date_issued' => 'date_issued',
                 'aif_place_issued' => 'place_issued',
-                
-
-              
+                'page' => 'page',
+                'lot_area_in_words' => 'lot_area_in_words',
+                'exec_signatories' => 'exec_signatories',
+                'exec_tin_no' => 'exec_tin_no',
+                'loan_terms_in_word' => 'loan_terms_in_word',
+                'company_tin' => 'company_tin',
+                'y' => 'yes_for_faq_solaris_project',
+                'n' => 'n_for_faq_solaris_project',
+                'loan_value' => 'loan_value_after_downpayment',
+                'company_address' => 'company_address',
+        
 
                 default  => $heading,
             };

@@ -159,6 +159,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'email' => $row['buyer_employer_email'] ?? '',
                         'nationality' => 'PH',
                         'contact_no' => (string) $row['buyer_employer_contact_number'],
+                        'fax' => $row['aif_fax'] ?? '',
                         'address' => [
                             'type' => 'work',
                             'ownership' => 'N/A',
@@ -206,6 +207,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'email' => $row['spouse_employer_email'] ?? '',
                         'nationality' => 'PH',
                         'contact_no' => (string) ($row['spouse_employer_contact_number'] ?? ''),
+                        'fax' => $row['aif_fax'] ?? '',
                         'address' => [
                             'type' => 'work',
                             'ownership' => 'N/A',
@@ -253,6 +255,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'email' => $row['co_borrower_employer_email'] ?? '',
                         'nationality' => 'PH',
                         'contact_no' => (string) ($row['co_borrower_employer_contact_number'] ?? ''),
+                        'fax' =>  $row['aif_fax'] ?? '',
                         'address' => [
                             'type' => 'work',
                             'ownership' => 'N/A',
@@ -370,6 +373,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'cash_outlay_3_terms' => $row['cash_outlay_3_terms'] ?? '',
                 'cash_outlay_3_monthly_payment' => $row['cash_outlay_3_monthly_payment'] ?? '',
                 'cash_outlay_3_effective_date' => $row['cash_outlay_3_effective_date'] ?? '',
+                'page' => $row['page'] ?? '',
 
                 // For checking
                 'building' => $row['building'],
@@ -415,6 +419,10 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'interest_in_words' => $row['interest_in_words'] ?? '',
                 'logo' => $row['logo'] ?? '',
                 'loan_period_months' => $row['loan_period_months'] ?? '',
+                'exec_signatories' => $row['exec_signatories'] ?? '',
+                'exec_tin_no' => $row['exec_tin_no'] ?? '',
+                'loan_terms_in_word' => $row['loan_terms_in_word'] ?? '',
+                'loan_value_after_downpayment' => $row['loan_value'] ?? '',
 
                 'date_created'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['date_created'])),
                 'ra_date'=> $row['ra_date'],
@@ -437,8 +445,11 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'hucf_move_in_fee' =>$row['hucf/move-in_fee'] ?? '',
                 'ltvr_slug' =>$row['ltvr_slug'] ?? '',
                 'repricing_period_slug' =>$row['repricing_period_slug'] ?? '',
+                'company_tin' =>$row['company_tin'] ?? '',
+                'yes_for_faq_solaris_project' =>$row['y'] ?? '',
+                'n_for_faq_solaris_project' =>$row['n'] ?? '',
 
-                'seller_data'=>[
+                'seller'=>[
                     'unit'=>$row['selling_unit'],
                     'id'=>$row['seller_id'],
                     'name'=>$row['seller_name'],
@@ -547,7 +558,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'relationship_to_buyer' => $row['aif_relationship_to_buyer'] ?? '',
                     'passport' => $row['aif_passport'] ?? '',
                     'date_issued' => $row['aif_date_issued'] ?? '',
-                    'place_issued' => $row['aif_place_issued'] ?? '',
+                    'place_issued' => $row['aif_date_issued'] ?? '',
                 ]
             ],
 
