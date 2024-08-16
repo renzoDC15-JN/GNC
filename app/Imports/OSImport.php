@@ -51,7 +51,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'civil_status' =>  $row['buyer_spouse_civil_status'] ?? '', // missing in MAP
                 'sex' =>  $row['buyer_spouse_gender'] ?? '',
                 'nationality' =>$row['buyer_spouse_nationality'] ?? '',
-                'date_of_birth' => $row['buyer_spouse_date_of_birth'] ?? '',
+                'date_of_birth' => Carbon::createFromDate(Date::excelToDateTimeObject($row['spouse_birthday']) ?? null),
                 'email' =>  $row['buyer_spouse_email'] ?? '',
                 'mobile' => $row['buyer_spouse_mobile'] ?? '',
                 'landline' => $row['buyer_spouse_landline'] ?? '',
@@ -66,7 +66,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             'civil_status' => Str::title($row['buyer_civil_status'] ?? ''),
             'sex' => Str::title($row['buyer_gender'] ?? ''),
             'nationality' => Str::title($row['buyer_nationality'] ?? ''),
-            'date_of_birth' => Carbon::createFromDate(Date::excelToDateTimeObject($row['buyer_birthday'] ?? '' )), //TODO: update this
+            'date_of_birth' => isset($row['buyer_birthday']) && $row['buyer_birthday'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['buyer_birthday'])) : null,//TODO: update this
             'email' => strtolower($row['buyer_principal_email'] ?? ''),
             'mobile' => (string) $row['buyer_primary_contact_number'] ?? '', //TODO: update this
             'help_number' => (string) ($row['buyer_help_number'] ?? ''),
@@ -308,7 +308,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'segment_field' => $row['segment_field'] ?? '',
                 'rebooked_id_form' => $row['rebooked_id_form'] ?? '',
                 'buyer_action_form_number' => $row['buyer_action_form_number'] ?? '',
-                'buyer_action_form_date' => $row['buyer_action_form_date'] ?? '',
+                // 'buyer_action_form_date' => Carbon::createFromDate(Date::excelToDateTimeObject($row['buyer_action_form_date'] ) ?? null),
                 'cancellation_type' => $row['cancellation_type'] ?? '',
                 'cancellation_reason' => $row['cancellation_reason'] ?? '',
                 'cancellation_reason2' => $row['cancellation_reason2'] ?? '',
@@ -318,7 +318,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'house_color' => $row['house_color'] ?? '',
                 'construction_status' => $row['construction_status'] ?? '',
                 'transaction_reference' => $row['transaction_reference'] ?? '',
-                'reservation_date' => $row['reservation_date'] ?? '',
+                'reservation_date' => Carbon::createFromDate(Date::excelToDateTimeObject($row['reservation_date'])  ?? null),
                 'circular_number' => $row['circular_number'] ?? '',
 
                 // For checking
@@ -342,7 +342,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'equity_1_interest_rate' => $row['equity_1_interest_rate'] ?? '',
                 'equity_1_terms' => $row['equity_1_terms'] ?? '',
                 'equity_1_monthly_payment' => $row['equity_1_monthly_payment'] ?? '',
-                'equity_1_effective_date' => $row['equity_1_effective_date'] ?? '',
+                'equity_1_effective_date' =>isset($row['equity_1_effective_date']) && $row['equity_1_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['equity_1_effective_date'])) : null,
                 'equity_2_amount' => $row['equity_2_amount'] ?? '',
                 'equity_2_percentage_rate' => $row['equity_2_percentage_rate'] ?? '',
                 'equity_2_interest_rate' => $row['equity_2_interest_rate'] ?? '',
@@ -351,19 +351,19 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 // For checking
                 'cash_outlay_1_terms' => $row['cash_outlay_1_terms'] ?? '',
                 'cash_outlay_1_monthly_payment' => $row['cash_outlay_1_monthly_payment'] ?? '',
-                'cash_outlay_1_effective_date' => $row['cash_outlay_1_effective_date'] ?? '',
+                'cash_outlay_1_effective_date' => isset($row['cash_outlay_1_effective_date']) && $row['cash_outlay_1_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['cash_outlay_1_effective_date'])) : null,
                 'cash_outlay_2_amount' => $row['cash_outlay_2_amount'] ?? '',
                 'cash_outlay_2_percentage_rate' => $row['cash_outlay_2_percentage_rate'] ?? '',
                 'cash_outlay_2_interest_rate' => $row['cash_outlay_2_interest_rate'] ?? '',
                 'cash_outlay_2_terms' => $row['cash_outlay_2_terms'] ?? '',
                 'cash_outlay_2_monthly_payment' => $row['cash_outlay_2_monthly_payment'] ?? '',
-                'cash_outlay_2_effective_date' => $row['cash_outlay_2_effective_date'] ?? '',
+                'cash_outlay_2_effective_date' => isset($row['cash_outlay_2_effective_date']) && $row['cash_outlay_2_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['cash_outlay_2_effective_date'])) : null,
                 'cash_outlay_3_amount' => $row['cash_outlay_3_amount'] ?? '',
                 'cash_outlay_3_percentage_rate' => $row['cash_outlay_3_percentage_rate'] ?? '',
                 'cash_outlay_3_interest_rate' => $row['cash_outlay_3_interest_rate'] ?? '',
                 'cash_outlay_3_terms' => $row['cash_outlay_3_terms'] ?? '',
                 'cash_outlay_3_monthly_payment' => $row['cash_outlay_3_monthly_payment'] ?? '',
-                'cash_outlay_3_effective_date' => $row['cash_outlay_3_effective_date'] ?? '',
+                'cash_outlay_3_effective_date' => isset($row['cash_outlay_3_effective_date']) && $row['cash_outlay_3_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['cash_outlay_3_effective_date'])) : null,
                 'page' => $row['page'] ?? '',
 
                 // For checking
@@ -379,7 +379,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'repricing_period' => $row['repricing_period'] ?? '',
                 'company_address' => $row['company_address'] ?? '',
                 'exec_position' => $row['exec_position'] ?? '',
-                'board_resolution_date' => $row['board_resolution_date'] ?? '',
+                'board_resolution_date' => isset($row['board_resolution_date']) && $row['board_resolution_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['board_resolution_date'])) : null,
                 'registry_of_deeds_address' => $row['registry_of_deeds_address'] ?? '',
                 'exec_tin' => $row['exec_tin'] ?? '',
                 'loan_period_in_words' => $row['loan_period_in_words'] ?? '',
@@ -392,19 +392,19 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'cash_outlay_1_percentage_rate' => $row['cash_outlay_1_percentage_rate'] ?? '',
                 'cash_outlay_1_interest_rate' => $row['cash_outlay_1_interest_rate'] ?? '',
                 'equity_2_monthly_payment' => $row['equity_2_monthly_payment'] ?? '',
-                'equity_2_effective_date' => $row['equity_2_effective_date'] ?? '',
+                'equity_2_effective_date' =>isset($row['equity_2_effective_date']) && $row['equity_2_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['equity_2_effective_date'])) : null,
                 'bp_1_amount' => $row['bp_1_-_amount'] ?? '',
                 'bp_1_percentage_rate' => $row['bp_1_percentage_rate'] ?? '',
                 'bp_1_interest_rate' => $row['bp_1_interest_rate'] ?? '',
                 'bp_1_terms' => $row['bp_1_terms'] ?? '',
                 'bp_1_monthly_payment' => $row['bp_1_monthly_payment'] ?? '',
-                'bp_1_effective_date' => $row['bp_1_effective_date'] ?? '',
+                'bp_1_effective_date' => isset($row['bp_1_effective_date']) && $row['bp_1_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['bp_1_effective_date'])) : null,
                 'bp_2_amount' => $row['bp_2_amount'] ?? '',
                 'bp_2_percentage_rate' => $row['bp_2_percentage_rate'] ?? '',
                 'bp_2_interest_rate' => $row['bp_2_interest_rate'] ?? '',
                 'bp_2_terms' => $row['bp_2_terms'] ?? '',
-                'bp_2_monthly_payment' => $row['bp_2_monthly_payment'] ?? '',
-                'bp_2_effective_date' => $row['bp_2_effective_date'] ?? '',
+                'bp_2_monthly_payment' =>isset($row['bp_2_monthly_payment']) && $row['bp_2_monthly_payment'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['bp_2_monthly_payment'])) : null,
+                'bp_2_effective_date' =>isset($row['bp_2_effective_date']) && $row['bp_2_effective_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['bp_2_effective_date'])) : null,
                 'circular_no_312_379' => $row['circular_no._(312/379)'] ?? '',
                 'tcp_in_words' => $row['tcp_in_words'] ?? '',
                 'interest_in_words' => $row['interest_in_words'] ?? '',
@@ -415,22 +415,22 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'loan_terms_in_word' => $row['loan_terms_in_word'] ?? '',
                 'loan_value_after_downpayment' => $row['loan_value'] ?? '',
 
-                'date_created'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['date_created'] ?? '')),
-                'ra_date'=> $row['ra_date'] ?? '',
-                'date_approved'=>$row['date_approved'] ?? '',
-                'date_expiration'=>$row['date_expiration'] ?? '',
-                'os_month'=>$row['os_month'] ?? '',
-                'due_date'=>$row['due_date'] ?? '',
+                'date_created'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['date_created'] ) ?? null),
+                'ra_date'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['ra_date'] ) ?? null),
+                'date_approved'=> isset($row['date_approved']) && $row['date_approved'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject($row['date_approved'])) : null,
+                'date_expiration'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['date_expiration'])  ?? null),
+                'os_month'=> Carbon::createFromDate(Date::excelToDateTimeObject($row['os_month']) ?? null),
+                'due_date'=> isset($row['due_date']) && $row['due_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject((int)$row['due_date'])) : null,
                 'total_payments_made'=>$row['total_payments_made'] ?? '',
                 'transaction_status'=>$row['transaction_status'] ?? '',
                 'staging_status'=>$row['staging_status'] ?? '',
                 'period_id'=>$row['period_id'] ?? '',
-                'date_closed'=>$row['date_closed'] ?? '',
+                'date_closed'=> isset($row['date_closed']) ? Carbon::createFromDate(Date::excelToDateTimeObject((int)$row['date_closed'])): null,
                 'closed_reason'=>$row['closed_reason'] ?? '',
-                'date_cancellation'=>$row['date_cancellation'] ?? '',
+                'date_cancellation'=>isset($row['date_cancellation']) && $row['date_cancellation'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject((int)$row['date_cancellation'])) : null,
 
                 'baf_number' => $row['baf_number'] ?? '',
-                'baf_date' => Carbon::createFromDate(Date::excelToDateTimeObject($row['baf_date'] ?? '')),
+                'baf_date' => isset($row['baf_date']) && $row['baf_date'] !== null ? Carbon::createFromDate(Date::excelToDateTimeObject((int)$row['baf_date'])) : null,
                 'client_id_buyer' => $row['client_id_buyer'] ?? '',
                 'buyer_age' => $row['buyer_age'] ?? '',
                 'hucf_move_in_fee' =>$row['hucf/move-in_fee'] ?? '',
@@ -464,25 +464,25 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         [
                             'type'=>'processing_fee',
                             'amount_paid'=>$row['pf_amount_paid'] ?? '',
-                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['pf_payment_date']) ?? '') ,
+                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['pf_payment_date']) ?? null) ,
                             'reference_number'=>$row['pf_payment_reference_number'] ?? '',
                         ],
                         [
                             'type'=>'home_utility_connection_fee',
                             'amount_paid'=>$row['hucf_amount_paid'] ?? '',
-                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['hucf_payment_date']) ?? ''),
+                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['hucf_payment_date']) ?? null),
                             'reference_number'=>$row['hucf_payment_reference_number'] ?? '',
                         ],
                         [
                             'type'=>'balance',
                             'amount_paid'=>$row['balance_payment_amount_paid'],
-                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['balance_payment_date']) ?? ''),
+                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['balance_payment_date']) ?? null),
                             'reference_number'=>$row['balance_payment_reference_number'] ?? '',
                         ],
                         [
                             'type'=>'equity',
                             'amount_paid'=>$row['equity_payment_amount_paid'] ?? '',
-                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['equity_payment_date']) ?? ''),
+                            'date'=>Carbon::createFromDate(Date::excelToDateTimeObject($row['equity_payment_date']) ?? null),
                             'reference_number'=>$row['equity_payment_reference_number'] ?? '',
                         ],
                     ],
@@ -558,7 +558,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
         // dd($attribs);
         $contact = app(PersistContactAction::class)->run($attribs);
 
-
+        // dd($attribs);
         return Contact::updateOrCreate(
             ['reference_code' => $attribs['reference_code']], // Unique identifier, adjust as needed
             $attribs
