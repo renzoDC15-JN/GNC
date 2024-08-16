@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "774396f43d4ea0644d88e3685cb7e0af",
+    "content-hash": "ff5d02e0c87d6ee2ab7fc41fe8baf420",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4178,11 +4178,17 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "dev-main",
+            "version": "v1.4.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jn-devops/contacts.git",
+                "reference": "f20562501077e4950b73e04f2fe29a57153ae47f"
+            },
             "dist": {
-                "type": "path",
-                "url": "../contacts",
-                "reference": "2cd44008a23618e9009f576eb5a7b6b6cdec7d4e"
+                "type": "zip",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/f20562501077e4950b73e04f2fe29a57153ae47f",
+                "reference": "f20562501077e4950b73e04f2fe29a57153ae47f",
+                "shasum": ""
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0",
@@ -4224,44 +4230,7 @@
                     "Homeful\\Contacts\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Homeful\\Contacts\\Tests\\": "tests/",
-                    "Workbench\\App\\": "workbench/app/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@composer run prepare"
-                ],
-                "clear": [
-                    "@php vendor/bin/testbench package:purge-contacts --ansi"
-                ],
-                "prepare": [
-                    "@php vendor/bin/testbench package:discover --ansi"
-                ],
-                "build": [
-                    "@composer run prepare",
-                    "@php vendor/bin/testbench workbench:build --ansi"
-                ],
-                "start": [
-                    "Composer\\Config::disableProcessTimeout",
-                    "@composer run build",
-                    "@php vendor/bin/testbench serve"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse"
-                ],
-                "test": [
-                    "vendor/bin/pest"
-                ],
-                "test-coverage": [
-                    "vendor/bin/pest --coverage"
-                ],
-                "format": [
-                    "vendor/bin/pint"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4279,10 +4248,17 @@
                 "contacts",
                 "laravel"
             ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/jn-devops/contacts/issues",
+                "source": "https://github.com/jn-devops/contacts/tree/v1.4.17"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Homeful",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-08-16T06:18:28+00:00"
         },
         {
             "name": "joaopaulolndev/filament-edit-profile",
@@ -16263,7 +16239,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "jn-devops/contacts": 20,
         "phpoffice/phpword": 20
     },
     "prefer-stable": true,
