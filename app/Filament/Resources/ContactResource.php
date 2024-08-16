@@ -117,38 +117,43 @@ class ContactResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('reference_code')
-                    ->required(),
-                Forms\Components\TextInput::make('first_name')
-                    ->required(),
-                Forms\Components\TextInput::make('middle_name')
-                    ->required(),
-                Forms\Components\TextInput::make('last_name')
-                    ->required(),
-                Forms\Components\TextInput::make('civil_status')
-                    ->required(),
-                Forms\Components\TextInput::make('sex')
-                    ->required(),
-                Forms\Components\TextInput::make('nationality')
-                    ->required(),
-                Forms\Components\DatePicker::make('date_of_birth')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-                Forms\Components\TextInput::make('mobile')
-                    ->required(),
-                Forms\Components\Textarea::make('spouse')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('addresses')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('employment')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('co_borrowers')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('order')
-                    ->columnSpanFull(),
+                Forms\Components\FileUpload::make('file')
+                    ->label('OS Report')
+                    ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
+                    ->maxSize(1024*12)
+                    ->storeFiles(false),
+//                Forms\Components\TextInput::make('reference_code')
+//                    ->required(),
+//                Forms\Components\TextInput::make('first_name')
+//                    ->required(),
+//                Forms\Components\TextInput::make('middle_name')
+//                    ->required(),
+//                Forms\Components\TextInput::make('last_name')
+//                    ->required(),
+//                Forms\Components\TextInput::make('civil_status')
+//                    ->required(),
+//                Forms\Components\TextInput::make('sex')
+//                    ->required(),
+//                Forms\Components\TextInput::make('nationality')
+//                    ->required(),
+//                Forms\Components\DatePicker::make('date_of_birth')
+//                    ->required(),
+//                Forms\Components\TextInput::make('email')
+//                    ->email()
+//                    ->required(),
+//                Forms\Components\TextInput::make('mobile')
+//                    ->required(),
+//                Forms\Components\Textarea::make('spouse')
+//                    ->required()
+//                    ->columnSpanFull(),
+//                Forms\Components\Textarea::make('addresses')
+//                    ->columnSpanFull(),
+//                Forms\Components\Textarea::make('employment')
+//                    ->columnSpanFull(),
+//                Forms\Components\Textarea::make('co_borrowers')
+//                    ->columnSpanFull(),
+//                Forms\Components\Textarea::make('order')
+//                    ->columnSpanFull(),
             ]);
     }
 
@@ -204,34 +209,32 @@ class ContactResource extends Resource
                 Tables\Actions\ViewAction::make()->label('View Details')->button(),
                 Tables\Actions\Action::make('document')
                     ->button()
-                    ->form(function(Form $form,array $data,Contact $record){
-                        return $form->schema([
-                            Select::make('document')
-                                ->label('Select Document')
-                                ->native(false)
-                                ->options(
-                                    Documents::all()->mapWithKeys(function ($document) {
+                    ->form([
+                        Select::make('document')
+                            ->label('Select Document')
+                            ->native(false)
+                            ->options(
+                                Documents::all()->mapWithKeys(function ($document) {
                                     return [$document->id => $document->name];
-                                    })->toArray()
-                                )
-                                ->multiple()
-                                ->searchable()
-                                ->required(),
-                            ToggleButtons::make('action')
-                                ->options([
-                                    'view' => 'View',
-                                    'download' => 'Download',
-                                ])
-                                ->icons([
-                                    'view' => 'heroicon-o-eye',
-                                    'download' => 'heroicon-o-arrow-down-tray',
-                                ])
-                                ->inline()
-                                ->columns(2)
-                                ->default('view')
-                                ->required(),
-                        ]);
-                    })
+                                })->toArray()
+                            )
+                            ->multiple()
+                            ->searchable()
+                            ->required(),
+                        ToggleButtons::make('action')
+                            ->options([
+                                'view' => 'View',
+                                'download' => 'Download',
+                            ])
+                            ->icons([
+                                'view' => 'heroicon-o-eye',
+                                'download' => 'heroicon-o-arrow-down-tray',
+                            ])
+                            ->inline()
+                            ->columns(2)
+                            ->default('view')
+                            ->required(),
+                    ])
                     ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
                     ->action(function (array $data, Contact $record, Component $livewire) {
 
