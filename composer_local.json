@@ -1,0 +1,99 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": ["laravel", "framework"],
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../contacts",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "aws/aws-sdk-php": "^3.316",
+        "barryvdh/laravel-dompdf": "^2.2",
+        "bezhansalleh/filament-shield": "^3.2",
+        "convertapi/convertapi-php": "^2.0",
+        "filament/filament": "^3.2",
+        "hasnayeen/themes": "^3.0",
+        "howdu/filament-record-switcher": "^1.0",
+        "jn-devops/contacts": "dev-main",
+        "joaopaulolndev/filament-edit-profile": "^1.0",
+        "laravel/framework": "^11.9",
+        "laravel/reverb": "^1.0",
+        "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "^1.29",
+        "phpoffice/phpword": "dev-master",
+        "pusher/pusher-php-server": "^7.2",
+        "shuvroroy/filament-spatie-laravel-backup": "^2.2",
+        "spatie/laravel-data": "^4.7",
+        "spatie/laravel-medialibrary": "^11.7",
+        "symfony/process": "^7.1",
+        "tecnickcom/tcpdf": "^6.7",
+        "ueberdosis/pandoc": "^0.9.0",
+        "valentin-morice/filament-json-column": "^1.3",
+        "yemenopensource/filament-excel": "^0.1.0"
+    },
+
+    "require-dev": {
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
