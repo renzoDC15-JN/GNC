@@ -273,25 +273,31 @@ class ContactResource extends Resource
                         try {
                             Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         } catch (\Exception $e) {
-                            // Get the validation error messages
-                            $messages = $e->validator->messages()->toArray();
+                            if (property_exists($e, 'validator')) {
+                                $messages = $e->validator->messages()->toArray();
 
-                            // Flatten the messages and wrap each one with a <br> tag
-                            $errorMessages = collect($messages)->map(function($message, $field) {
-                                return "$field: " . implode(', ', $message) . '<br><br>';
-                            })->implode('');
+                                $errorMessages = collect($messages)->map(function($message, $field) {
+                                    return "$field: " . implode(', ', $message) . '<br>';
+                                })->implode('');git ad
 
-                            // Output the error messages
-                            Log::error('Excel Import failed: ' . $errorMessages);
-                            Notification::make()
-                                ->title('Excel Import failed:')
-                                ->danger()
-                                ->persistent()
-                                ->body($errorMessages)
-                                ->send();
-//                            dd($errorMessages);
 
-//                            throw new \Exception( $e->getMessage());
+                                Log::error('Excel Import failed: ' . $errorMessages);
+                                Notification::make()
+                                    ->title('Excel Import failed:')
+                                    ->danger()
+                                    ->persistent()
+                                    ->body($errorMessages)
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->title('Excel Import failed:')
+                                    ->danger()
+                                    ->persistent()
+                                    ->body($e->getMessage())
+                                    ->send();
+                                Log::error('Excel Import failed: ' . $e->getMessage());
+                            }
+
                         }
                     })
 
