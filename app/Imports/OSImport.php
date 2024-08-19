@@ -67,7 +67,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             'civil_status' => Str::title($row['buyer_civil_status']),
             'sex' => Str::title($row['buyer_gender']),
             'nationality' => Str::title($row['buyer_nationality']),
-            'date_of_birth' => (isset($row['buyer_birthday']) && (is_int($row['buyer_birthday']) || is_float($row['buyer_birthday']))) ? Carbon::createFromDate(Date::excelToDateTimeObject($row['buyer_birthday'])) : null, //TODO: update this
+            'date_of_birth' =>  Carbon::createFromDate($row['date_of_birth']), //TODO: update this
             'email' => strtolower($row['buyer_principal_email']),
             'mobile' => (string) $row['buyer_primary_contact_number'], //TODO: update this
             'help_number' => (string) ($row['buyer_help_number'] ?? ''),
@@ -558,7 +558,6 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
 
         ];
 
-//        dd($attribs);
         $action = app(PersistContactAction::class);
         $validator = Validator::make($attribs, $action->rules());
 
