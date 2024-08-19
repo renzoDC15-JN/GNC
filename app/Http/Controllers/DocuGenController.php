@@ -108,8 +108,9 @@ class DocuGenController extends Controller
         $outputFile = storage_path('app/public/converted_pdf/');
         $command = env('LIBREOFFICE_PATH')." --headless --convert-to pdf:writer_pdf_Export --outdir '".storage_path('app/public/converted_pdf/'). "' " . escapeshellarg($docx_file);
         exec($command, $outputFile, $return_var);
-
+        // dd($command);
         $pdfFile = storage_path("app/public/converted_pdf/{$filename}_templated.pdf");
+        // dd($pdfFile);
         if (file_exists($pdfFile)) {
 //            if($isView){
 //               return response()->file($pdfFile, [

@@ -327,6 +327,10 @@ class AppServiceProvider extends ServiceProvider
                 'n' => 'n_for_faq_solaris_project',
                 'loan_value' => 'loan_value_after_downpayment',
                 'company_address' => 'company_address',
+                'buyer_birthday' => 'date_of_birth',
+                'due_date' => 'due_date',
+                'date_closed' => 'date_closed',
+
         
                 default  => $heading,
             };

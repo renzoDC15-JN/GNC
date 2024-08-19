@@ -20,6 +20,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontWeight;
@@ -42,8 +43,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
 //use RLI\Booking\Imports\Cornerstone\OSReportsImport;
@@ -260,7 +263,13 @@ class ContactResource extends Resource
                     ])
                     ->action(function (array $arguments, $form, $data): void {
 //                        Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
-                        Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
+                        try {
+                            Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
+                        } catch (\Exception $e) {
+                            Log::error('Excel Import failed: ' . $e->getMessage());
+
+                            throw new \Exception( $e->getMessage());
+                        }
                     })
 
             ])->filters([
@@ -281,6 +290,13 @@ class ContactResource extends Resource
             ], layout: FiltersLayout::AboveContent);
     }
 
+    protected function onValidationError(ValidationException $exception): void
+    {
+        Notification::make()
+            ->title($exception->getMessage())
+            ->danger()
+            ->send();
+    }
     public static function getRelations(): array
     {
         return [
