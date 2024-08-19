@@ -15,6 +15,7 @@ use Filament\Actions\ImportAction;
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Set;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Tabs;
@@ -259,34 +260,45 @@ class ContactResource extends Resource
                             ->label('OS Report')
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                             ->maxSize(1024*12)
-                            ->storeFiles(false),
+                            ->storeFiles(false)
+                            ->live(),
+
+                        Forms\Components\Placeholder::make('error')
+                            ->label('')
+                            ->content('')
+
                     ])
-                    ->action(function (array $arguments, $form, $data): void {
+                    ->action(function (array $arguments, $form, $data,Set $set): void {
 //                        Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         try {
                             Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         } catch (\Exception $e) {
                             Log::error('Excel Import failed: ' . $e->getMessage());
-
-                            throw new \Exception( $e->getMessage());
+                            Notification::make()
+                                ->title('Excel Import failed:')
+                                ->danger()
+                                ->persistent()
+                                ->body($e->getMessage())
+                                ->send();
+//                            throw new \Exception( $e->getMessage());
                         }
                     })
 
             ])->filters([
-                SelectFilter::make('project')
-                    ->multiple()
-                    ->options(
-                        Auth::user()->projects()->get()->mapWithKeys(function ($item,$keys) {
-                            return [$item->description => $item->description];
-                        })->toArray()
-                    )->columnSpan(2),
-                SelectFilter::make('location')
-                    ->multiple()
-                    ->options(
-                        Auth::user()->locations()->get()->mapWithKeys(function ($item,$keys) {
-                            return [$item->description => $item->description];
-                        })->toArray()
-                    )->columnSpan(2)
+//                SelectFilter::make('project')
+//                    ->multiple()
+//                    ->options(
+//                        Auth::user()->projects()->get()->mapWithKeys(function ($item,$keys) {
+//                            return [$item->description => $item->description];
+//                        })->toArray()
+//                    )->columnSpan(2),
+//                SelectFilter::make('location')
+//                    ->multiple()
+//                    ->options(
+//                        Auth::user()->locations()->get()->mapWithKeys(function ($item,$keys) {
+//                            return [$item->description => $item->description];
+//                        })->toArray()
+//                    )->columnSpan(2)
             ], layout: FiltersLayout::AboveContent);
     }
 
