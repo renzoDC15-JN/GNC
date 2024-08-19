@@ -7,7 +7,9 @@ use Homeful\Contacts\Actions\PersistContactAction;
 use Homeful\Contacts\Data\PaymentSchemeData;
 use Homeful\Contacts\Models\Contact;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
@@ -38,7 +40,6 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
         if (!isset($row['project_code'])) {
             return null;
         }
-    //    dd($row);
         $attribs  = [
             //
             'reference_code'=>(string) $row['brn'],
@@ -92,7 +93,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'floor' =>  Str::title($row['buyer_floor'] ?? ''),
                     'street' =>  Str::title($row['buyer_street'] ?? ''),
                     'building' =>  Str::title($row['buyer_building'] ?? ''),
-                    'length_of_stay' => $row['buyer_length_of_stay'] ?? '', 
+                    'length_of_stay' => $row['buyer_length_of_stay'] ?? '',
                 ],
                 [
                     'type' => 'co_borrower',
@@ -133,9 +134,9 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'floor' =>  Str::title($row['buyer_floor'] ?? ''),
                     'street' =>  Str::title($row['buyer_street'] ?? ''),
                     'building' =>  Str::title($row['buyer_building'] ?? ''),
-                    'length_of_stay' => $row['buyer_length_of_stay'] ?? '', 
+                    'length_of_stay' => $row['buyer_length_of_stay'] ?? '',
                 ],
-                
+
             ],
             'employment' =>[
                 [
@@ -555,15 +556,23 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
 
         ];
 
-        // dd($attribs);
-        $contact = app(PersistContactAction::class)->run($attribs);
+//        dd($attribs);
+        $action = app(PersistContactAction::class);
+        $validator = Validator::make($attribs, $action->rules());
 
-        // dd($attribs);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+        $validated = $validator->validated();
+        $contact = $action->run($validated);
+
         return Contact::updateOrCreate(
             ['reference_code' => $attribs['reference_code']], // Unique identifier, adjust as needed
             $attribs
         );
     }
+
+
 
     /**
      * @param array $headerRow
