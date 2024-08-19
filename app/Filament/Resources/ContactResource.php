@@ -273,13 +273,24 @@ class ContactResource extends Resource
                         try {
                             Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         } catch (\Exception $e) {
-                            Log::error('Excel Import failed: ' . $e->getMessage());
+                            // Get the validation error messages
+                            $messages = $e->validator->messages()->toArray();
+
+                            // Flatten the messages and wrap each one with a <br> tag
+                            $errorMessages = collect($messages)->map(function($message, $field) {
+                                return "$field: " . implode(', ', $message) . '<br><br>';
+                            })->implode('');
+
+                            // Output the error messages
+                            Log::error('Excel Import failed: ' . $errorMessages);
                             Notification::make()
                                 ->title('Excel Import failed:')
                                 ->danger()
                                 ->persistent()
-                                ->body($e->getMessage())
+                                ->body($errorMessages)
                                 ->send();
+//                            dd($errorMessages);
+
 //                            throw new \Exception( $e->getMessage());
                         }
                     })
