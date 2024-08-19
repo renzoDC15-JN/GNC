@@ -278,7 +278,7 @@ class ContactResource extends Resource
 
                                 $errorMessages = collect($messages)->map(function($message, $field) {
                                     return "$field: " . implode(', ', $message) . '<br>';
-                                })->implode('');git ad
+                                })->implode('');
 
 
                                 Log::error('Excel Import failed: ' . $errorMessages);
