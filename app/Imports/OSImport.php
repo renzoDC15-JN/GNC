@@ -41,6 +41,9 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
         if (!isset($row['project_code'])) {
             return null;
         }
+//        if ($row['brn']=='7002257600038050'){
+//            dd($row);
+//        }
         $attribs  = [
             //
             'reference_code'=>(string) $row['brn'],
@@ -68,7 +71,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             'civil_status' => Str::title($row['buyer_civil_status']),
             'sex' => Str::title($row['buyer_gender']),
             'nationality' => Str::title($row['buyer_nationality']),
-            'date_of_birth' =>  Carbon::createFromDate($row['date_of_birth'])->format('Y-m-d'), //TODO: update this
+            'date_of_birth' =>  $this->convertExcelDate($row['date_of_birth']),
             'email' => strtolower($row['buyer_principal_email']),
             'mobile' => (string) $row['buyer_primary_contact_number'], //TODO: update this
             'help_number' => (string) ($row['buyer_help_number'] ?? ''),
@@ -573,10 +576,37 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
 //        $contactArray['other_mobile'] = $contact->other_mobile ? $contact->other_mobile->formatE164() : null;
 //        $contactArray['help_number'] = $contact->help_number ? $contact->help_number->formatE164() : null;
 
+        $contactArray['date_of_birth'] = $contact->date_of_birth
+            ? Carbon::parse($contact->date_of_birth)->format('Y-m-d')
+            : null;
+
+
         return Contact::updateOrCreate(
             ['reference_code' => $contactArray['reference_code']], // Unique identifier, adjust as needed
             $contactArray
         );
+    }
+
+    public function convertExcelDate($date)
+    {
+        if (is_null($date) || $date === '') {
+            return null;
+        }
+
+        if (is_numeric($date)) {
+            return Carbon::parse(Date::excelToDateTimeObject($date))->format('Y-m-d');
+        }
+
+        try {
+            return Carbon::createFromFormat('Y-m-d', $date)->format('Y-m-d');
+        } catch (\Exception $e) {
+            try {
+                return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+            } catch (\Exception $e) {
+                // If all formats fail, return null
+                return null;
+            }
+        }
     }
 
 
