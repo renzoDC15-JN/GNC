@@ -71,8 +71,8 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             'email' => strtolower($row['buyer_principal_email']),
             'mobile' => (string) $row['buyer_primary_contact_number'], //TODO: update this
             'help_number' => (string) ($row['buyer_help_number'] ?? ''),
-            'landline' =>  $row['buyer_help_number'] ?? '',
-            'other_mobile' =>  $row['buyer_other_contact_number'],
+            'landline' => (string) $row['buyer_help_number'] ?? '',
+            'other_mobile' => (string) $row['buyer_other_contact_number'],
             'mothers_maiden_name' =>  $row['buyer_mothers_maiden_name'] ?? '',
             'addresses' => [
                 [
