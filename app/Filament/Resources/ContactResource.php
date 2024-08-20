@@ -54,6 +54,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\OSImport;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use function PHPUnit\Framework\throwException;
 
 class ContactResource extends Resource
 {
@@ -297,7 +298,6 @@ class ContactResource extends Resource
                                     ->send();
                                 Log::error('Excel Import failed: ' . $e->getMessage());
                             }
-
                         }
                     })
 

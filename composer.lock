@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff5d02e0c87d6ee2ab7fc41fe8baf420",
+    "content-hash": "4defdeceece5e1f3b6b8da1e5694844b",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4178,16 +4178,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v1.4.17",
+            "version": "v1.4.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "f20562501077e4950b73e04f2fe29a57153ae47f"
+                "reference": "b2b3a9b6e59c737748f7a66399aaa9f69bb5ad02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/f20562501077e4950b73e04f2fe29a57153ae47f",
-                "reference": "f20562501077e4950b73e04f2fe29a57153ae47f",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/b2b3a9b6e59c737748f7a66399aaa9f69bb5ad02",
+                "reference": "b2b3a9b6e59c737748f7a66399aaa9f69bb5ad02",
                 "shasum": ""
             },
             "require": {
@@ -4250,7 +4250,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v1.4.17"
+                "source": "https://github.com/jn-devops/contacts/tree/v1.4.20"
             },
             "funding": [
                 {
@@ -4258,7 +4258,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-16T06:18:28+00:00"
+            "time": "2024-08-20T03:39:42+00:00"
         },
         {
             "name": "joaopaulolndev/filament-edit-profile",

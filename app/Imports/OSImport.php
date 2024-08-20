@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 HeadingRowFormatter::default('cornerstone-os-report-1');
 class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithChunkReading, ShouldQueue
@@ -566,10 +567,15 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
         }
         $validated = $validator->validated();
         $contact = $action->run($validated);
+        $contactArray = $contact->toArray();
+
+//        $contactArray['mobile'] = $contact->mobile ? $contact->mobile->formatE164() : null;
+//        $contactArray['other_mobile'] = $contact->other_mobile ? $contact->other_mobile->formatE164() : null;
+//        $contactArray['help_number'] = $contact->help_number ? $contact->help_number->formatE164() : null;
 
         return Contact::updateOrCreate(
-            ['reference_code' => $contact->toArray()['reference_code']], // Unique identifier, adjust as needed
-            $contact->toArray()
+            ['reference_code' => $contactArray['reference_code']], // Unique identifier, adjust as needed
+            $contactArray
         );
     }
 
