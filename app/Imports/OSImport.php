@@ -292,6 +292,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'sku' => Str::title($row['sku'] ?? ''),
                 'seller_commission_code' => Str::title($row['seller_commission_code'] ?? ''),
                 'property_code' => Str::title($row['property_code'] ?? ''),
+                'property_type' => Str::title($row['property_type'] ?? ''),
                 'company_name' => Str::title($row['company_name'] ?? ''),
                 'project_name' => Str::title($row['project_name'] ?? ''),
                 'project_code' => Str::title($row['project_code'] ?? ''),

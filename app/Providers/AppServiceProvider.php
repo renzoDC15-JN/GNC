@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         HeadingRowFormatter::extend('cornerstone-os-report-1', function($value, $key) {
             $heading = Str::snake(Str::camel($value));
-            
+
             return match ($heading) {
                 'property_name' => 'property_code', //old
                 'b_r_n' => 'brn',
@@ -190,6 +190,7 @@ class AppServiceProvider extends ServiceProvider
                 'total_principal' => 'total_principal',
                 'payment_type' => 'payment_type',
                 'document_status' => 'document_status',
+                'property_type' => 'property_type',
                 'property_status' => 'property_status',
                 'buyer_status' => 'buyer_status',
                 'spouse_status' => 'spouse_status',
@@ -331,7 +332,7 @@ class AppServiceProvider extends ServiceProvider
                 'due_date' => 'due_date',
                 'date_closed' => 'date_closed',
 
-        
+
                 default  => $heading,
             };
         });
