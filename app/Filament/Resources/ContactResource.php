@@ -89,6 +89,7 @@ class ContactResource extends Resource
                                     TextEntry::make('email')
                                         ->weight(FontWeight::Bold),
                                     TextEntry::make('mobile')
+                                        ->label('Mobile Number')
                                         ->weight(FontWeight::Bold),
                                 ]),
                                 Fieldset::make('Spouse Info')->schema([
@@ -167,7 +168,7 @@ class ContactResource extends Resource
     {
         return $table
             ->poll('10')
-            ->defaultPaginationPageOption(25)
+            ->defaultPaginationPageOption(50)
             ->extremePaginationLinks()
             ->defaultSort('id','desc')
 //            ->query(
