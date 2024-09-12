@@ -4180,16 +4180,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v1.5.4",
+            "version": "v1.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "7e2d4b76fb47ea424becd7f0316179dbd1519cd1"
+                "reference": "0e27a05ad2dd4e5fec02527c239f69de6fe9e4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/7e2d4b76fb47ea424becd7f0316179dbd1519cd1",
-                "reference": "7e2d4b76fb47ea424becd7f0316179dbd1519cd1",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/0e27a05ad2dd4e5fec02527c239f69de6fe9e4b5",
+                "reference": "0e27a05ad2dd4e5fec02527c239f69de6fe9e4b5",
                 "shasum": ""
             },
             "require": {
@@ -4252,7 +4252,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v1.5.4"
+                "source": "https://github.com/jn-devops/contacts/tree/v1.5.8"
             },
             "funding": [
                 {
@@ -4260,7 +4260,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-11T06:24:01+00:00"
+            "time": "2024-09-12T08:36:50+00:00"
         },
         {
             "name": "joaopaulolndev/filament-edit-profile",
