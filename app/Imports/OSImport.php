@@ -393,6 +393,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'civil_status' => $row['co_borrower_civil_status'] ?? '', // TODO: Clarify *aif_civil_status
                     'sex' => $row['aif_gender'] ?? '',
                     'nationality' => $row['co_borrower_nationality'] ?? '', // TODO: Clarify *aif_nationality
+                    'spouse' => $row['co_borrower_spouse'] ?? '',
                     'email' => '', // TODO: Look up in Mapping
                     'mobile' => '', // TODO: Look up in Mapping
                     'other_mobile' => '', // TODO: Look up in Mapping

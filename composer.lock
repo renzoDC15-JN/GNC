@@ -867,16 +867,16 @@
         },
         {
             "name": "anourvalar/eloquent-serialize",
-            "version": "1.2.24",
+            "version": "1.2.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AnourValar/eloquent-serialize.git",
-                "reference": "77e3fc7da44fa96b6148a1613dd76fe954a5f279"
+                "reference": "6d7a868ae4218b9d7796334ff9a17e1539bad48a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AnourValar/eloquent-serialize/zipball/77e3fc7da44fa96b6148a1613dd76fe954a5f279",
-                "reference": "77e3fc7da44fa96b6148a1613dd76fe954a5f279",
+                "url": "https://api.github.com/repos/AnourValar/eloquent-serialize/zipball/6d7a868ae4218b9d7796334ff9a17e1539bad48a",
+                "reference": "6d7a868ae4218b9d7796334ff9a17e1539bad48a",
                 "shasum": ""
             },
             "require": {
@@ -927,9 +927,9 @@
             ],
             "support": {
                 "issues": "https://github.com/AnourValar/eloquent-serialize/issues",
-                "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.24"
+                "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.25"
             },
-            "time": "2024-09-08T15:57:08+00:00"
+            "time": "2024-09-16T12:59:37+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -987,16 +987,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.321.10",
+            "version": "3.321.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a81a9a2cb5f451e03f8ef68b02ebfecfbf1fa7f2"
+                "reference": "ccb1871998fb05ec1075468a743afba51a36e2c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a81a9a2cb5f451e03f8ef68b02ebfecfbf1fa7f2",
-                "reference": "a81a9a2cb5f451e03f8ef68b02ebfecfbf1fa7f2",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ccb1871998fb05ec1075468a743afba51a36e2c4",
+                "reference": "ccb1871998fb05ec1075468a743afba51a36e2c4",
                 "shasum": ""
             },
             "require": {
@@ -1079,9 +1079,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.321.10"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.321.12"
             },
-            "time": "2024-09-12T18:08:32+00:00"
+            "time": "2024-09-16T18:15:56+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1848,12 +1848,12 @@
             "version": "v2.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ConvertAPI/convertapi-php.git",
+                "url": "https://github.com/ConvertAPI/convertapi-library-php.git",
                 "reference": "f770866365c306e8c6fe2b8d67c9e64d4ca453d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ConvertAPI/convertapi-php/zipball/f770866365c306e8c6fe2b8d67c9e64d4ca453d3",
+                "url": "https://api.github.com/repos/ConvertAPI/convertapi-library-php/zipball/f770866365c306e8c6fe2b8d67c9e64d4ca453d3",
                 "reference": "f770866365c306e8c6fe2b8d67c9e64d4ca453d3",
                 "shasum": ""
             },
@@ -1890,8 +1890,8 @@
                 "convert"
             ],
             "support": {
-                "issues": "https://github.com/ConvertAPI/convertapi-php/issues",
-                "source": "https://github.com/ConvertAPI/convertapi-php/tree/v2.0.1"
+                "issues": "https://github.com/ConvertAPI/convertapi-library-php/issues",
+                "source": "https://github.com/ConvertAPI/convertapi-library-php/tree/v2.0.1"
             },
             "time": "2024-06-24T18:18:21+00:00"
         },
@@ -4095,16 +4095,16 @@
         },
         {
             "name": "jn-devops/common",
-            "version": "v1.2.6",
+            "version": "v1.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/common.git",
-                "reference": "28a0bb62d508685f6ebe5c5b78458430ef20b14c"
+                "reference": "7a0be2f9e87cdec5503507ecd7c9713d3174d92a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/common/zipball/28a0bb62d508685f6ebe5c5b78458430ef20b14c",
-                "reference": "28a0bb62d508685f6ebe5c5b78458430ef20b14c",
+                "url": "https://api.github.com/repos/jn-devops/common/zipball/7a0be2f9e87cdec5503507ecd7c9713d3174d92a",
+                "reference": "7a0be2f9e87cdec5503507ecd7c9713d3174d92a",
                 "shasum": ""
             },
             "require": {
@@ -4168,7 +4168,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/common/issues",
-                "source": "https://github.com/jn-devops/common/tree/v1.2.6"
+                "source": "https://github.com/jn-devops/common/tree/v1.2.7"
             },
             "funding": [
                 {
@@ -4176,20 +4176,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-31T03:12:08+00:00"
+            "time": "2024-09-15T15:41:01+00:00"
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v1.5.9",
+            "version": "v1.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "73e131e73ba45f882e2db447b61b805a25dad72a"
+                "reference": "7256d23d07dfa34187ce9d68ba20fb50c14bb0fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/73e131e73ba45f882e2db447b61b805a25dad72a",
-                "reference": "73e131e73ba45f882e2db447b61b805a25dad72a",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/7256d23d07dfa34187ce9d68ba20fb50c14bb0fc",
+                "reference": "7256d23d07dfa34187ce9d68ba20fb50c14bb0fc",
                 "shasum": ""
             },
             "require": {
@@ -4252,7 +4252,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v1.5.9"
+                "source": "https://github.com/jn-devops/contacts/tree/v1.5.11"
             },
             "funding": [
                 {
@@ -4260,20 +4260,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-13T06:42:02+00:00"
+            "time": "2024-09-17T02:12:18+00:00"
         },
         {
             "name": "joaopaulolndev/filament-edit-profile",
-            "version": "v1.0.28",
+            "version": "v1.0.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joaopaulolndev/filament-edit-profile.git",
-                "reference": "d352c57600e3314b72e16db6e2b7cc2af79cd402"
+                "reference": "c07fbbaa7146532cdeb08b1045be6d54137b8b2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joaopaulolndev/filament-edit-profile/zipball/d352c57600e3314b72e16db6e2b7cc2af79cd402",
-                "reference": "d352c57600e3314b72e16db6e2b7cc2af79cd402",
+                "url": "https://api.github.com/repos/joaopaulolndev/filament-edit-profile/zipball/c07fbbaa7146532cdeb08b1045be6d54137b8b2d",
+                "reference": "c07fbbaa7146532cdeb08b1045be6d54137b8b2d",
                 "shasum": ""
             },
             "require": {
@@ -4336,7 +4336,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-09T10:53:18+00:00"
+            "time": "2024-09-16T10:22:56+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -4513,16 +4513,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.23.4",
+            "version": "v11.23.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "08b46ae7be52f71688196f98556d21cb2ec799b6"
+                "reference": "16b31ab0e1dad5cb2ed6dcc1818c02f02fc48453"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/08b46ae7be52f71688196f98556d21cb2ec799b6",
-                "reference": "08b46ae7be52f71688196f98556d21cb2ec799b6",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/16b31ab0e1dad5cb2ed6dcc1818c02f02fc48453",
+                "reference": "16b31ab0e1dad5cb2ed6dcc1818c02f02fc48453",
                 "shasum": ""
             },
             "require": {
@@ -4717,7 +4717,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-09-12T14:57:48+00:00"
+            "time": "2024-09-13T13:36:30+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -6669,16 +6669,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "683130c2ff8c2739f4822ff7ac5c873ec529abd1"
+                "reference": "23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/683130c2ff8c2739f4822ff7ac5c873ec529abd1",
-                "reference": "683130c2ff8c2739f4822ff7ac5c873ec529abd1",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb",
+                "reference": "23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb",
                 "shasum": ""
             },
             "require": {
@@ -6721,9 +6721,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.1.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.2.0"
             },
-            "time": "2024-07-01T20:03:41+00:00"
+            "time": "2024-09-15T16:40:33+00:00"
         },
         {
             "name": "nunomaduro/termwind",
@@ -7537,12 +7537,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPWord.git",
-                "reference": "2e4f3cf3b7ebf50131f5f661da2c9a9788a8dc2c"
+                "reference": "43785fe76b35d5a5c9338ed943383a2529e30deb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/2e4f3cf3b7ebf50131f5f661da2c9a9788a8dc2c",
-                "reference": "2e4f3cf3b7ebf50131f5f661da2c9a9788a8dc2c",
+                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/43785fe76b35d5a5c9338ed943383a2529e30deb",
+                "reference": "43785fe76b35d5a5c9338ed943383a2529e30deb",
                 "shasum": ""
             },
             "require": {
@@ -7639,7 +7639,7 @@
                 "issues": "https://github.com/PHPOffice/PHPWord/issues",
                 "source": "https://github.com/PHPOffice/PHPWord/tree/master"
             },
-            "time": "2024-09-05T07:08:06+00:00"
+            "time": "2024-09-13T17:58:26+00:00"
         },
         {
             "name": "phpoption/phpoption",
