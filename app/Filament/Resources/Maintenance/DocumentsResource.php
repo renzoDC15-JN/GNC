@@ -67,6 +67,7 @@ class DocumentsResource extends Resource
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                             ->unique('documents')
                             ->directory('documents')
+                            ->downloadable()
                             ->preserveFilenames()
                             ->maxSize(1024*12)
                             ->required(),
