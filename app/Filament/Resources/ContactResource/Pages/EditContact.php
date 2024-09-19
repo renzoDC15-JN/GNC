@@ -59,14 +59,15 @@ class EditContact extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
 //        $data['last_edited_by_id'] = auth()->id();
-            collect($data['addresses'])->firstWhere(function ($address) {
-                return in_array($address['type'], ['present', 'Present', 'Primary','primary']);
-            })??[];
+//            collect($data['addresses'])->firstWhere(function ($address) {
+//                return in_array($address['type'], ['present', 'Present', 'Primary','primary']);
+//            })??[];
         return $data;
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        dd($data);
         $record->update($data);
 
         return $record;
