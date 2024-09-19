@@ -271,6 +271,24 @@ class ContactResource extends Resource
                                 Forms\Components\TextInput::make('buyer_employment.employer.contact_no')
                                     ->label('Employer Contact Number')
                                     ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.employer.year_established')
+                                    ->label('Year Established')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.employer.total_number_of_employees')
+                                    ->label('Number of Employees')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.id.tin')
+                                    ->label('TIN')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.id.pagibig')
+                                    ->label('Pag-IBIG')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.id.sss')
+                                    ->label('SSS')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.id.gsis')
+                                    ->label('GSIS')
+                                    ->columnSpan(3),
                             ])->columns(12)->columnSpanFull(),
                     ])->columns(12)->columnSpan(9),
                 Section::make()
@@ -490,7 +508,7 @@ class ContactResource extends Resource
         return [
             'index' => Pages\ListContacts::route('/'),
             'create' => Pages\CreateContact::route('/create'),
-//            'edit' => Pages\EditContact::route('/{record}/edit'),
+            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }
