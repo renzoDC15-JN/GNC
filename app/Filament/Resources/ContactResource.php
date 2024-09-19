@@ -13,11 +13,11 @@ use App\Models\Documents;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
 use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Set;
 use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -60,7 +60,7 @@ class ContactResource extends Resource
 {
     protected static ?string $label ='Contacts Information';
     protected static ?string $model = Contact::class;
-    protected static ?string $recordTitleAttribute ='reference_code';
+    protected static ?string $recordTitleAttribute ='last_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -123,45 +123,195 @@ class ContactResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('file')
-                    ->label('OS Report')
-                    ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
-                    ->maxSize(1024*12)
-                    ->storeFiles(false),
-//                Forms\Components\TextInput::make('reference_code')
-//                    ->required(),
-//                Forms\Components\TextInput::make('first_name')
-//                    ->required(),
-//                Forms\Components\TextInput::make('middle_name')
-//                    ->required(),
-//                Forms\Components\TextInput::make('last_name')
-//                    ->required(),
-//                Forms\Components\TextInput::make('civil_status')
-//                    ->required(),
-//                Forms\Components\TextInput::make('sex')
-//                    ->required(),
-//                Forms\Components\TextInput::make('nationality')
-//                    ->required(),
-//                Forms\Components\DatePicker::make('date_of_birth')
-//                    ->required(),
-//                Forms\Components\TextInput::make('email')
-//                    ->email()
-//                    ->required(),
-//                Forms\Components\TextInput::make('mobile')
-//                    ->required(),
-//                Forms\Components\Textarea::make('spouse')
-//                    ->required()
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('addresses')
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('employment')
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('co_borrowers')
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('order')
-//                    ->columnSpanFull(),
-            ]);
+                Section::make()
+                    ->schema([
+                        Forms\Components\Fieldset::make('Personal Information')->schema([
+                            Forms\Components\TextInput::make('first_name')
+                                ->label('First Name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('middle_name')
+                                ->label('Middle Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('last_name')
+                                ->label('Last Name')
+                                ->required()
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('name_suffix')
+                                ->label('Name Suffix')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('civil_status')
+                                ->label('Civil Status')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('sex')
+                                ->label('Sex')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('nationality')
+                                ->label('Nationality')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('date_of_birth')
+                                ->label('Date of Birth')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('email')
+                                ->label('Email Address')
+                                ->email()
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('mobile')
+                                ->label('Mobile Number')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('other_mobile')
+                                ->label('Other Mobile')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('landline')
+                                ->label('Landline')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('mothers_maiden_name')
+                                ->label('Mother\'s Maiden Name')
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Spouse Information')->schema([
+                            Forms\Components\TextInput::make('spouse.first_name')
+                                ->label('First Name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.middle_name')
+                                ->label('Middle Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.last_name')
+                                ->label('Last Name')
+                                ->required()
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('spouse.name_suffix')
+                                ->label('Name Suffix')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.civil_status')
+                                ->label('Civil Status')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.sex')
+                                ->label('Sex')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.nationality')
+                                ->label('Nationality')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('spouse.date_of_birth')
+                                ->label('Date of Birth')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.email')
+                                ->label('Email Address')
+                                ->email()
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.mobile')
+                                ->label('Mobile Number')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.other_mobile')
+                                ->label('Other Mobile')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.landline')
+                                ->label('Landline')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.mothers_maiden_name')
+                                ->label('Mother\'s Maiden Name')
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Employment Information')
+                            ->schema([
+                                Forms\Components\TextInput::make('buyer_employment.employment_status')
+                                    ->label('Employment Status')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.monthly_gross_income')
+                                    ->label('Monthly Gross Income')
+                                    ->numeric()
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.current_position')
+                                    ->label('Current Position')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.employer.name')
+                                    ->label('Employer Name')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.employer.industry')
+                                    ->label('Employer Industry')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.employer.nationality')
+                                    ->label('Employer Nationality')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.employer.contact_no')
+                                    ->label('Employer Contact Number')
+                                    ->columnSpan(3),
+                            ])->columns(12)->columnSpanFull(),
+                    ])->columns(12)->columnSpan(9),
+                Section::make()
+                ->schema([
+                    Forms\Components\TextInput::make('reference_code')
+                        ->label('Reference Code')
+                        ->required()
+                        ->columnSpanFull(),
+                    // Media Uploads
+                    Forms\Components\FileUpload::make('idImage')
+                        ->label('ID Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('id-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\FileUpload::make('selfieImage')
+                        ->label('Selfie Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('selfie-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\FileUpload::make('payslipImage')
+                        ->label('Payslip Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('payslip-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\FileUpload::make('signatureImage')
+                        ->label('Signature Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('signature-images')
+                        ->columnSpanFull(),
+                ])->columnSpan(3)->columns(12),
+
+            ])->columns(12);
     }
+
 
 
     public static function table(Table $table): Table
@@ -213,6 +363,7 @@ class ContactResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->label('View Details')->button(),
+
                 Tables\Actions\Action::make('document')
                     ->button()
                     ->form([

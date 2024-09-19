@@ -17,4 +17,26 @@ class EditContact extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $buyer_address_present = collect($data['addresses'])->firstWhere(function ($address) {
+            return in_array($address['type'], ['present', 'Present', 'Primary','primary']);
+        })??[];
+        $buyer_address_permanent= collect($data['addresses'])->firstWhere(function ($address) {
+            return in_array($address['type'], ['permanent', 'Permanent', 'Secondary','secondary']);
+        })??[];
+
+        $buyer_employment= collect($data['employment'])->firstWhere(function ($address) {
+            return in_array($address['type'], ['buyer', 'Buyer']);
+        })??[];
+
+
+        $data= array_merge($data,['buyer_address_present'=>$buyer_address_present]);
+        $data= array_merge($data,['buyer_address_permanent'=>$buyer_address_permanent]);
+        $data= array_merge($data,['buyer_employment'=>$buyer_employment]);
+
+
+        return $data;
+    }
 }
