@@ -126,66 +126,65 @@ class ContactResource extends Resource
                 Section::make()
                     ->schema([
                         Forms\Components\Fieldset::make('Personal Information')->schema([
-                            Forms\Components\TextInput::make('first_name')
+                            Forms\Components\TextInput::make('profile.first_name')
                                 ->label('First Name')
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('middle_name')
+                            Forms\Components\TextInput::make('profile.middle_name')
                                 ->label('Middle Name')
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('last_name')
+                            Forms\Components\TextInput::make('profile.last_name')
                                 ->label('Last Name')
                                 ->required()
                                 ->columnSpan(3),
-                            Forms\Components\TextInput::make('name_suffix')
+
+                            Forms\Components\TextInput::make('profile.name_suffix')
                                 ->label('Name Suffix')
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('civil_status')
+                            Forms\Components\TextInput::make('profile.civil_status')
                                 ->label('Civil Status')
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('sex')
+                            Forms\Components\TextInput::make('profile.sex')
                                 ->label('Sex')
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('nationality')
+                            Forms\Components\TextInput::make('profile.nationality')
                                 ->label('Nationality')
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\DatePicker::make('date_of_birth')
+                            Forms\Components\DatePicker::make('profile.date_of_birth')
                                 ->label('Date of Birth')
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('email')
-                                ->label('Email Address')
+                            Forms\Components\TextInput::make('profile.email')
+                                ->label('Email')
                                 ->email()
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('mobile')
-                                ->label('Mobile Number')
+                            Forms\Components\TextInput::make('profile.mobile')
+                                ->label('Mobile')
                                 ->required()
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('other_mobile')
+                            Forms\Components\TextInput::make('profile.other_mobile')
                                 ->label('Other Mobile')
                                 ->columnSpan(3),
 
-                            Forms\Components\TextInput::make('landline')
+                            Forms\Components\TextInput::make('profile.landline')
                                 ->label('Landline')
                                 ->columnSpan(3),
-
-                            Forms\Components\TextInput::make('mothers_maiden_name')
-                                ->label('Mother\'s Maiden Name')
-                                ->columnSpan(3),
                         ])->columns(12)->columnSpanFull(),
+
+
                         Forms\Components\Fieldset::make('Spouse Information')->schema([
                             Forms\Components\TextInput::make('spouse.first_name')
                                 ->label('First Name')
@@ -247,47 +246,83 @@ class ContactResource extends Resource
                                 ->label('Mother\'s Maiden Name')
                                 ->columnSpan(3),
                         ])->columns(12)->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Address')->schema([
+                            Forms\Components\TextInput::make('buyer_address_present.type')
+                                ->label('Address Type')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.ownership')
+                                ->label('Ownership')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.full_address')
+                                ->label('Full Address')
+                                ->columnSpan(6),
+
+                            Forms\Components\TextInput::make('buyer_address_present.sublocality')
+                                ->label('Barangay')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.locality')
+                                ->label('City/Municipality')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.administrative_area')
+                                ->label('Province')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.postal_code')
+                                ->label('Postal Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.block')
+                                ->label('Block')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.street')
+                                ->label('Street')
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
                         Forms\Components\Fieldset::make('Employment Information')
                             ->schema([
                                 Forms\Components\TextInput::make('buyer_employment.employment_status')
                                     ->label('Employment Status')
+                                    ->required()
                                     ->columnSpan(3),
+
                                 Forms\Components\TextInput::make('buyer_employment.monthly_gross_income')
                                     ->label('Monthly Gross Income')
                                     ->numeric()
                                     ->columnSpan(3),
+
                                 Forms\Components\TextInput::make('buyer_employment.current_position')
                                     ->label('Current Position')
                                     ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.employment_type')
+                                    ->label('Employment Type')
+                                    ->required()
+                                    ->columnSpan(3),
+
                                 Forms\Components\TextInput::make('buyer_employment.employer.name')
                                     ->label('Employer Name')
                                     ->columnSpan(3),
+
                                 Forms\Components\TextInput::make('buyer_employment.employer.industry')
                                     ->label('Employer Industry')
                                     ->columnSpan(3),
+
                                 Forms\Components\TextInput::make('buyer_employment.employer.nationality')
                                     ->label('Employer Nationality')
                                     ->columnSpan(3),
+
                                 Forms\Components\TextInput::make('buyer_employment.employer.contact_no')
                                     ->label('Employer Contact Number')
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('buyer_employment.employer.year_established')
-                                    ->label('Year Established')
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('buyer_employment.employer.total_number_of_employees')
-                                    ->label('Number of Employees')
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('buyer_employment.id.tin')
-                                    ->label('TIN')
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('buyer_employment.id.pagibig')
-                                    ->label('Pag-IBIG')
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('buyer_employment.id.sss')
-                                    ->label('SSS')
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('buyer_employment.id.gsis')
-                                    ->label('GSIS')
                                     ->columnSpan(3),
                             ])->columns(12)->columnSpanFull(),
                     ])->columns(12)->columnSpan(9),
