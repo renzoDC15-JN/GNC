@@ -93,7 +93,7 @@ class DocuGenController extends Controller
         // dd($ci);
         //set values
         foreach ($ci as $key => $value) {
-            $templateProcessor->setValue($key, htmlspecialchars($value??''));
+            $templateProcessor->setValue($key, htmlspecialchars($value==''?'N/A':$value));
         }
 
         //set image
