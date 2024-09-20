@@ -458,7 +458,6 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             ],
         ];
 
-
         $action = app(PersistContactAction::class);
         $validator = Validator::make($attribs, $action->rules());
 
