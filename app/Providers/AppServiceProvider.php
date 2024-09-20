@@ -325,8 +325,9 @@ class AppServiceProvider extends ServiceProvider
                 'co-borrower_nationality' => 'co_borrower_nationality',
                 'co-borrower_tin' => 'co_borrower_tin',
                 'co-borrower_spouse' => 'co_borrower_spouse',
-                'co-borrower_character_reference_name' => 'co-borrower_character_reference_name',
-                'co-borrower_character_reference_mobile' => 'co-borrower_character_reference_mobile',
+                'co-borrower_character_reference_name' => 'co_borrower_character_reference_name',
+                'co-borrower_character_reference_mobile' => 'co_borrower_character_reference_mobile',
+                'co-borrower_spouse_tin' => 'co_borrower_spouse_tin',
                 'year_in_fix_interest_rate_only' => 'repricing_period',
 
                 default  => $heading,
