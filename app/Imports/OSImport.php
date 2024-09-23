@@ -454,6 +454,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'passport' => $row['aif_passport'] ?? '',
                     'date_issued' => $this->convertExcelDate($row['aif_date_issued'] ?? ''),
                     'place_issued' => $row['aif_date_issued'] ?? '',
+                    'tin' => $row['co_borrower_spouse_tin'] ?? '',
                 ]
             ],
         ];
