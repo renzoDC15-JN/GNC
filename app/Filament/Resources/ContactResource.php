@@ -225,7 +225,6 @@ class ContactResource extends Resource
 
                             Forms\Components\TextInput::make('spouse.civil_status')
                                 ->label('Civil Status')
-                                ->required()
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.sex')
