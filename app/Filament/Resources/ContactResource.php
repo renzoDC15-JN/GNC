@@ -168,15 +168,37 @@ class ContactResource extends Resource
                                 ->label('Email')
                                 ->email()
                                 ->required()
+                                ->maxLength(255)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->unique(ignoreRecord: true,table: Contact::class,column: 'email')
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('profile.mobile')
                                 ->label('Mobile')
                                 ->required()
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('profile.other_mobile')
                                 ->label('Other Mobile')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('profile.landline')
@@ -232,10 +254,26 @@ class ContactResource extends Resource
                             Forms\Components\TextInput::make('spouse.mobile')
                                 ->label('Mobile Number')
                                 ->required()
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.other_mobile')
                                 ->label('Other Mobile')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.landline')
@@ -286,6 +324,12 @@ class ContactResource extends Resource
 
                             Forms\Components\TextInput::make('buyer_address_present.street')
                                 ->label('Street')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('buyer_address_present.country')
+                                ->label('Country')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('buyer_address_present.region')
+                                ->label('Region')
                                 ->columnSpan(3),
                         ])->columns(12)->columnSpanFull(),
                         Forms\Components\Fieldset::make('Employment Information')
@@ -361,6 +405,14 @@ class ContactResource extends Resource
 
                             Forms\Components\TextInput::make('buyer_employment.employer.contact_no')
                                 ->label('Employer Contact Number')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('buyer_employment.employer.year_established')
@@ -443,14 +495,38 @@ class ContactResource extends Resource
 
                                     Forms\Components\TextInput::make('mobile')
                                         ->label('Mobile Number')
+                                        ->prefix('+63')
+                                        ->regex("/^[0-9]+$/")
+                                        ->minLength(10)
+                                        ->maxLength(10)
+                                        ->live()
+                                        ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('other_mobile')
                                         ->label('Other Mobile Number')
+                                        ->prefix('+63')
+                                        ->regex("/^[0-9]+$/")
+                                        ->minLength(10)
+                                        ->maxLength(10)
+                                        ->live()
+                                        ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('help_number')
                                         ->label('Help Number')
+                                        ->prefix('+63')
+                                        ->regex("/^[0-9]+$/")
+                                        ->minLength(10)
+                                        ->maxLength(10)
+                                        ->live()
+                                        ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('landline')
@@ -712,6 +788,14 @@ class ContactResource extends Resource
                         ->disk('public')
                         ->directory('signature-images')
                         ->columnSpanFull(),
+
+                    Forms\Components\TextInput::make('order.witness1')
+                        ->label('Witness 1')
+                        ->columnSpanFull(),
+                    Forms\Components\TextInput::make('order.witness2')
+                        ->label('Witness 2')
+                        ->columnSpanFull(),
+
                 ])->columnSpan(3)->columns(12),
 
             ])->columns(12);
@@ -725,7 +809,7 @@ class ContactResource extends Resource
             ->poll('10')
             ->defaultPaginationPageOption(50)
             ->extremePaginationLinks()
-            ->defaultSort('id','desc')
+            ->defaultSort('created_at','desc')
 //            ->query(
 //                Contact::query()
 //                    ->whereIn('project',Auth::user()->projects()->pluck('description'))
@@ -768,7 +852,6 @@ class ContactResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->label('View Details')->button(),
-
                 Tables\Actions\Action::make('document')
                     ->button()
                     ->form([
@@ -811,6 +894,7 @@ class ContactResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->headerActions([
+                Tables\Actions\CreateAction::make(),
                 Tables\Actions\Action::make('Import OS Report')
                     ->label('Import OS Report')
                     ->form([
