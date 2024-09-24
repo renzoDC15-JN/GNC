@@ -4,11 +4,18 @@ namespace App\Filament\Resources\ContactResource\Pages;
 
 use App\Filament\Clusters\Settings;
 use App\Filament\Resources\ContactResource;
+use App\Models\Documents;
 use Filament\Actions;
+use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\MaxWidth;
 use Homeful\Contacts\Data\ContactData;
+use Homeful\Contacts\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Component;
 
 class EditContact extends EditRecord
 {
@@ -20,6 +27,42 @@ class EditContact extends EditRecord
 //            Actions\DeleteAction::make(),
             $this->getSaveFormAction()
                 ->formId('form'),
+            Actions\Action::make('document')
+                ->button()
+                ->form([
+                    Select::make('document')
+                        ->label('Select Document')
+                        ->native(false)
+                        ->options(
+                            Documents::all()->mapWithKeys(function ($document) {
+                                return [$document->id => $document->name];
+                            })->toArray()
+                        )
+                        ->multiple()
+                        ->searchable()
+                        ->required(),
+                    ToggleButtons::make('action')
+                        ->options([
+                            'view' => 'View',
+                            'download' => 'Download',
+                        ])
+                        ->icons([
+                            'view' => 'heroicon-o-eye',
+                            'download' => 'heroicon-o-arrow-down-tray',
+                        ])
+                        ->inline()
+                        ->columns(2)
+                        ->default('view')
+                        ->required(),
+                ])
+                ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
+                ->action(function (array $data, Contact $record, Component $livewire) {
+
+                    foreach ($data['document'] as $d){
+                        $livewire->dispatch('open-link-new-tab-event',route('contacts_docx_to_pdf', [$record,$d,$data['action']=='view'?1:0,$record->last_name]));
+                    }
+                })
+                ->modalWidth(MaxWidth::Small)
         ];
     }
     protected function getFormActions(): array
