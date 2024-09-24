@@ -210,7 +210,6 @@ class ContactResource extends Resource
                         Forms\Components\Fieldset::make('Spouse Information')->schema([
                             Forms\Components\TextInput::make('spouse.first_name')
                                 ->label('First Name')
-                                ->required()
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.middle_name')
@@ -219,7 +218,6 @@ class ContactResource extends Resource
 
                             Forms\Components\TextInput::make('spouse.last_name')
                                 ->label('Last Name')
-                                ->required()
                                 ->columnSpan(3),
                             Forms\Components\TextInput::make('spouse.name_suffix')
                                 ->label('Name Suffix')
@@ -232,28 +230,23 @@ class ContactResource extends Resource
 
                             Forms\Components\TextInput::make('spouse.sex')
                                 ->label('Sex')
-                                ->required()
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.nationality')
                                 ->label('Nationality')
-                                ->required()
                                 ->columnSpan(3),
 
                             Forms\Components\DatePicker::make('spouse.date_of_birth')
                                 ->label('Date of Birth')
-                                ->required()
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.email')
                                 ->label('Email Address')
                                 ->email()
-                                ->required()
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('spouse.mobile')
                                 ->label('Mobile Number')
-                                ->required()
                                 ->prefix('+63')
                                 ->regex("/^[0-9]+$/")
                                 ->minLength(10)
