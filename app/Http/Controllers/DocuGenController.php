@@ -89,7 +89,20 @@ class DocuGenController extends Controller
 
         $templateProcessor = new TemplateProcessor($filePath);
 
-        $ci = FlatData::fromModel($information);
+        $data = $information->toArray();
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                // Recursively process arrays
+                foreach ($value as $subKey => &$subValue) {
+                    if (is_null($subValue)) {
+                        $subValue = ''; // Set null values to empty strings in nested arrays
+                    }
+                }
+            } elseif (is_null($value)) {
+                $value = ''; // Set null values to empty strings
+            }
+        }
+        $ci = FlatData::fromModel(new Contact($data));
         // dd($ci);
         //set values
         foreach ($ci as $key => $value) {
