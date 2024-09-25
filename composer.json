@@ -9,6 +9,7 @@
         "aws/aws-sdk-php": "^3.316",
         "barryvdh/laravel-dompdf": "^2.2",
         "bezhansalleh/filament-shield": "^3.2",
+        "charrafimed/global-search-modal": "^3.3",
         "convertapi/convertapi-php": "^2.0",
         "doctrine/dbal": "^4.0",
         "filament/filament": "^3.2",

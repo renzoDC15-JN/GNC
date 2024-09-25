@@ -448,7 +448,6 @@ class ContactResource extends Resource
                                 ->schema([
                                     Forms\Components\TextInput::make('first_name')
                                         ->label('First Name')
-                                        ->required()
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('middle_name')
