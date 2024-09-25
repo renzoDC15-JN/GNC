@@ -9,6 +9,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Homeful\Contacts\Data\ContactData;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class EditContact extends EditRecord
 {
@@ -149,13 +150,89 @@ class EditContact extends EditRecord
                     'character_reference'=> $data['buyer_employment']['character_reference'],
                 ]
             ],
-//            'employment'=>[
-//                $data['buyer_employment']
-//            ],
-            'order'=>$data['order']
-        ];
+           'co_borrowers' => collect($data['co_borrowers'])->map(function($item){
+                return [
+                    'first_name' => $item['first_name'] ?? '',
+                    'middle_name' => $item['middle_name'] ?? '',
+                    'last_name' => $item['last_name'] ?? '',
+                    'name_suffix' => $item['name_suffix'] ?? '',
+                    'civil_status' => $item['civil_status'] ?? '',
+                    'sex' => $item['sex'] ?? '',
+                    'address' => $item['address'] ?? '',
+                    'nationality' => $item['nationality'] ?? '',
+                    'date_of_birth' => $item['date_of_birth'] ?? '',
+                    'email' => $item['email'] ?? '',
+                    'mobile' => $item['mobile'] ?? '',
+                    'other_mobile' => $item['other_mobile'] ?? '',
+                    'help_number' => $item['help_number'] ?? '',
+                    'landline' => $item['landline'] ?? '',
+                    'mothers_maiden_name' => $item['mothers_maiden_name'] ?? '',
+                    'age' => $item['age'] ?? '',
+                    'relationship_to_buyer' => $item['relationship_to_buyer'] ?? '',
+                    'passport' => $item['passport'] ?? '',
+                    'date_issued' => $item['date_issued'] ?? '',
+                    'place_issued' => $item['place_issued'] ?? '',
+                    'spouse' => $item['spouse'] ?? '',
+                    'spouse_tin' => $item['spouse_tin'] ?? '',
+                ];
+           }),
+            'order'=> [
+                'sku' => $data['order']['sku'] ?? '',
+                'seller_commission_code' => $data['order']['seller_commission_code'] ?? '',
+                'property_code' => $data['order']['property_code'] ?? '',
+                'property_type' => $data['order']['property_type'] ?? '',
+                'company_name' => $data['order']['company_name'] ?? '',
+                'project_name' => $data['order']['project_name'] ?? '',
+                'project_code' => $data['order']['project_code'] ?? '',
+                'property_name' => $data['order']['property_name'] ?? '',
+                'block' => $data['order']['block'] ?? '',
+                'lot' => $data['order']['lot'] ?? '',
+                'lot_area' => $data['order']['lot_area'] ?? '',
+                'floor_area' => $data['order']['floor_area'] ?? '',
+                'loan_term' => $data['order']['loan_term'] ?? '',
+                'loan_interest_rate' => $data['order']['loan_interest_rate'] ?? '',
+                'tct_no' => $data['order']['tct_no'] ?? '',
+                'project_location' => $data['order']['project_location'] ?? '',
+                'project_address' => $data['order']['project_address'] ?? '',
+                'reservation_rate' => $data['order']['reservation_rate'] ?? '',
+                'unit_type' => $data['order']['unit_type'] ?? '',
+                'unit_type_interior' => $data['order']['unit_type_interior'] ?? '',
+                'reservation_date' => $data['order']['reservation_date'] ?? '',
+                'transaction_reference' => $data['order']['transaction_reference'] ?? '',
+                'transaction_status' => $data['order']['transaction_status'] ?? '',
+                'total_payments_made' => $data['order']['total_payments_made'] ?? '',
+                'staging_status' => $data['order']['staging_status'] ?? '',
+                'period_id' => $data['order']['period_id'] ?? '',
+                'buyer_age' => $data['order']['buyer_age'] ?? '',
+                'seller' => [
+                    'name' => $data['order']['seller']['name'] ?? '',
+                    'id' => $data['order']['seller']['id'] ?? '',
+                    'superior' => $data['order']['seller']['superior'] ?? '',
+                    'team_head' => $data['order']['seller']['team_head'] ?? '',
+                    'chief_seller_officer' => $data['order']['seller']['chief_seller_officer'] ?? '',
+                    'deputy_chief_seller_officer' => $data['order']['seller']['deputy_chief_seller_officer'] ?? '',
+                    'unit' => $data['order']['seller']['unit'] ?? '',
+                ],
+                'seller' => [
+                    'scheme' => $data['order']['payment_scheme']['scheme'] ?? '',
+                    'method' => $data['order']['payment_scheme']['method'] ?? '',
+                    'collectible_price' => $data['order']['payment_scheme']['collectible_price'] ?? '',
+                    'commissionable_amount' => $data['order']['payment_scheme']['commissionable_amount'] ?? '',
+                    'evat_percentage' => $data['order']['payment_scheme']['evat_percentage'] ?? '',
+                    'evat_amount' => $data['order']['payment_scheme']['evat_amount'] ?? '',
+                    'fees' => collect($data['order']['payment_scheme']['fees'])->map(function($item){
+                        return [
+                            'name' => $item['name'] ?? '',
+                        'amount' => $item['amount'] ?? 0,
+                        ];
+                    }),
+                ],
+                'witness1' => $data['order']['witness1'] ?? '',
+                'witness2' => $data['order']['witness2'] ?? '',
+            ]
+         ];
         $record->update($attribs);
-//        dd($data,$attribs,$record);
+    //    dd($data,$attribs,$record);
 
         return $record;
     }

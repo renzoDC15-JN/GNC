@@ -55,6 +55,8 @@ use App\Imports\OSImport;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use function PHPUnit\Framework\throwException;
+use App\Livewire\ContactLog;
+use Filament\Forms\Components\Livewire;
 
 class ContactResource extends Resource
 {
@@ -121,8 +123,13 @@ class ContactResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $record = $form->model;
         return $form
             ->schema([
+                Section::make('Update Logs')
+                    ->schema([
+                        Livewire::make(ContactLog::class, ['id' => $record->id]),
+                    ])->columnSpan(12),
                 Section::make()
                     ->schema([
                         Forms\Components\Fieldset::make('Personal Information')->schema([
@@ -753,9 +760,9 @@ class ContactResource extends Resource
                             ->columns(12)
                             ->columnSpanFull(),
 
-        ])->columns(12)->columnSpan(9),
-                Section::make()
-                ->schema([
+                ])->columns(12)->columnSpan(9),
+                    Section::make()
+                    ->schema([
                     Forms\Components\TextInput::make('reference_code')
                         ->label('Reference Code')
                         ->required()
