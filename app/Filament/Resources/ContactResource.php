@@ -456,7 +456,6 @@ class ContactResource extends Resource
 
                                     Forms\Components\TextInput::make('last_name')
                                         ->label('Last Name')
-                                        ->required()
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('name_suffix')
