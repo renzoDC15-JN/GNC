@@ -70,9 +70,22 @@ class EditContact extends EditRecord
         return [];
     }
 
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $contact_data = ContactData::fromModel($this->record);
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                // Recursively process arrays
+                foreach ($value as $subKey => &$subValue) {
+                    if (is_null($subValue)) {
+                        $subValue = ''; // Set null values to empty strings in nested arrays
+                    }
+                }
+            } elseif (is_null($value)) {
+                $value = ''; // Set null values to empty strings
+            }
+        }
+        $contact_data = ContactData::fromModel(new Contact($data));
         $new_data = [];
 
         // Extracting data from contact_data for form
