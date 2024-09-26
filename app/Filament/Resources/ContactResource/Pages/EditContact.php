@@ -14,11 +14,13 @@ use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\MaxWidth;
 use Homeful\Contacts\Data\ContactData;
 use Homeful\Contacts\Models\Contact;
+use Howdu\FilamentRecordSwitcher\Filament\Concerns\HasRecordSwitcher;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
 class EditContact extends EditRecord
 {
+    use HasRecordSwitcher;
     protected static string $resource = ContactResource::class;
     protected static ?string $cluster = Settings::class;
     protected function getHeaderActions(): array
