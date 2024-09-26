@@ -705,6 +705,10 @@ class ContactResource extends Resource
                                     ->label('Payment Method')
                                     ->columnSpan(3),
 
+                                Forms\Components\TextInput::make('order.payment_scheme.total_contract_price')
+                                    ->label('Total Contract Price')
+                                    ->numeric()
+                                    ->columnSpan(3),
                                 Forms\Components\TextInput::make('order.payment_scheme.collectible_price')
                                     ->label('Collectible Price')
                                     ->numeric()
