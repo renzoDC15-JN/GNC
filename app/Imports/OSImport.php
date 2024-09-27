@@ -115,7 +115,6 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'name' => $row['buyer_character_reference_name'] ?? '',
                         'mobile' => $row['buyer_character_reference_mobile'] ?? '',
                     ],
-
                     'employer' => [
                         'name' => Str::title($row['buyer_employer_name'] ?? ''),
                         'industry' => Str::title($row['industry'] ?? ''),
@@ -155,7 +154,59 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                         'gsis' => (string) ($row['buyer_sss_gsis_number'] ?? ''),
                     ],
                 ],
-                // Repeat for spouse and co-borrower...
+                [
+                    'type' => 'spouse',
+                    'employment_status' => Str::title($row['spouse_employer_status'] ?? ''),
+                    'monthly_gross_income' => $row['spouse_salary_gross_income'] ?? 0,
+                    'current_position' => Str::title($row['spouse_position'] ?? ''),
+                    'employment_type' => Str::title($row['spouse_employer_type'] ?? ''),
+                    'years_in_service' => Str::title($row['spouse_years_in_service'] ?? ''),
+                    'salary_range' => $row['spouse_salary_range'] ?? '',
+                    'department_name' => $row['spouse_department_name'] ?? '',
+                    'character_reference' => [
+                        'name' => $row['spouse_character_reference_name'] ?? '',
+                        'mobile' => $row['spouse_character_reference_mobile'] ?? '',
+                    ],
+                    'employer' => [
+                        'name' => Str::title($row['spouse_employer_name'] ?? ''),
+                        'industry' => Str::title($row['spouse_industry'] ?? ''),
+                        'type' => Str::title($row['spouse_employer_type'] ?? ''),
+                        'status' => Str::title($row['spouse_employer_status'] ?? ''),
+                        'year_established' => Str::title($row['spouse_employer_year_established'] ?? ''),
+                        'total_number_of_employees' => $row['spouse_employer_total_number_of_employees'] ?? 0,
+                        'email' => $row['spouse_employer_email'] ?? '',
+                        'nationality' => 'PH',
+                        'contact_no' => (string) ($row['spouse_employer_contact_number'] ?? ''),
+                        'fax' => $row['aif_fax'] ?? '',
+                        'address' => [
+                            'type' => 'work',
+                            'ownership' => 'N/A',
+                            'full_address' => Str::title($row['spouse_employer_address'] ?? ''),
+                            'address1' => Str::title($row['spouse_place_of_work_1_(city_of_employer)'] ?? ''),
+                            'address2' => Str::title($row['spouse_place_of_work_2_(province_of_employer)'] ?? ''),
+                            'sublocality' => Str::title($row['spouse_employer_barangay'] ?? ''),
+                            'locality' => Str::title($row['spouse_employer_city'] ?? ''),
+                            'administrative_area' => Str::title($row['spouse_employer_province'] ?? ''),
+                            'postal_code' => Str::title($row['spouse_employer_zip_code'] ?? ''),
+                            'sorting_code' => '',
+                            'country' => 'PH',
+                            'block' => Str::title($row['spouse_employer_block'] ?? ''),
+                            'lot' => Str::title($row['spouse_employer_lot'] ?? ''),
+                            'unit' => Str::title($row['spouse_employer_unit'] ?? ''),
+                            'floor' => Str::title($row['spouse_employer_floor'] ?? ''),
+                            'street' => Str::title($row['spouse_employer_street'] ?? ''),
+                            'building' => Str::title($row['spouse_employer_building'] ?? ''),
+                            'length_of_stay' => $row['spouse_employer_length_of_stay'] ?? '',
+                        ],
+                    ],
+                    'id' => [
+                        'tin' => (string) ($row['spouse_tax_identification_number'] ?? ''),
+                        'sss' => (string) ($row['spouse_sss_gsis_number'] ?? ''),
+                        'pagibig' => (string) ($row['spouse_pag_ibig_number'] ?? ''),
+                        'gsis' => (string) ($row['spouse_sss_gsis_number'] ?? ''),
+                    ],
+                ],
+
             ],
             'order' => [
                 'sku' => Str::title($row['sku'] ?? ''),
@@ -199,18 +250,18 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 'term_1' => $row['term_1'] ?? '',
                 'term_2' => $row['term_2'] ?? '',
                 'term_3' => $row['term_3'] ?? '',
-                'amort_mrisri1' => $row['amort_mrisri1'] ?? '',
+                'amort_mrisri1' => $row['amort_mrisri1'] ?? 0,
                 'amort_mrisri2' => $row['amort_mrisri2'] ?? '',
                 'amort_mrisri3' => $row['amort_mrisri3'] ?? '',
-                'amort_nonlife1' => $row['amort_nonlife1'] ?? '',
+                'amort_nonlife1' => $row['amort_nonlife1'] ?? 0,
                 'amort_nonlife2' => $row['amort_nonlife2'] ?? '',
                 'amort_nonlife3' => $row['amort_nonlife3'] ?? '',
-                'amort_princ_int1' => $row['amort_princ_int1'] ?? '',
+                'amort_princ_int1' => $row['amort_princ_int1'] ?? 0,
                 'amort_princ_int2' => $row['amort_princ_int2'] ?? '',
                 'amort_princ_int3' => $row['amort_princ_int3'] ?? '',
                 'monthly_amort1' => $row['monthly_amort1'] ?? 0,
-                'monthly_amort2' => $row['monthly_amort2'] ?? 0,
-                'monthly_amort3' => $row['monthly_amort3'] ?? 0,
+                'monthly_amort2' => $row['monthly_amort2'] ?? '',
+                'monthly_amort3' => $row['monthly_amort3'] ?? '',
                 'equity_1_amount' => $row['equity_1_amount'] ?? 0,
                 'equity_1_percentage_rate' => $row['equity_1_percentage_rate'] ?? 0,
                 'equity_1_interest_rate' => $row['equity_1_interest_rate'] ?? 0,
@@ -403,6 +454,7 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                     'civil_status' => $row['co_borrower_civil_status'] ?? '', // TODO: Clarify *aif_civil_status
                     'sex' => $row['aif_gender'] ?? '',
                     'nationality' => $row['co_borrower_nationality'] ?? '', // TODO: Clarify *aif_nationality
+                    'spouse' => $row['co_borrower_spouse'] ?? '',
                     'email' => '', // TODO: Look up in Mapping
                     'mobile' => '', // TODO: Look up in Mapping
                     'other_mobile' => '', // TODO: Look up in Mapping
@@ -415,7 +467,6 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
                 ]
             ],
         ];
-
 
         $action = app(PersistContactAction::class);
         $validator = Validator::make($attribs, $action->rules());

@@ -13,11 +13,11 @@ use App\Models\Documents;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
 use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Set;
 use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -60,7 +60,7 @@ class ContactResource extends Resource
 {
     protected static ?string $label ='Contacts Information';
     protected static ?string $model = Contact::class;
-    protected static ?string $recordTitleAttribute ='reference_code';
+    protected static ?string $recordTitleAttribute ='last_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -123,45 +123,678 @@ class ContactResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('file')
-                    ->label('OS Report')
-                    ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
-                    ->maxSize(1024*12)
-                    ->storeFiles(false),
-//                Forms\Components\TextInput::make('reference_code')
-//                    ->required(),
-//                Forms\Components\TextInput::make('first_name')
-//                    ->required(),
-//                Forms\Components\TextInput::make('middle_name')
-//                    ->required(),
-//                Forms\Components\TextInput::make('last_name')
-//                    ->required(),
-//                Forms\Components\TextInput::make('civil_status')
-//                    ->required(),
-//                Forms\Components\TextInput::make('sex')
-//                    ->required(),
-//                Forms\Components\TextInput::make('nationality')
-//                    ->required(),
-//                Forms\Components\DatePicker::make('date_of_birth')
-//                    ->required(),
-//                Forms\Components\TextInput::make('email')
-//                    ->email()
-//                    ->required(),
-//                Forms\Components\TextInput::make('mobile')
-//                    ->required(),
-//                Forms\Components\Textarea::make('spouse')
-//                    ->required()
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('addresses')
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('employment')
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('co_borrowers')
-//                    ->columnSpanFull(),
-//                Forms\Components\Textarea::make('order')
-//                    ->columnSpanFull(),
-            ]);
+                Section::make()
+                    ->schema([
+                        Forms\Components\Fieldset::make('Personal Information')->schema([
+                            Forms\Components\TextInput::make('profile.first_name')
+                                ->label('First Name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.middle_name')
+                                ->label('Middle Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.last_name')
+                                ->label('Last Name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.name_suffix')
+                                ->label('Name Suffix')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.civil_status')
+                                ->label('Civil Status')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.sex')
+                                ->label('Sex')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.nationality')
+                                ->label('Nationality')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('profile.date_of_birth')
+                                ->label('Date of Birth')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.email')
+                                ->label('Email')
+                                ->email()
+                                ->required()
+                                ->maxLength(255)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->unique(ignoreRecord: true,table: Contact::class,column: 'email')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.mobile')
+                                ->label('Mobile')
+                                ->required()
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.other_mobile')
+                                ->label('Other Mobile')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('profile.landline')
+                                ->label('Landline')
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
+
+
+                        Forms\Components\Fieldset::make('Spouse Information')->schema([
+                            Forms\Components\TextInput::make('spouse.first_name')
+                                ->label('First Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.middle_name')
+                                ->label('Middle Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.last_name')
+                                ->label('Last Name')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('spouse.name_suffix')
+                                ->label('Name Suffix')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.civil_status')
+                                ->label('Civil Status')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.sex')
+                                ->label('Sex')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.nationality')
+                                ->label('Nationality')
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('spouse.date_of_birth')
+                                ->label('Date of Birth')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.email')
+                                ->label('Email Address')
+                                ->email()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.mobile')
+                                ->label('Mobile Number')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.other_mobile')
+                                ->label('Other Mobile')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.landline')
+                                ->label('Landline')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('spouse.mothers_maiden_name')
+                                ->label('Mother\'s Maiden Name')
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Address')->schema([
+                            Forms\Components\TextInput::make('buyer_address_present.type')
+                                ->label('Address Type')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.ownership')
+                                ->label('Ownership')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.full_address')
+                                ->label('Full Address')
+                                ->columnSpan(6),
+
+                            Forms\Components\TextInput::make('buyer_address_present.sublocality')
+                                ->label('Barangay')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.locality')
+                                ->label('City/Municipality')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.administrative_area')
+                                ->label('Province')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.postal_code')
+                                ->label('Postal Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.block')
+                                ->label('Block')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_address_present.street')
+                                ->label('Street')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('buyer_address_present.country')
+                                ->label('Country')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('buyer_address_present.region')
+                                ->label('Region')
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Employment Information')
+                            ->schema([
+                                Forms\Components\TextInput::make('buyer_employment.employment_status')
+                                    ->label('Employment Status')
+                                    ->required()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.monthly_gross_income')
+                                    ->label('Monthly Gross Income')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.current_position')
+                                    ->label('Current Position')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.rank')
+                                    ->label('Rank')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.employment_type')
+                                    ->label('Employment Type')
+                                    ->required()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.years_in_service')
+                                    ->label('Years in Service')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.salary_range')
+                                    ->label('Salary Range')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.id.tin')
+                                    ->label('TIN')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.id.pagibig')
+                                    ->label('Pag-IBIG')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.id.sss')
+                                    ->label('SSS')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.id.gsis')
+                                    ->label('GSIS')
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('buyer_employment.character_reference.name')
+                                    ->label('Character Reference Name')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('buyer_employment.character_reference.mobile')
+                                    ->label('Character Reference Mobile')
+                                    ->columnSpan(3),
+                            ])->columns(12)->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Employer Information')->schema([
+                            Forms\Components\TextInput::make('buyer_employment.employer.name')
+                                ->label('Employer Name')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.industry')
+                                ->label('Employer Industry')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.nationality')
+                                ->label('Employer Nationality')
+                                ->required()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.contact_no')
+                                ->label('Employer Contact Number')
+                                ->prefix('+63')
+                                ->regex("/^[0-9]+$/")
+                                ->minLength(10)
+                                ->maxLength(10)
+                                ->live()
+                                ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.year_established')
+                                ->label('Year Established')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.total_number_of_employees')
+                                ->label('Total Number of Employees')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.email')
+                                ->label('Employer Email')
+                                ->email()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.fax')
+                                ->label('Employer Fax')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('buyer_employment.employer.address.full_address')
+                                ->label('Full Address')
+                                ->columnSpan(6),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.address.locality')
+                                ->label('City')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.address.administrative_area')
+                                ->label('Province')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('buyer_employment.employer.address.country')
+                                ->label('Country')
+                                ->required()
+                                ->columnSpan(3),
+                        ])->columns(12)->columnSpanFull(),
+                        Section::make('Co-Borrowers Information')->schema([
+                            // Co-Borrower Fields
+                            Forms\Components\Repeater::make('co_borrowers')
+                                ->label('Co-Borrowers')
+                                ->schema([
+                                    Forms\Components\TextInput::make('first_name')
+                                        ->label('First Name')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('middle_name')
+                                        ->label('Middle Name')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('last_name')
+                                        ->label('Last Name')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('name_suffix')
+                                        ->label('Name Suffix')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('civil_status')
+                                        ->label('Civil Status')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('sex')
+                                        ->label('Sex')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('nationality')
+                                        ->label('Nationality')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\DatePicker::make('date_of_birth')
+                                        ->label('Date of Birth')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('email')
+                                        ->label('Email')
+                                        ->email()
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('mobile')
+                                        ->label('Mobile Number')
+                                        ->prefix('+63')
+                                        ->regex("/^[0-9]+$/")
+                                        ->minLength(10)
+                                        ->maxLength(10)
+                                        ->live()
+                                        ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('other_mobile')
+                                        ->label('Other Mobile Number')
+                                        ->prefix('+63')
+                                        ->regex("/^[0-9]+$/")
+                                        ->minLength(10)
+                                        ->maxLength(10)
+                                        ->live()
+                                        ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('help_number')
+                                        ->label('Help Number')
+                                        ->prefix('+63')
+                                        ->regex("/^[0-9]+$/")
+                                        ->minLength(10)
+                                        ->maxLength(10)
+                                        ->live()
+                                        ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('landline')
+                                        ->label('Landline')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('mothers_maiden_name')
+                                        ->label('Mother\'s Maiden Name')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('age')
+                                        ->label('Age')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('relationship_to_buyer')
+                                        ->label('Relationship to Buyer')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('passport')
+                                        ->label('Passport Number')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\DatePicker::make('date_issued')
+                                        ->label('Date Issued')
+                                        ->columnSpan(3),
+
+                                    Forms\Components\TextInput::make('place_issued')
+                                        ->label('Place Issued')
+                                        ->columnSpan(3),
+                                ])
+                                ->columns(12)
+                                ->columnSpanFull(),
+                            Forms\Components\Fieldset::make('Order')->schema([
+                                // Property and Project Information
+                                Forms\Components\TextInput::make('order.sku')
+                                    ->label('SKU')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller_commission_code')
+                                    ->label('Seller Commission Code')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.property_code')
+                                    ->label('Property Code')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.property_type')
+                                    ->label('Property Type')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.company_name')
+                                    ->label('Company Name')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.project_name')
+                                    ->label('Project Name')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.project_code')
+                                    ->label('Project Code')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.property_name')
+                                    ->label('Property Name')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.block')
+                                    ->label('Block')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.lot')
+                                    ->label('Lot')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.lot_area')
+                                    ->label('Lot Area (sqm)')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.floor_area')
+                                    ->label('Floor Area (sqm)')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                // Loan and Transaction Details
+                                Forms\Components\TextInput::make('order.loan_term')
+                                    ->label('Loan Term')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.loan_interest_rate')
+                                    ->label('Loan Interest Rate (%)')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.tct_no')
+                                    ->label('TCT Number')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.project_location')
+                                    ->label('Project Location')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.project_address')
+                                    ->label('Project Address')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.reservation_rate')
+                                    ->label('Reservation Rate')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.unit_type')
+                                    ->label('Unit Type')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.unit_type_interior')
+                                    ->label('Unit Type (Interior)')
+                                    ->columnSpan(3),
+
+                                Forms\Components\DatePicker::make('order.reservation_date')
+                                    ->label('Reservation Date')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.transaction_reference')
+                                    ->label('Transaction Reference')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.transaction_status')
+                                    ->label('Transaction Status')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.total_payments_made')
+                                    ->label('Total Payments Made')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.staging_status')
+                                    ->label('Staging Status')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.period_id')
+                                    ->label('Period ID')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.buyer_age')
+                                    ->label('Buyer Age')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                // Seller Information
+                                Forms\Components\TextInput::make('order.seller.name')
+                                    ->label('Seller Name')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller.id')
+                                    ->label('Seller ID')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller.superior')
+                                    ->label('Superior')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller.team_head')
+                                    ->label('Team Head')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller.chief_seller_officer')
+                                    ->label('Chief Seller Officer')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller.deputy_chief_seller_officer')
+                                    ->label('Deputy Chief Seller Officer')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.seller.unit')
+                                    ->label('Seller Unit')
+                                    ->columnSpan(3),
+
+                                // Payment Scheme Section (Repeater for Fees)
+                                Forms\Components\TextInput::make('order.payment_scheme.scheme')
+                                    ->label('Payment Scheme')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.payment_scheme.method')
+                                    ->label('Payment Method')
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.payment_scheme.total_contract_price')
+                                    ->label('Total Contract Price')
+                                    ->numeric()
+                                    ->columnSpan(3),
+                                Forms\Components\TextInput::make('order.payment_scheme.collectible_price')
+                                    ->label('Collectible Price')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.payment_scheme.commissionable_amount')
+                                    ->label('Commissionable Amount')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.payment_scheme.evat_percentage')
+                                    ->label('EVAT Percentage')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\TextInput::make('order.payment_scheme.evat_amount')
+                                    ->label('EVAT Amount')
+                                    ->numeric()
+                                    ->columnSpan(3),
+
+                                Forms\Components\Repeater::make('order.payment_scheme.fees')
+                                    ->label('Fees')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Fee Name')
+                                            ->columnSpan(3),
+                                        Forms\Components\TextInput::make('amount')
+                                            ->label('Amount')
+                                            ->numeric()
+                                            ->columnSpan(3),
+                                    ])->columns(6)
+                                    ->columnSpanFull(),
+
+                            ])->columns(12)->columnSpanFull(),
+                        ])
+                            ->columns(12)
+                            ->columnSpanFull(),
+
+        ])->columns(12)->columnSpan(9),
+                Section::make()
+                ->schema([
+                    Forms\Components\TextInput::make('reference_code')
+                        ->label('Reference Code')
+                        ->required()
+                        ->columnSpanFull(),
+                    // Media Uploads
+                    Forms\Components\FileUpload::make('idImage')
+                        ->label('ID Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('id-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\FileUpload::make('selfieImage')
+                        ->label('Selfie Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('selfie-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\FileUpload::make('payslipImage')
+                        ->label('Payslip Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('payslip-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\FileUpload::make('signatureImage')
+                        ->label('Signature Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('signature-images')
+                        ->columnSpanFull(),
+
+                    Forms\Components\TextInput::make('order.witness1')
+                        ->label('Witness 1')
+                        ->columnSpanFull(),
+                    Forms\Components\TextInput::make('order.witness2')
+                        ->label('Witness 2')
+                        ->columnSpanFull(),
+
+                ])->columnSpan(3)->columns(12),
+
+            ])->columns(12);
     }
+
 
 
     public static function table(Table $table): Table
@@ -170,7 +803,7 @@ class ContactResource extends Resource
             ->poll('10')
             ->defaultPaginationPageOption(50)
             ->extremePaginationLinks()
-            ->defaultSort('id','desc')
+            ->defaultSort('created_at','desc')
 //            ->query(
 //                Contact::query()
 //                    ->whereIn('project',Auth::user()->projects()->pluck('description'))
@@ -255,6 +888,7 @@ class ContactResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->headerActions([
+                Tables\Actions\CreateAction::make(),
                 Tables\Actions\Action::make('Import OS Report')
                     ->label('Import OS Report')
                     ->form([
@@ -339,7 +973,7 @@ class ContactResource extends Resource
         return [
             'index' => Pages\ListContacts::route('/'),
             'create' => Pages\CreateContact::route('/create'),
-//            'edit' => Pages\EditContact::route('/{record}/edit'),
+            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }
