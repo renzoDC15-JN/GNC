@@ -328,8 +328,6 @@ class AppServiceProvider extends ServiceProvider
                 'co-borrower_character_reference_name' => 'co-borrower_character_reference_name',
                 'co-borrower_character_reference_mobile' => 'co-borrower_character_reference_mobile',
                 'year_in_fix_interest_rate_only' => 'repricing_period',
-                'loan_term_in_years' => 'loan_term_in_years',
-                'loan_term_in_years_in_words' => 'loan_term_in_years_in_words',
                 'retention_fee' => 'retention_fee',
                 'service_fee' => 'service_fee',
                 'd_s_l_t_total' => 'dslt_total',
