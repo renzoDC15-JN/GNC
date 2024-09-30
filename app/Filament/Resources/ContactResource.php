@@ -548,204 +548,236 @@ class ContactResource extends Resource
                                         ->columnSpan(3),
                                 ])
                                 ->columns(12)
-                                ->columnSpanFull(),
-                            Forms\Components\Fieldset::make('Order')->schema([
-                                // Property and Project Information
-                                Forms\Components\TextInput::make('order.sku')
-                                    ->label('SKU')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller_commission_code')
-                                    ->label('Seller Commission Code')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.property_code')
-                                    ->label('Property Code')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.property_type')
-                                    ->label('Property Type')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.company_name')
-                                    ->label('Company Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_name')
-                                    ->label('Project Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_code')
-                                    ->label('Project Code')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.property_name')
-                                    ->label('Property Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.block')
-                                    ->label('Block')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.lot')
-                                    ->label('Lot')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.lot_area')
-                                    ->label('Lot Area (sqm)')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.floor_area')
-                                    ->label('Floor Area (sqm)')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                // Loan and Transaction Details
-                                Forms\Components\TextInput::make('order.loan_term')
-                                    ->label('Loan Term')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.loan_interest_rate')
-                                    ->label('Loan Interest Rate (%)')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.tct_no')
-                                    ->label('TCT Number')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_location')
-                                    ->label('Project Location')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_address')
-                                    ->label('Project Address')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.reservation_rate')
-                                    ->label('Reservation Rate')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.unit_type')
-                                    ->label('Unit Type')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.unit_type_interior')
-                                    ->label('Unit Type (Interior)')
-                                    ->columnSpan(3),
-
-                                Forms\Components\DatePicker::make('order.reservation_date')
-                                    ->label('Reservation Date')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.transaction_reference')
-                                    ->label('Transaction Reference')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.transaction_status')
-                                    ->label('Transaction Status')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.total_payments_made')
-                                    ->label('Total Payments Made')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.staging_status')
-                                    ->label('Staging Status')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.period_id')
-                                    ->label('Period ID')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.buyer_age')
-                                    ->label('Buyer Age')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                // Seller Information
-                                Forms\Components\TextInput::make('order.seller.name')
-                                    ->label('Seller Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.id')
-                                    ->label('Seller ID')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.superior')
-                                    ->label('Superior')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.team_head')
-                                    ->label('Team Head')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.chief_seller_officer')
-                                    ->label('Chief Seller Officer')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.deputy_chief_seller_officer')
-                                    ->label('Deputy Chief Seller Officer')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.unit')
-                                    ->label('Seller Unit')
-                                    ->columnSpan(3),
-
-                                // Payment Scheme Section (Repeater for Fees)
-                                Forms\Components\TextInput::make('order.payment_scheme.scheme')
-                                    ->label('Payment Scheme')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.method')
-                                    ->label('Payment Method')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.total_contract_price')
-                                    ->label('Total Contract Price')
-                                    ->numeric()
-                                    ->columnSpan(3),
-                                Forms\Components\TextInput::make('order.payment_scheme.collectible_price')
-                                    ->label('Collectible Price')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.commissionable_amount')
-                                    ->label('Commissionable Amount')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.evat_percentage')
-                                    ->label('EVAT Percentage')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.evat_amount')
-                                    ->label('EVAT Amount')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\Repeater::make('order.payment_scheme.fees')
-                                    ->label('Fees')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('name')
-                                            ->label('Fee Name')
-                                            ->columnSpan(3),
-                                        Forms\Components\TextInput::make('amount')
-                                            ->label('Amount')
-                                            ->numeric()
-                                            ->columnSpan(3),
-                                    ])->columns(6)
-                                    ->columnSpanFull(),
-
-                            ])->columns(12)->columnSpanFull(),
+                                ->columnSpanFull()
+                            ->maxItems(1)
+                            ->defaultItems(0),
                         ])
                             ->columns(12)
                             ->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Order')->schema([
+                            // Property and Project Information
+                            Forms\Components\TextInput::make('order.sku')
+                                ->label('SKU')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller_commission_code')
+                                ->label('Seller Commission Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.property_code')
+                                ->label('Property Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.property_type')
+                                ->label('Property Type')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.company_name')
+                                ->label('Company Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_name')
+                                ->label('Project Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_code')
+                                ->label('Project Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.property_name')
+                                ->label('Property Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.block')
+                                ->label('Block')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.lot')
+                                ->label('Lot')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.lot_area')
+                                ->label('Lot Area (sqm)')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.floor_area')
+                                ->label('Floor Area (sqm)')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            // Loan and Transaction Details
+                            Forms\Components\TextInput::make('order.loan_term')
+                                ->label('Loan Term')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.loan_interest_rate')
+                                ->label('Loan Interest Rate (%)')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.tct_no')
+                                ->label('TCT Number')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_location')
+                                ->label('Project Location')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_address')
+                                ->label('Project Address')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.reservation_rate')
+                                ->label('Reservation Rate')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.unit_type')
+                                ->label('Unit Type')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.unit_type_interior')
+                                ->label('Unit Type (Interior)')
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('order.reservation_date')
+                                ->label('Reservation Date')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.transaction_reference')
+                                ->label('Transaction Reference')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.transaction_status')
+                                ->label('Transaction Status')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.total_payments_made')
+                                ->label('Total Payments Made')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.staging_status')
+                                ->label('Staging Status')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.period_id')
+                                ->label('Period ID')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.buyer_age')
+                                ->label('Buyer Age')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            // Seller Information
+                            Forms\Components\TextInput::make('order.seller.name')
+                                ->label('Seller Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.id')
+                                ->label('Seller ID')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.superior')
+                                ->label('Superior')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.team_head')
+                                ->label('Team Head')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.chief_seller_officer')
+                                ->label('Chief Seller Officer')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.deputy_chief_seller_officer')
+                                ->label('Deputy Chief Seller Officer')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.unit')
+                                ->label('Seller Unit')
+                                ->columnSpan(3),
+
+                            // Payment Scheme Section (Repeater for Fees)
+                            Forms\Components\TextInput::make('order.payment_scheme.scheme')
+                                ->label('Payment Scheme')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.method')
+                                ->label('Payment Method')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.total_contract_price')
+                                ->label('Total Contract Price')
+                                ->numeric()
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.payment_scheme.collectible_price')
+                                ->label('Collectible Price')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.commissionable_amount')
+                                ->label('Commissionable Amount')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.evat_percentage')
+                                ->label('EVAT Percentage')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.evat_amount')
+                                ->label('EVAT Amount')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.total_deductions_from_loan_proceeds')
+                                ->label('Total Deductions From Loan Proceeds')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.net_loan_proceeds')
+                                ->label('Net Loan Proceeds')
+                                ->numeric()
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.disclosure_statement_on_loan_transaction_total')
+                                ->label('Disclosure Statement On Loan Transaction Total')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.documentary_stamp')
+                                ->label('Documentary Stamp')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.verified_survey_return_no')
+                                 ->label('Verified Survey Return No')
+                                 ->columnSpan(3),
+
+                            Forms\Components\Textarea::make('order.technical_description')
+                                ->label('Technical Description')
+                                ->rows(5)
+                                ->cols(10)
+                                ->autosize()
+                                ->columnSpanFull(),
+
+                            Forms\Components\Repeater::make('order.payment_scheme.fees')
+                                ->label('Fees')
+                                ->schema([
+                                    Forms\Components\TextInput::make('name')
+                                        ->label('Fee Name')
+                                        ->columnSpan(3),
+                                    Forms\Components\TextInput::make('amount')
+                                        ->label('Amount')
+                                        ->numeric()
+                                        ->columnSpan(3),
+                                ])->columns(6)
+                                ->columnSpanFull(),
+
+                        ])->columns(12)->columnSpanFull(),
+
 
         ])->columns(12)->columnSpan(9),
                 Section::make()
