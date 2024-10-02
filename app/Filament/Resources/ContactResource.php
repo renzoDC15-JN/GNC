@@ -7,15 +7,18 @@ use App\Filament\Imports\ContactImporter;
 use App\Filament\Resources\ContactResource\Pages;
 use App\Filament\Resources\ContactResource\RelationManagers;
 use App\Filament\Resources\Maintenance\CompaniesResource;
+use App\Livewire\UpdateLogComponent;
 use App\Models\ClientInformations;
 use App\Models\Companies;
 use App\Models\Documents;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
 use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\Tabs;
@@ -40,10 +43,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
@@ -125,6 +130,9 @@ class ContactResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
+                        Livewire::make(UpdateLogComponent::class,['model' =>$form->model])
+                            ->key('foo-first')
+                            ->columnSpanFull(),
                         Forms\Components\Fieldset::make('Personal Information')->schema([
                             Forms\Components\TextInput::make('profile.first_name')
                                 ->label('First Name')
@@ -727,6 +735,7 @@ class ContactResource extends Resource
                             Forms\Components\TextInput::make('order.payment_scheme.evat_percentage')
                                 ->label('EVAT Percentage')
                                 ->numeric()
+                                ->default(0)
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('order.payment_scheme.evat_amount')
@@ -737,19 +746,24 @@ class ContactResource extends Resource
                             Forms\Components\TextInput::make('order.total_deductions_from_loan_proceeds')
                                 ->label('Total Deductions From Loan Proceeds')
                                 ->numeric()
+                                ->default(0)
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('order.net_loan_proceeds')
                                 ->label('Net Loan Proceeds')
                                 ->numeric()
+                                ->default(0)
                                 ->columnSpan(3),
                             Forms\Components\TextInput::make('order.disclosure_statement_on_loan_transaction_total')
                                 ->label('Disclosure Statement On Loan Transaction Total')
                                 ->numeric()
+                                ->default(0)
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('order.documentary_stamp')
                                 ->label('Documentary Stamp')
+                                ->numeric()
+                                ->default(0)
                                 ->columnSpan(3),
 
                             Forms\Components\TextInput::make('order.verified_survey_return_no')
@@ -757,6 +771,50 @@ class ContactResource extends Resource
                                  ->columnSpan(3),
 
                             Forms\Components\Textarea::make('order.technical_description')
+                                ->hintAction(Forms\Components\Actions\Action::make('Get Technical Description from MFiles')
+                                    ->label('Get Technical Description from MFiles')
+                                    ->icon('heroicon-m-clipboard')
+                                    ->action(function (Get $get, Set $set, $state) {
+                                        try {
+                                            $mfilesLink = config('gnc.mfiles_link');
+                                            $credentials = config('gnc.mfiles_credentials');
+
+                                            // Prepare the data to send in the POST request
+                                            $payload = [
+                                                "Credentials" => [
+                                                    "Username" => $credentials['username'],  // Fetching from config
+                                                    "Password" => $credentials['password'],  // Fetching from config
+                                                ],
+                                                "objectID" => 119,
+                                                "propertyID" => 1105,
+                                                "name" => "PVT3_DEV-01-001-001",
+                                                "property_ids"=>[1105,1050,1109,1203,1204,1202,1285],
+                                            ];
+//                    dd($payload,$this->data['order']['property_name']);
+//                        dd($mfilesLink. '/api/mfiles/document/search/properties',$payload);
+                                            $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
+
+                                            if ($response->successful()) {
+//                                                $this->data['order']['technical_description'] = $response->json()['Technical Description'];
+                                                $set('order.technical_description', $response->json()['Technical Description']);
+                                                Notification::make()
+                                                    ->title('MFILES Tech Decription '.$response->status())
+                                                    ->body($response->json()['Technical Description'])
+                                                    ->success()
+                                                    ->persistent()
+                                                    ->sendToDatabase(auth()->user())
+                                                    ->send();
+                                            }
+                                        }catch (Exception $e){
+                                            Notification::make()
+                                                ->title('MFILES Tech Decription '.$response->status())
+                                                ->body($response->body())
+                                                ->danger()
+                                                ->persistent()
+                                                ->sendToDatabase(auth()->user())
+                                                ->send();
+                                        }
+                                    }))
                                 ->label('Technical Description')
                                 ->rows(5)
                                 ->cols(10)
@@ -775,6 +833,7 @@ class ContactResource extends Resource
                                         ->columnSpan(3),
                                 ])->columns(6)
                                 ->columnSpanFull(),
+
 
                         ])->columns(12)->columnSpanFull(),
 

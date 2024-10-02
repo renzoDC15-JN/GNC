@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 use Illuminate\Support\Facades\Gate;
-
+use App\Observers\ContactsObserver;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Approvers::class, ApproversPolicy::class);
         Gate::policy(Contact::class, ContactPolicy::class);
-
+        Contact::observe(ContactsObserver::class);
         FilamentAsset::register([
             Js::make('openlinknewtab', __DIR__ . '/../../resources/js/openlinknewtab.js'),
         ]);
@@ -336,7 +336,7 @@ class AppServiceProvider extends ServiceProvider
                 'net_loan_proceeds' => 'net_loan_proceeds',
                 'v_s_r_no.' => 'vsr_no',
                 'technical_description' => 'technical_description',
-                
+
                 default  => $heading,
             };
         });

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        Schema::table('contacts', function (Blueprint $table) {
-//            $table->uuid('id')->primary()->change();
-//        });
+        Schema::table('update_logs', function (Blueprint $table) {
+            $table->uuid('loggable_id')->change();  // Change this to UUID type to handle UUIDs
+        });
     }
 
     /**
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-//        Schema::table('contacts', function (Blueprint $table) {
-//            $table->integer('id')->primary();
-//        });
+        Schema::table('update_logs', function (Blueprint $table) {
+            $table->unsignedBigInteger('loggable_id');
+        });
     }
 };
