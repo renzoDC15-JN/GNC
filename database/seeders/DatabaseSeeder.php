@@ -26,6 +26,13 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             ProjectSeeder::class,
             CompanySeeder::class,
+            PhilippineStandardGeographicalCodeSeeder::class,
+            EmploymentStatusSeeder::class,
+            EmploymentTypeSeeder::class,
+            HomeOwnershipSeeder::class,
+            NationalitySeeder::class,
+            PostalCodeSeeder::class,
+            TenureSeeder::class,
         ]);
     }
 }
