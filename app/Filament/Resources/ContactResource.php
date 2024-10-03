@@ -7,15 +7,18 @@ use App\Filament\Imports\ContactImporter;
 use App\Filament\Resources\ContactResource\Pages;
 use App\Filament\Resources\ContactResource\RelationManagers;
 use App\Filament\Resources\Maintenance\CompaniesResource;
+use App\Livewire\UpdateLogComponent;
 use App\Models\ClientInformations;
 use App\Models\Companies;
 use App\Models\Documents;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
 use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\Tabs;
@@ -40,10 +43,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
@@ -125,6 +130,9 @@ class ContactResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
+                        Livewire::make(UpdateLogComponent::class,['model' =>$form->model])
+                            ->key('foo-first')
+                            ->columnSpanFull(),
                         Forms\Components\Fieldset::make('Personal Information')->schema([
                             Forms\Components\TextInput::make('profile.first_name')
                                 ->label('First Name')
@@ -218,7 +226,6 @@ class ContactResource extends Resource
 
                             Forms\Components\TextInput::make('spouse.last_name')
                                 ->label('Last Name')
-                                ->required()
                                 ->columnSpan(3),
                             Forms\Components\TextInput::make('spouse.name_suffix')
                                 ->label('Name Suffix')
@@ -449,7 +456,6 @@ class ContactResource extends Resource
                                 ->schema([
                                     Forms\Components\TextInput::make('first_name')
                                         ->label('First Name')
-                                        ->required()
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('middle_name')
@@ -458,7 +464,6 @@ class ContactResource extends Resource
 
                                     Forms\Components\TextInput::make('last_name')
                                         ->label('Last Name')
-                                        ->required()
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('name_suffix')
@@ -551,200 +556,287 @@ class ContactResource extends Resource
                                         ->columnSpan(3),
                                 ])
                                 ->columns(12)
-                                ->columnSpanFull(),
-                            Forms\Components\Fieldset::make('Order')->schema([
-                                // Property and Project Information
-                                Forms\Components\TextInput::make('order.sku')
-                                    ->label('SKU')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller_commission_code')
-                                    ->label('Seller Commission Code')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.property_code')
-                                    ->label('Property Code')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.property_type')
-                                    ->label('Property Type')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.company_name')
-                                    ->label('Company Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_name')
-                                    ->label('Project Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_code')
-                                    ->label('Project Code')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.property_name')
-                                    ->label('Property Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.block')
-                                    ->label('Block')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.lot')
-                                    ->label('Lot')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.lot_area')
-                                    ->label('Lot Area (sqm)')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.floor_area')
-                                    ->label('Floor Area (sqm)')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                // Loan and Transaction Details
-                                Forms\Components\TextInput::make('order.loan_term')
-                                    ->label('Loan Term')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.loan_interest_rate')
-                                    ->label('Loan Interest Rate (%)')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.tct_no')
-                                    ->label('TCT Number')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_location')
-                                    ->label('Project Location')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.project_address')
-                                    ->label('Project Address')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.reservation_rate')
-                                    ->label('Reservation Rate')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.unit_type')
-                                    ->label('Unit Type')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.unit_type_interior')
-                                    ->label('Unit Type (Interior)')
-                                    ->columnSpan(3),
-
-                                Forms\Components\DatePicker::make('order.reservation_date')
-                                    ->label('Reservation Date')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.transaction_reference')
-                                    ->label('Transaction Reference')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.transaction_status')
-                                    ->label('Transaction Status')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.total_payments_made')
-                                    ->label('Total Payments Made')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.staging_status')
-                                    ->label('Staging Status')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.period_id')
-                                    ->label('Period ID')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.buyer_age')
-                                    ->label('Buyer Age')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                // Seller Information
-                                Forms\Components\TextInput::make('order.seller.name')
-                                    ->label('Seller Name')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.id')
-                                    ->label('Seller ID')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.superior')
-                                    ->label('Superior')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.team_head')
-                                    ->label('Team Head')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.chief_seller_officer')
-                                    ->label('Chief Seller Officer')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.deputy_chief_seller_officer')
-                                    ->label('Deputy Chief Seller Officer')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.seller.unit')
-                                    ->label('Seller Unit')
-                                    ->columnSpan(3),
-
-                                // Payment Scheme Section (Repeater for Fees)
-                                Forms\Components\TextInput::make('order.payment_scheme.scheme')
-                                    ->label('Payment Scheme')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.method')
-                                    ->label('Payment Method')
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.collectible_price')
-                                    ->label('Collectible Price')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.commissionable_amount')
-                                    ->label('Commissionable Amount')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.evat_percentage')
-                                    ->label('EVAT Percentage')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\TextInput::make('order.payment_scheme.evat_amount')
-                                    ->label('EVAT Amount')
-                                    ->numeric()
-                                    ->columnSpan(3),
-
-                                Forms\Components\Repeater::make('order.payment_scheme.fees')
-                                    ->label('Fees')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('name')
-                                            ->label('Fee Name')
-                                            ->columnSpan(3),
-                                        Forms\Components\TextInput::make('amount')
-                                            ->label('Amount')
-                                            ->numeric()
-                                            ->columnSpan(3),
-                                    ])->columns(6)
-                                    ->columnSpanFull(),
-
-                            ])->columns(12)->columnSpanFull(),
+                                ->columnSpanFull()
+                            ->maxItems(1)
+                            ->defaultItems(0),
                         ])
                             ->columns(12)
                             ->columnSpanFull(),
+                        Forms\Components\Fieldset::make('Order')->schema([
+                            // Property and Project Information
+                            Forms\Components\TextInput::make('order.sku')
+                                ->label('SKU')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller_commission_code')
+                                ->label('Seller Commission Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.property_code')
+                                ->label('Property Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.property_type')
+                                ->label('Property Type')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.company_name')
+                                ->label('Company Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_name')
+                                ->label('Project Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_code')
+                                ->label('Project Code')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.property_name')
+                                ->label('Property Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.block')
+                                ->label('Block')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.lot')
+                                ->label('Lot')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.lot_area')
+                                ->label('Lot Area (sqm)')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.floor_area')
+                                ->label('Floor Area (sqm)')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            // Loan and Transaction Details
+                            Forms\Components\TextInput::make('order.loan_term')
+                                ->label('Loan Term')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.loan_interest_rate')
+                                ->label('Loan Interest Rate (%)')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.tct_no')
+                                ->label('TCT Number')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_location')
+                                ->label('Project Location')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.project_address')
+                                ->label('Project Address')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.reservation_rate')
+                                ->label('Reservation Rate')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.unit_type')
+                                ->label('Unit Type')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.unit_type_interior')
+                                ->label('Unit Type (Interior)')
+                                ->columnSpan(3),
+
+                            Forms\Components\DatePicker::make('order.reservation_date')
+                                ->label('Reservation Date')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.transaction_reference')
+                                ->label('Transaction Reference')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.transaction_status')
+                                ->label('Transaction Status')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.total_payments_made')
+                                ->label('Total Payments Made')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.staging_status')
+                                ->label('Staging Status')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.period_id')
+                                ->label('Period ID')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.buyer_age')
+                                ->label('Buyer Age')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            // Seller Information
+                            Forms\Components\TextInput::make('order.seller.name')
+                                ->label('Seller Name')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.id')
+                                ->label('Seller ID')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.superior')
+                                ->label('Superior')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.team_head')
+                                ->label('Team Head')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.chief_seller_officer')
+                                ->label('Chief Seller Officer')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.deputy_chief_seller_officer')
+                                ->label('Deputy Chief Seller Officer')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.seller.unit')
+                                ->label('Seller Unit')
+                                ->columnSpan(3),
+
+                            // Payment Scheme Section (Repeater for Fees)
+                            Forms\Components\TextInput::make('order.payment_scheme.scheme')
+                                ->label('Payment Scheme')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.method')
+                                ->label('Payment Method')
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.total_contract_price')
+                                ->label('Total Contract Price')
+                                ->numeric()
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.payment_scheme.collectible_price')
+                                ->label('Collectible Price')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.commissionable_amount')
+                                ->label('Commissionable Amount')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.evat_percentage')
+                                ->label('EVAT Percentage')
+                                ->numeric()
+                                ->default(0)
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.payment_scheme.evat_amount')
+                                ->label('EVAT Amount')
+                                ->numeric()
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.total_deductions_from_loan_proceeds')
+                                ->label('Total Deductions From Loan Proceeds')
+                                ->numeric()
+                                ->default(0)
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.net_loan_proceeds')
+                                ->label('Net Loan Proceeds')
+                                ->numeric()
+                                ->default(0)
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.disclosure_statement_on_loan_transaction_total')
+                                ->label('Disclosure Statement On Loan Transaction Total')
+                                ->numeric()
+                                ->default(0)
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.documentary_stamp')
+                                ->label('Documentary Stamp')
+                                ->numeric()
+                                ->default(0)
+                                ->columnSpan(3),
+
+                            Forms\Components\TextInput::make('order.verified_survey_return_no')
+                                 ->label('Verified Survey Return No')
+                                 ->columnSpan(3),
+
+                            Forms\Components\Textarea::make('order.technical_description')
+                                ->hintAction(Forms\Components\Actions\Action::make('Get Technical Description from MFiles')
+                                    ->label('Get Technical Description from MFiles')
+                                    ->icon('heroicon-m-clipboard')
+                                    ->action(function (Get $get, Set $set, $state) {
+                                        try {
+                                            $mfilesLink = config('gnc.mfiles_link');
+                                            $credentials = config('gnc.mfiles_credentials');
+
+                                            // Prepare the data to send in the POST request
+                                            $payload = [
+                                                "Credentials" => [
+                                                    "Username" => $credentials['username'],  // Fetching from config
+                                                    "Password" => $credentials['password'],  // Fetching from config
+                                                ],
+                                                "objectID" => 119,
+                                                "propertyID" => 1105,
+                                                "name" => "PVT3_DEV-01-001-001",
+                                                "property_ids"=>[1105,1050,1109,1203,1204,1202,1285],
+                                            ];
+//                    dd($payload,$this->data['order']['property_name']);
+//                        dd($mfilesLink. '/api/mfiles/document/search/properties',$payload);
+                                            $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
+
+                                            if ($response->successful()) {
+//                                                $this->data['order']['technical_description'] = $response->json()['Technical Description'];
+                                                $set('order.technical_description', $response->json()['Technical Description']);
+                                                Notification::make()
+                                                    ->title('MFILES Tech Decription '.$response->status())
+                                                    ->body($response->json()['Technical Description'])
+                                                    ->success()
+                                                    ->persistent()
+                                                    ->sendToDatabase(auth()->user())
+                                                    ->send();
+                                            }
+                                        }catch (Exception $e){
+                                            Notification::make()
+                                                ->title('MFILES Tech Decription '.$response->status())
+                                                ->body($response->body())
+                                                ->danger()
+                                                ->persistent()
+                                                ->sendToDatabase(auth()->user())
+                                                ->send();
+                                        }
+                                    }))
+                                ->label('Technical Description')
+                                ->rows(5)
+                                ->cols(10)
+                                ->autosize()
+                                ->columnSpanFull(),
+
+                            Forms\Components\Repeater::make('order.payment_scheme.fees')
+                                ->label('Fees')
+                                ->schema([
+                                    Forms\Components\TextInput::make('name')
+                                        ->label('Fee Name')
+                                        ->columnSpan(3),
+                                    Forms\Components\TextInput::make('amount')
+                                        ->label('Amount')
+                                        ->numeric()
+                                        ->columnSpan(3),
+                                ])->columns(6)
+                                ->columnSpanFull(),
+
+
+                        ])->columns(12)->columnSpanFull(),
+
 
         ])->columns(12)->columnSpan(9),
                 Section::make()
@@ -906,7 +998,7 @@ class ContactResource extends Resource
                     ->action(function (array $arguments, $form, $data,Set $set): void {
 //                        Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         try {
-                            Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
+                            Excel::queueImport(new OSImport(auth()->id()), $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         } catch (\Exception $e) {
                             if (property_exists($e, 'validator')) {
                                 $messages = $e->validator->messages()->toArray();

@@ -4,14 +4,26 @@ namespace App\Filament\Resources\ContactResource\Pages;
 
 use App\Filament\Clusters\Settings;
 use App\Filament\Resources\ContactResource;
+use App\Models\Documents;
+use Exception;
 use Filament\Actions;
+use Filament\Actions\StaticAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\MaxWidth;
 use Homeful\Contacts\Data\ContactData;
+use Homeful\Contacts\Models\Contact;
+use Howdu\FilamentRecordSwitcher\Filament\Concerns\HasRecordSwitcher;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
+use Livewire\Component;
+use PhpParser\Node\Stmt\TryCatch;
 
 class EditContact extends EditRecord
 {
+    use HasRecordSwitcher;
     protected static string $resource = ContactResource::class;
     protected static ?string $cluster = Settings::class;
     protected function getHeaderActions(): array
@@ -20,6 +32,84 @@ class EditContact extends EditRecord
 //            Actions\DeleteAction::make(),
             $this->getSaveFormAction()
                 ->formId('form'),
+            Actions\Action::make('document')
+                ->button()
+                ->form([
+                    Select::make('document')
+                        ->label('Select Document')
+                        ->native(false)
+                        ->options(
+                            Documents::all()->mapWithKeys(function ($document) {
+                                return [$document->id => $document->name];
+                            })->toArray()
+                        )
+                        ->multiple()
+                        ->searchable()
+                        ->required(),
+                    ToggleButtons::make('action')
+                        ->options([
+                            'view' => 'View',
+                            'download' => 'Download',
+                        ])
+                        ->icons([
+                            'view' => 'heroicon-o-eye',
+                            'download' => 'heroicon-o-arrow-down-tray',
+                        ])
+                        ->inline()
+                        ->columns(2)
+                        ->default('view')
+                        ->required(),
+                ])
+                ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
+                ->action(function (array $data, Contact $record, Component $livewire) {
+
+                    foreach ($data['document'] as $d){
+                        $livewire->dispatch('open-link-new-tab-event',route('contacts_docx_to_pdf', [$record,$d,$data['action']=='view'?1:0,$record->last_name]));
+                    }
+                })
+                ->modalWidth(MaxWidth::Small),
+            Actions\Action::make('Get Technical Description from MFiles')
+                ->label('Get Technical Description from MFiles')
+                ->action(function (Model $record) {
+                    try {
+                        $mfilesLink = config('gnc.mfiles_link');
+                        $credentials = config('gnc.mfiles_credentials');
+
+                        // Prepare the data to send in the POST request
+                        $payload = [
+                            "Credentials" => [
+                                "Username" => $credentials['username'],  // Fetching from config
+                                "Password" => $credentials['password'],  // Fetching from config
+                            ],
+                            "objectID" => 119,
+                            "propertyID" => 1105,
+                            "name" => "PVT3_DEV-01-001-001",
+                            "property_ids"=>[1105,1050,1109,1203,1204,1202,1285],
+                        ];
+//                    dd($payload,$this->data['order']['property_name']);
+//                        dd($mfilesLink. '/api/mfiles/document/search/properties',$payload);
+                        $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
+
+                        if ($response->successful()) {
+                            $this->data['order']['technical_description'] = $response->json()['Technical Description'];
+                            Notification::make()
+                                ->title('MFILES Tech Decription '.$response->status())
+                                ->body($response->json()['Technical Description'])
+                                ->success()
+                                ->persistent()
+                                ->sendToDatabase(auth()->user())
+                                ->send();
+                        }
+                    }catch (Exception $e){
+                        Notification::make()
+                            ->title('MFILES Tech Decription '.$response->status())
+                            ->body($response->body())
+                            ->danger()
+                            ->persistent()
+                            ->sendToDatabase(auth()->user())
+                            ->send();
+                    }
+            }),
         ];
     }
     protected function getFormActions(): array
@@ -27,9 +117,22 @@ class EditContact extends EditRecord
         return [];
     }
 
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $contact_data = ContactData::fromModel($this->record);
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                // Recursively process arrays
+                foreach ($value as $subKey => &$subValue) {
+                    if (is_null($subValue)) {
+                        $subValue = ''; // Set null values to empty strings in nested arrays
+                    }
+                }
+            } elseif (is_null($value)) {
+                $value = ''; // Set null values to empty strings
+            }
+        }
+        $contact_data = ContactData::fromModel(new Contact($data));
         $new_data = [];
 
         // Extracting data from contact_data for form
@@ -44,6 +147,7 @@ class EditContact extends EditRecord
 
         // Profile data
         $new_data['profile'] = $contact_data->profile->toArray();
+        $new_data['profile']['mobile']=$data['mobile'];
 
         // Order and seller details
         $new_data['order'] = $contact_data->order->toArray();
@@ -154,8 +258,9 @@ class EditContact extends EditRecord
 //            ],
             'order'=>$data['order']
         ];
+//        dd($attribs['order']);
         $record->update($attribs);
-//        dd($data,$attribs,$record);
+//        dd($data['order'],$attribs['order'],$record->order);
 
         return $record;
     }
