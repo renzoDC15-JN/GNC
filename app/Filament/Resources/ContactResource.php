@@ -130,9 +130,7 @@ class ContactResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        Livewire::make(UpdateLogComponent::class,['model' =>$form->model])
-                            ->key('foo-first')
-                            ->columnSpanFull(),
+
                         Forms\Components\Fieldset::make('Personal Information')->schema([
                             Forms\Components\TextInput::make('profile.first_name')
                                 ->label('First Name')
@@ -769,6 +767,15 @@ class ContactResource extends Resource
                             Forms\Components\TextInput::make('order.verified_survey_return_no')
                                  ->label('Verified Survey Return No')
                                  ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.exec_position')
+                                ->label('Exec Position')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.exec_tin')
+                                ->label('Exec TIN')
+                                ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.exec_signatories')
+                                ->label('Exec Signatory')
+                                ->columnSpan(3),
 
                             Forms\Components\Textarea::make('order.technical_description')
                                 ->hintAction(Forms\Components\Actions\Action::make('Get Technical Description from MFiles')
@@ -834,7 +841,9 @@ class ContactResource extends Resource
                                 ])->columns(6)
                                 ->columnSpanFull(),
 
-
+                            Livewire::make(UpdateLogComponent::class,['model' =>$form->model])
+                                ->key('foo-first')
+                                ->columnSpanFull(),
                         ])->columns(12)->columnSpanFull(),
 
 
