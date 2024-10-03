@@ -998,7 +998,7 @@ class ContactResource extends Resource
                     ->action(function (array $arguments, $form, $data,Set $set): void {
 //                        Excel::import(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         try {
-                            Excel::queueImport(new OSImport, $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
+                            Excel::queueImport(new OSImport(auth()->id()), $data['file'], null, \Maatwebsite\Excel\Excel::XLSX);
                         } catch (\Exception $e) {
                             if (property_exists($e, 'validator')) {
                                 $messages = $e->validator->messages()->toArray();

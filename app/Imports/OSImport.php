@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Homeful\Contacts\Actions\PersistContactAction;
 use Homeful\Contacts\Data\PaymentSchemeData;
 use Homeful\Contacts\Models\Contact;
@@ -12,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
@@ -19,16 +21,26 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Maatwebsite\Excel\Validators\Failure;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Events\BeforeImport;
 
 HeadingRowFormatter::default('cornerstone-os-report-1');
-class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithChunkReading, ShouldQueue
+class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithChunkReading, ShouldQueue, WithEvents
 {
     use Importable;
+    public $tries = 5;
 
+    protected $successCount = 0;
+    protected $failureCount = 0;
+    protected $totalRows = 0;
+    protected $userId;
 
-
-    public function __construct()
+    public function __construct($userId)
     {
+        ini_set('memory_limit', '2048M');
+        $this->userId = $userId;
     }
 
     /**
@@ -38,9 +50,11 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
      */
     public function model(array $row)
     {
+
         if (!isset($row['project_code'])) {
             return null;
         }
+
 //        if ($row['brn']=='7002257600038050'){
 //            dd($row);
 //        }
@@ -476,6 +490,13 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
         $validator = Validator::make($attribs, $action->rules());
 
         if ($validator->fails()) {
+            Notification::make()
+                ->title('Import Failed')
+                ->body($validator->errors()->first())
+                ->danger()
+                ->persistent()
+                ->sendToDatabase(\App\Models\User::find($this->userId))
+                ->send();
             throw new ValidationException($validator);
         }
         $validated = $validator->validated();
@@ -491,6 +512,10 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
             ? Carbon::parse($contact->date_of_birth)->format('Y-m-d')
             : null;
 
+        // Increase the success count stored in cache
+        $cacheKey = "import_success_count_{$this->userId}";
+        $currentSuccessCount = cache()->get($cacheKey, 0);
+        cache()->put($cacheKey, $currentSuccessCount + 1);
 
         return Contact::updateOrCreate(
             ['reference_code' => $contactArray['reference_code']], // Unique identifier, adjust as needed
@@ -529,4 +554,53 @@ class OSImport implements ToModel, WithHeadingRow, WithGroupedHeadingRow, WithCh
     {
         return 1000;
     }
+    public function registerEvents(): array
+    {
+        return [
+            BeforeImport::class => function(BeforeImport $event) {
+                // Total rows can be calculated based on the sheet's highest row or manually tracked
+                $this->totalRows = array_sum($event->reader->getTotalRows());
+                Notification::make()
+                    ->title('Import Start')
+                    ->body("Importing {$this->totalRows} rows.")
+                    ->success()
+                    ->persistent()
+                    ->sendToDatabase(\App\Models\User::find($this->userId))
+                    ->send();
+            },
+            AfterImport::class => function(AfterImport $event) {
+                $this->onSuccess($event);
+            },
+            ImportFailed::class => function(ImportFailed $event) {
+                $this->onFailure($event->getException());
+            },
+        ];
+    }
+    public function onSuccess(AfterImport $event)
+    {
+        $cacheKey = "import_success_count_{$this->userId}";
+        $successCount = cache()->get($cacheKey, 0);
+        Notification::make()
+            ->title('Import Completed')
+            ->body("Import finished successfully: {$successCount} out of {$this->totalRows} rows imported.")
+            ->success()
+            ->persistent()
+            ->sendToDatabase(\App\Models\User::find($this->userId))
+            ->send();
+        cache()->forget($cacheKey);
+
+    }
+
+    public function onFailure(\Exception $e)
+    {
+        // Send a failure notification with the failure count
+        Notification::make()
+            ->title('Import Failed')
+            ->body($e->getMessage())
+            ->danger()
+            ->persistent()
+            ->sendToDatabase(\App\Models\User::find($this->userId))
+            ->send();
+    }
+
 }
