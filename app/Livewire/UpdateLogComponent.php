@@ -33,7 +33,8 @@ class UpdateLogComponent extends Component implements HasForms, HasTable
                         $formattedDate = $date->format('F j, Y');
                         $formattedTime = $date->format('g:i A');
                         $timeAgo = $date->diffForHumans(); // 1 hour ago
-                        return $formattedDate . '<br>' . $formattedTime . '<br>' . $record->user->name . '<br><small>' . $timeAgo . '</small>';
+                        $user = $record->user==null?'':$record->user->name;
+                        return $formattedDate . '<br>' . $formattedTime . '<br>'.$user. '<br><small>' . $timeAgo . '</small>';
                     })
                     ->html(),
                 TextColumn::make('field')->grow(false),
