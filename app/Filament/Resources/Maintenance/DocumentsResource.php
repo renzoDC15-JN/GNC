@@ -33,6 +33,11 @@ class DocumentsResource extends Resource
     protected static ?string $navigationGroup = 'Maintenance';
     protected static ?string $recordTitleAttribute = 'name';
 
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function form(Form $form): Form
     {
 

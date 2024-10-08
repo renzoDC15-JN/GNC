@@ -68,6 +68,10 @@ class ContactResource extends Resource
     protected static ?string $recordTitleAttribute ='last_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
 //    public static function  infolist(Infolist $infolist): Infolist
 //    {
