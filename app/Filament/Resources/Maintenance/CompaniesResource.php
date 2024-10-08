@@ -44,7 +44,6 @@ class CompaniesResource extends Resource
                     ->acceptedFileTypes(['application/png','application/x-png','image/jpeg','image/png'])
                     ->directory('company_logo')
                     ->preserveFilenames()
-                    ->required()
                     ->columnSpan(12),
 
             ])->columns(12);
