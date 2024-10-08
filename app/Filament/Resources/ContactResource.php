@@ -11,6 +11,7 @@ use App\Livewire\UpdateLogComponent;
 use App\Models\ClientInformations;
 use App\Models\Companies;
 use App\Models\Documents;
+use App\Models\Projects;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
 use Filament\Actions\StaticAction;
@@ -59,6 +60,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\OSImport;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\throwException;
 
 class ContactResource extends Resource
@@ -1156,6 +1158,8 @@ class ContactResource extends Resource
             ->defaultPaginationPageOption(50)
             ->extremePaginationLinks()
             ->defaultSort('created_at','desc')
+            ->deferFilters()
+            ->persistFiltersInSession()
 //            ->query(
 //                Contact::query()
 //                    ->whereIn('project',Auth::user()->projects()->pluck('description'))
@@ -1193,9 +1197,7 @@ class ContactResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+
             ->actions([
                 Tables\Actions\ViewAction::make()->label('View Details')->button(),
                 Tables\Actions\Action::make('document')
@@ -1289,13 +1291,26 @@ class ContactResource extends Resource
                     })
 
             ])->filters([
-//                SelectFilter::make('project')
+//                SelectFilter::make('order.project_code')
+//                    ->label('Project')
 //                    ->multiple()
 //                    ->options(
 //                        Auth::user()->projects()->get()->mapWithKeys(function ($item,$keys) {
 //                            return [$item->description => $item->description];
 //                        })->toArray()
-//                    )->columnSpan(2),
+//                    )->query(function (Builder $query, array $data): Builder {
+//                        if (empty($data['values'])) {
+//                            return $query;
+//                        }
+//                        $projectCodes = Projects::whereIn('description', $data['values'])->pluck('code');
+//                        if ($projectCodes->isNotEmpty()) {
+//                            return $query->whereRaw('JSON_UNQUOTE(JSON_EXTRACT(`order`, "$.project_code")) COLLATE utf8mb4_general_ci IN (?)', [$projectCodes->implode(', ')]);
+//                        }
+//
+//                        // If no matching project is found, return the unmodified query
+//                        return $query;
+//                    })
+//                    ->columnSpan(2),
 //                SelectFilter::make('location')
 //                    ->multiple()
 //                    ->options(
@@ -1303,7 +1318,7 @@ class ContactResource extends Resource
 //                            return [$item->description => $item->description];
 //                        })->toArray()
 //                    )->columnSpan(2)
-            ], layout: FiltersLayout::AboveContent);
+            ]);
     }
 
     protected function onValidationError(ValidationException $exception): void

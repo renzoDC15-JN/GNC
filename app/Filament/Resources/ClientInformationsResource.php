@@ -161,9 +161,6 @@ class ClientInformationsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                     Tables\Actions\ViewAction::make()->label('View Details')->button(),
                     Tables\Actions\Action::make('document')
