@@ -854,7 +854,6 @@ class ContactResource extends Resource
                             Forms\Components\Fieldset::make('Personal Information')->schema([
                                 Forms\Components\TextInput::make('aif.profile.first_name')
                                     ->label('First Name')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.profile.middle_name')
@@ -863,7 +862,6 @@ class ContactResource extends Resource
 
                                 Forms\Components\TextInput::make('aif.profile.last_name')
                                     ->label('Last Name')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.profile.name_suffix')
@@ -872,28 +870,23 @@ class ContactResource extends Resource
 
                                 Forms\Components\TextInput::make('aif.profile.civil_status')
                                     ->label('Civil Status')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.profile.sex')
                                     ->label('Sex')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.profile.nationality')
                                     ->label('Nationality')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\DatePicker::make('aif.profile.date_of_birth')
                                     ->label('Date of Birth')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.profile.email')
                                     ->label('Email')
                                     ->email()
-                                    ->required()
                                     ->maxLength(255)
                                     ->live()
                                     ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
@@ -903,7 +896,6 @@ class ContactResource extends Resource
 
                                 Forms\Components\TextInput::make('aif.profile.mobile')
                                     ->label('Mobile')
-                                    ->required()
                                     ->prefix('+63')
                                     ->regex("/^[0-9]+$/")
                                     ->minLength(10)
@@ -933,12 +925,10 @@ class ContactResource extends Resource
                             Forms\Components\Fieldset::make('Address')->schema([
                                 Forms\Components\TextInput::make('aif.present.type')
                                     ->label('Address Type')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.present.ownership')
                                     ->label('Ownership')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.present.full_address')
@@ -947,17 +937,14 @@ class ContactResource extends Resource
 
                                 Forms\Components\TextInput::make('aif.present.sublocality')
                                     ->label('Barangay')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.present.locality')
                                     ->label('City/Municipality')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.present.administrative_area')
                                     ->label('Province')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.present.postal_code')
@@ -982,7 +969,6 @@ class ContactResource extends Resource
                                 ->schema([
                                     Forms\Components\TextInput::make('aif.employment.employment_status')
                                         ->label('Employment Status')
-                                        ->required()
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('aif.employment.monthly_gross_income')
@@ -1000,7 +986,6 @@ class ContactResource extends Resource
 
                                     Forms\Components\TextInput::make('aif.employment.employment_type')
                                         ->label('Employment Type')
-                                        ->required()
                                         ->columnSpan(3),
 
                                     Forms\Components\TextInput::make('aif.employment.years_in_service')
@@ -1036,17 +1021,14 @@ class ContactResource extends Resource
                             Forms\Components\Fieldset::make('Employer Information')->schema([
                                 Forms\Components\TextInput::make('aif.employment.employer.name')
                                     ->label('Employer Name')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.employment.employer.industry')
                                     ->label('Employer Industry')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.employment.employer.nationality')
                                     ->label('Employer Nationality')
-                                    ->required()
                                     ->columnSpan(3),
 
                                 Forms\Components\TextInput::make('aif.employment.employer.contact_no')
@@ -1092,7 +1074,6 @@ class ContactResource extends Resource
 
                                 Forms\Components\TextInput::make('aif.employment.employer.address.country')
                                     ->label('Country')
-                                    ->required()
                                     ->columnSpan(3),
                             ])->columns(12)->columnSpanFull(),
 
@@ -1291,26 +1272,26 @@ class ContactResource extends Resource
                     })
 
             ])->filters([
-//                SelectFilter::make('order.project_code')
-//                    ->label('Project')
-//                    ->multiple()
-//                    ->options(
-//                        Auth::user()->projects()->get()->mapWithKeys(function ($item,$keys) {
-//                            return [$item->description => $item->description];
-//                        })->toArray()
-//                    )->query(function (Builder $query, array $data): Builder {
-//                        if (empty($data['values'])) {
-//                            return $query;
-//                        }
-//                        $projectCodes = Projects::whereIn('description', $data['values'])->pluck('code');
-//                        if ($projectCodes->isNotEmpty()) {
-//                            return $query->whereRaw('JSON_UNQUOTE(JSON_EXTRACT(`order`, "$.project_code")) COLLATE utf8mb4_general_ci IN (?)', [$projectCodes->implode(', ')]);
-//                        }
-//
-//                        // If no matching project is found, return the unmodified query
-//                        return $query;
-//                    })
-//                    ->columnSpan(2),
+                SelectFilter::make('order.project_code')
+                    ->label('Project')
+                    ->multiple()
+                    ->options(
+                        Auth::user()->projects()->get()->mapWithKeys(function ($item,$keys) {
+                            return [$item->description => $item->description];
+                        })->toArray()
+                    )->query(function (Builder $query, array $data): Builder {
+                        if (empty($data['values'])) {
+                            return $query;
+                        }
+                        $projectCodes = Projects::whereIn('description', $data['values'])->pluck('code');
+                        if ($projectCodes->isNotEmpty()) {
+                            return $query->whereRaw('JSON_UNQUOTE(JSON_EXTRACT(`order`, "$.project_code")) COLLATE utf8mb4_general_ci IN (?)', [$projectCodes->implode(', ')]);
+                        }
+
+                        // If no matching project is found, return the unmodified query
+                        return $query;
+                    })
+                    ->columnSpan(2),
 //                SelectFilter::make('location')
 //                    ->multiple()
 //                    ->options(
