@@ -618,7 +618,7 @@ class ContactResource extends Resource
                                 ->numeric()
                                 ->columnSpan(3),
                             Forms\Components\TextInput::make('order.registry_of_deeds_address')
-                                ->label('Floor Area (sqm)')
+                                ->label('Registry of Deeds Address')
                                 ->numeric()
                                 ->columnSpan(3),
 
