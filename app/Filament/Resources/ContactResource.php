@@ -617,6 +617,10 @@ class ContactResource extends Resource
                                 ->label('Floor Area (sqm)')
                                 ->numeric()
                                 ->columnSpan(3),
+                            Forms\Components\TextInput::make('order.registry_of_deeds_address')
+                                ->label('Floor Area (sqm)')
+                                ->numeric()
+                                ->columnSpan(3),
 
                             // Loan and Transaction Details
                             Forms\Components\TextInput::make('order.loan_term')
