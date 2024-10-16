@@ -619,7 +619,6 @@ class ContactResource extends Resource
                                 ->columnSpan(3),
                             Forms\Components\TextInput::make('order.registry_of_deeds_address')
                                 ->label('Registry of Deeds Address')
-                                ->numeric()
                                 ->columnSpan(3),
 
                             // Loan and Transaction Details
