@@ -137,10 +137,17 @@ class DocuGenController extends Controller
 //            }else{
 //               return response()->download($pdfFile);
 //            }
-            return $isView? response()->file($pdfFile, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
-            ]):response()->download($pdfFile);
+            if ($document_template->type=='WORD'){
+                return $isView? response()->file($docx_file, [
+                    'Content-Type' => 'application/msword',
+                    'Content-Disposition' => 'inline; filename="' . basename($docx_file) . '"'
+                ]):response()->download($docx_file);
+            }else{
+                return $isView? response()->file($pdfFile, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="' . basename($pdfFile) . '"'
+                ]):response()->download($pdfFile);
+            }
         } else {
             return response()->json(['error' => 'An error occurred during the file conversion'], 500);
         }
