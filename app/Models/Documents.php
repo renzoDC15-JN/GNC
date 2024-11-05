@@ -24,7 +24,8 @@ class Documents extends Model implements HasMedia
         'data',
         'company_code',
         'projects',
-        'approvers'
+        'approvers',
+        'type'
     ];
 
     protected $casts = [
