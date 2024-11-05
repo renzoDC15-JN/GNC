@@ -84,6 +84,15 @@ class DocumentsResource extends Resource
                                 })->toArray()
                             )->native(false)
                             ->multiple(),
+                        Forms\Components\Select::make('type')
+                            ->label('Type')
+                            ->options(
+                                [
+                                    'WORD'=>'WORD',
+                                    'PDF'=>'PDF',
+                                ]
+                            )->native(false)
+                            ->required(),
 
 
                     ])->columns(1)->columnSpan(4),
